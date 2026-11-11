@@ -29,5 +29,35 @@ window.PROFILE = {
     {t:"台灣融券與借券制度研究", d:"含虛擬資產與穩定幣作為財力證明的可行性論述。"},
     {t:"2026 年 7 月去槓桿回檔 13F 分析", d:"5 頁中文市場分析簡報。"}
   ],
-  links: [["LinkedIn","https://www.linkedin.com/in/0xdanielchen"]]
+  links: [["LinkedIn","https://www.linkedin.com/in/0xdanielchen"]],
+  en: {
+    nameZh: "",
+    title: "Digital Assets & Stablecoin Research",
+    location: "Taipei",
+    tagline: "Regulators are writing, clause by clause, the rules that bring digital assets into banking. I watch, absorb, and help Taiwan's banks make the shift one step at a time.",
+    bio: [
+      "I study how digital assets, stablecoins and tokenised real-world assets enter traditional finance, with a focus on how banks in Taiwan should structure these businesses.",
+      "My background spans exchanges and traditional finance: growth and research partnerships at Binance APAC, my own on-chain and perpetual-futures book, and hands-on familiarity with securities lending and ETF creation and redemption in Taiwan's equity market. This site is my daily working notebook. Regulatory sources are the regulators' own texts."
+    ],
+    views: [],
+    experience: [
+      {org:"Deloitte Taiwan", role:"Consultant, Forensic & Financial Crime", when:"From Dec 2026 (expected start)", where:"Taipei",
+       note:"Digital asset and stablecoin service planning. This site is a personal research notebook and does not represent the views of my employer."},
+      {org:"Binance", role:"APAC BAP Intern", when:"May 2023 – Apr 2024", where:"Singapore",
+       note:"APAC new-user growth programmes; led five interns producing five quarterly research reports, including an APAC RWA compliance report; set up research partnerships with Messari and CryptoRank."},
+      {org:"Bitgin Exchange", role:"Marketing Intern", when:"Dec 2022 – Mar 2023", where:"Taipei",
+       note:"Campaign research and marketing execution at a Taiwan-based exchange."},
+      {org:"Arcade", role:"Community Manager Intern", when:"Apr 2022 – Dec 2022", where:"Taipei",
+       note:"Monthly research on market structure, regulation and industry trends."}
+    ],
+    education: [
+      {org:"RMIT University", role:"Bachelor of Business (Finance)", when:"Graduated Dec 2025", note:"GPA 3.8 / 4.0"}
+    ],
+    work: [
+      {t:"Global Digital Asset Regulation Brief", d:"This site. A daily brief on regulation and business models across Taiwan, Asia, the US and Europe, with a concrete response for Taiwan's banks under each story."},
+      {t:"A three-year digital asset strategy for a large private bank", d:"Eight-slide deck. Thesis: custody at the core, stablecoins as the extension, trading through partnerships."},
+      {t:"Margin short-selling and securities lending in Taiwan", d:"Includes a case for digital assets and stablecoins as proof of financial capacity."},
+      {t:"13F analysis of the July 2026 deleveraging drawdown", d:"Five-slide market analysis deck (in Chinese)."}
+    ]
+  }
 };

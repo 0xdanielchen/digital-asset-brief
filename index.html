@@ -27,11 +27,12 @@ button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{
 .who h1{font-family:var(--display);font-weight:900;font-size:36px;line-height:1.2;margin:0}
 .who h1 span{font-size:22px;font-weight:600;margin-left:10px}
 .who .role{font-weight:700;color:var(--accent);margin-top:4px}
-.who .tag{color:var(--muted);font-size:14px;max-width:46ch}
-.tabs{display:flex;gap:4px;border-bottom:3px double var(--ink);width:100%}
+.who .tag{color:var(--muted);font-size:14px;max-width:52ch}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:3px double var(--ink);width:100%}
 .tab{font:inherit;font-family:var(--display);font-weight:600;font-size:16.5px;border:0;background:none;color:var(--muted);padding:8px 16px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-3px}
 .tab:hover{color:var(--ink)}
 .tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--bright)}
+.tab.lang{margin-left:auto;font-family:var(--body);font-size:14px;font-weight:700;color:var(--accent)}
 .view{display:none} .view.on{display:block}
 .bar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--rule)}
 .nav{display:flex;flex-wrap:wrap;gap:4px 6px}
@@ -59,7 +60,7 @@ button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{
 .take{margin:10px 0 0;font-size:14.5px}
 .take b{color:var(--accent)}
 .src{margin-top:8px;font-size:13px;display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--muted)}
-.src .sec::after{content:"（次級）";color:var(--muted)}
+.src .sec{color:var(--muted)}
 details{margin-top:8px}
 summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
 .rail{display:flex;flex-direction:column;gap:22px;padding-top:18px}
@@ -94,20 +95,16 @@ summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
       <div class="role" id="prole"></div>
       <div class="tag" id="ptag"></div>
     </div>
-    <nav class="tabs" aria-label="頁面">
-      <button type="button" class="tab" data-v="daily">每日重點</button>
-      <button type="button" class="tab" data-v="views">我的觀點</button>
-      <button type="button" class="tab" data-v="about">關於我</button>
-    </nav>
+    <nav class="tabs" id="tabs" aria-label="Pages"></nav>
   </header>
   <div class="view" id="v-daily">
     <div class="bar">
       <nav class="nav" id="nav" aria-label="地區"></nav>
       <div class="pick">
-        <button type="button" id="prev" aria-label="前一期">‹</button>
-        <label for="edition">期別</label>
+        <button type="button" id="prev">‹</button>
+        <label for="edition" id="edlabel"></label>
         <select id="edition"></select>
-        <button type="button" id="next" aria-label="後一期">›</button>
+        <button type="button" id="next">›</button>
       </div>
     </div>
     <section class="lead" id="lead"></section>
@@ -115,58 +112,95 @@ summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
       <main id="stories"></main>
       <aside class="rail" id="rail"></aside>
     </div>
-    <p class="foot">級別：P0 需立即行動｜P1 本週內評估｜P2 觀察。來源以主管機關官方文件為主；標「次級」者為媒體或律所整理，引用前請再核實。本站為個人研究筆記，不構成法律或投資建議。</p>
+    <p class="foot" id="foot"></p>
   </div>
   <div class="view" id="v-views"></div>
   <div class="view" id="v-about"></div>
 </div>
 <script src="profile.js"></script>
 <script src="editions.js"></script>
+<script src="editions.en.js"></script>
 <script>
-const P = window.PROFILE || {};
-const ED = (window.EDITIONS || []).slice().sort((a,b) => a.date < b.date ? 1 : -1);
-const state = {i:0, region:"全部"};
+const P0 = window.PROFILE || {};
+const byDate = a => (a || []).slice().sort((x,y) => x.date < y.date ? 1 : -1);
+const EDS = {zh: byDate(window.EDITIONS), en: byDate(window.EDITIONS_EN)};
+const T = {
+  zh: {all:"全部", lead:"頭條", bank:"台灣銀行怎麼做", src:"來源", sec:"（次級）", take:"評析　", more:"更多重點與評析", dates:"倒數提醒", todo:"明日追蹤",
+       edition:"期別", prev:"前一期", next:"後一期", none:"還沒有任何一期。", noreg:"這一期沒有這個地區的新聞。",
+       tabs:{daily:"每日重點", views:"我的觀點", about:"關於我"}, other:"English", htmlLang:"zh-Hant",
+       intro:"這幾條是我目前對台灣銀行切入虛擬資產業務的判斷，會隨法規進展修正。", draft:"草稿，待本人修訂", basis:"依據：",
+       bio:"簡介", work:"研究與作品", exp:"經歷", edu:"學歷", contact:"聯絡", sep:"｜",
+       foot:"級別：P0 需立即行動｜P1 本週內評估｜P2 觀察。來源以主管機關官方文件為主；標「次級」者為媒體或律所整理，引用前請再核實。本站為個人研究筆記，不構成法律或投資建議。",
+       week:["日","一","二","三","四","五","六"], wk:(d,w) => d + "（" + w + "）"},
+  en: {all:"All", lead:"Lead", bank:"What Taiwan's banks should do", src:"Sources", sec:" (secondary)", take:"Analysis  ", more:"More detail and analysis", dates:"Key dates", todo:"Following up next",
+       edition:"Edition", prev:"Older edition", next:"Newer edition", none:"No English edition yet.", noreg:"No stories for this region in this edition.",
+       tabs:{daily:"Daily Brief", views:"My Views", about:"About"}, other:"中文", htmlLang:"en",
+       intro:"My current judgments on how banks in Taiwan should enter digital assets. They will change as the rules do.", draft:"Draft, pending my revision", basis:"Basis: ",
+       bio:"Profile", work:"Research and work", exp:"Experience", edu:"Education", contact:"Contact", sep:" | ",
+       foot:"Priority: P0 act now | P1 assess this week | P2 watch. Sources are regulators' own documents first; items marked secondary are media or law-firm summaries and should be verified before use. This site is a personal research notebook and is not legal or investment advice.",
+       week:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], wk:(d,w) => d + " (" + w + ")"}
+};
+const state = {lang:"zh", view:"daily", i:0, region:null};
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-const WEEK = ["日","一","二","三","四","五","六"];
-const label = d => { const t = new Date(d + "T00:00:00"); return isNaN(t) ? d : d + "（" + WEEK[t.getDay()] + "）"; };
-
-(() => {
-  const h = document.getElementById("pname"); h.textContent = P.name || "";
-  if (P.nameZh) h.appendChild(el("span",null,P.nameZh));
-  document.getElementById("prole").textContent = [P.title, P.location].filter(Boolean).join("｜");
-  document.getElementById("ptag").textContent = P.tagline || "";
-})();
+const $ = id => document.getElementById(id);
+const t = () => T[state.lang];
+const prof = () => state.lang === "en" ? Object.assign({}, P0, P0.en || {}) : P0;
+const label = d => { const x = new Date(d + "T00:00:00"); return isNaN(x) ? d : t().wk(d, t().week[x.getDay()]); };
 
 function kicker(s, lead){
   const k = el("div","kick");
-  if (lead) k.appendChild(el("span",null,"頭條"));
+  if (lead) k.appendChild(el("span",null,t().lead));
   k.appendChild(el("span","reg",s.region));
   k.appendChild(el("span","pri " + s.p, s.p));
   return k;
 }
 function bankBox(s){
-  const b = el("div","bank"); b.appendChild(el("h4",null,"台灣銀行怎麼做"));
+  const b = el("div","bank"); b.appendChild(el("h4",null,t().bank));
   const ul = el("ul"); s.bank.forEach(x => ul.appendChild(el("li",null,x))); b.appendChild(ul); return b;
 }
 function sources(s){
-  const d = el("div","src"); d.appendChild(el("span",null,"來源"));
-  s.links.forEach(([n,u,sec]) => { const a = el("a", sec ? "sec" : null, n); a.href = u; a.target = "_blank"; a.rel = "noopener"; d.appendChild(a); });
+  const d = el("div","src"); d.appendChild(el("span",null,t().src));
+  s.links.forEach(([n,u,sec]) => { const a = el("a", sec ? "sec" : null, n + (sec ? t().sec : "")); a.href = u; a.target = "_blank"; a.rel = "noopener"; d.appendChild(a); });
   return d;
 }
 function points(s){ const ul = el("ul","pts"); s.points.forEach(x => ul.appendChild(el("li",null,x))); return ul; }
-function take(s){ const p = el("p","take"); p.appendChild(el("b",null,"評析　")); p.appendChild(document.createTextNode(s.view)); return p; }
+function take(s){ const p = el("p","take"); p.appendChild(el("b",null,t().take)); p.appendChild(document.createTextNode(s.view)); return p; }
+
+function renderMast(){
+  const P = prof();
+  document.documentElement.lang = t().htmlLang;
+  const h = $("pname"); h.textContent = P.name || "";
+  if (P.nameZh) h.appendChild(el("span",null,P.nameZh));
+  $("prole").textContent = [P.title, P.location].filter(Boolean).join(t().sep);
+  $("ptag").textContent = P.tagline || "";
+  const tabs = $("tabs"); tabs.textContent = "";
+  const names = ["daily"].concat((P.views || []).length ? ["views"] : [], ["about"]);
+  if (!names.includes(state.view)) state.view = "daily";
+  names.forEach(n => {
+    const b = el("button","tab",t().tabs[n]); b.type = "button";
+    if (n === state.view) b.setAttribute("aria-current","page");
+    b.addEventListener("click", () => go(state.lang, n)); tabs.appendChild(b);
+  });
+  const lb = el("button","tab lang",t().other); lb.type = "button";
+  lb.addEventListener("click", () => go(state.lang === "en" ? "zh" : "en", state.view)); tabs.appendChild(lb);
+  ["daily","views","about"].forEach(n => $("v-" + n).classList.toggle("on", n === state.view));
+  $("foot").textContent = t().foot;
+  $("edlabel").textContent = t().edition;
+  $("prev").setAttribute("aria-label", t().prev); $("next").setAttribute("aria-label", t().next);
+}
 
 function renderDaily(){
-  const e = ED[state.i];
-  const lead = document.getElementById("lead"), main = document.getElementById("stories"), rail = document.getElementById("rail"), nav = document.getElementById("nav");
-  [lead, main, rail, nav].forEach(x => x.textContent = "");
-  if (!e){ main.appendChild(el("p","empty","還沒有任何一期。")); return; }
-  ["全部", ...Array.from(new Set(e.stories.map(s => s.region)))].forEach(r => {
-    const b = el("button","navbtn",r); b.type = "button"; b.setAttribute("aria-pressed", String(state.region === r));
+  const ED = EDS[state.lang]; const e = ED[state.i];
+  const lead = $("lead"), main = $("stories"), rail = $("rail"), nav = $("nav"), sel = $("edition");
+  [lead, main, rail, nav, sel].forEach(x => x.textContent = "");
+  ED.forEach((x,i) => { const o = el("option",null,label(x.date)); o.value = String(i); sel.appendChild(o); });
+  if (!e){ lead.style.display = "none"; main.appendChild(el("p","empty",t().none)); $("prev").disabled = $("next").disabled = true; return; }
+  [null, ...Array.from(new Set(e.stories.map(s => s.region)))].forEach(r => {
+    const b = el("button","navbtn", r === null ? t().all : r); b.type = "button"; b.setAttribute("aria-pressed", String(state.region === r));
     b.addEventListener("click", () => { state.region = r; renderDaily(); }); nav.appendChild(b);
   });
-  const list = e.stories.filter(s => state.region === "全部" || s.region === state.region);
-  if (!list.length){ lead.style.display = "none"; main.appendChild(el("p","empty","這一期沒有這個地區的新聞。")); }
+  const list = e.stories.filter(s => state.region === null || s.region === state.region);
+  if (!list.length){ lead.style.display = "none"; main.appendChild(el("p","empty",t().noreg)); }
   else {
     lead.style.display = "";
     const top = list[0];
@@ -178,63 +212,68 @@ function renderDaily(){
       const a = el("article","story");
       a.appendChild(kicker(s)); a.appendChild(el("h3",null,s.headline)); a.appendChild(el("p","lede",s.lede));
       a.appendChild(bankBox(s));
-      const det = el("details"); det.appendChild(el("summary",null,"更多重點與評析"));
+      const det = el("details"); det.appendChild(el("summary",null,t().more));
       if (s.points.length) det.appendChild(points(s)); det.appendChild(take(s)); a.appendChild(det);
       a.appendChild(sources(s));
       main.appendChild(a);
     });
   }
   const box = (title, cls) => { const b = el("section","box" + (cls ? " " + cls : "")); b.appendChild(el("h4",null,title)); const ul = el("ul"); b.appendChild(ul); rail.appendChild(b); return ul; };
-  const du = box("倒數提醒");
-  (e.dates || []).forEach(([d,t]) => { const li = el("li"); li.appendChild(el("time",null,d)); li.appendChild(document.createTextNode(t)); du.appendChild(li); });
-  const tu = box("明日追蹤","todo");
-  (e.todo || []).forEach(t => tu.appendChild(el("li",null,t)));
-  document.getElementById("edition").value = String(state.i);
-  document.getElementById("prev").disabled = state.i >= ED.length - 1;
-  document.getElementById("next").disabled = state.i <= 0;
+  const du = box(t().dates);
+  (e.dates || []).forEach(([d,x]) => { const li = el("li"); li.appendChild(el("time",null,d)); li.appendChild(document.createTextNode(x)); du.appendChild(li); });
+  const tu = box(t().todo,"todo");
+  (e.todo || []).forEach(x => tu.appendChild(el("li",null,x)));
+  sel.value = String(state.i);
+  $("prev").disabled = state.i >= ED.length - 1;
+  $("next").disabled = state.i <= 0;
 }
-const sel = document.getElementById("edition");
-ED.forEach((e,i) => { const o = el("option",null,label(e.date)); o.value = String(i); sel.appendChild(o); });
-sel.addEventListener("change", () => { state.i = Number(sel.value); state.region = "全部"; renderDaily(); });
-document.getElementById("prev").addEventListener("click", () => { if (state.i < ED.length - 1){ state.i++; state.region = "全部"; renderDaily(); } });
-document.getElementById("next").addEventListener("click", () => { if (state.i > 0){ state.i--; state.region = "全部"; renderDaily(); } });
 
-(() => {
-  const v = document.getElementById("v-views");
-  v.appendChild(el("p","intro","這幾條是我目前對台灣銀行切入虛擬資產業務的判斷，會隨法規進展修正。"));
-  (P.views || []).forEach((t,i) => {
+function renderViews(){
+  const P = prof(); const v = $("v-views"); v.textContent = "";
+  const intro = el("p","intro",t().intro);
+  if (P.viewsDraft) intro.appendChild(el("span","draft",t().draft));
+  v.appendChild(intro);
+  (P.views || []).forEach((x,i) => {
     const a = el("article","thesis");
     a.appendChild(el("div","n", String(i + 1).padStart(2,"0")));
-    const b = el("div"); b.appendChild(el("h3",null,t.h)); b.appendChild(el("p",null,t.p));
-    if (t.basis) b.appendChild(el("div","basis","依據：" + t.basis));
+    const b = el("div"); b.appendChild(el("h3",null,x.h)); b.appendChild(el("p",null,x.p));
+    if (x.basis) b.appendChild(el("div","basis",t().basis + x.basis));
     a.appendChild(b); v.appendChild(a);
   });
-})();
+}
 
-(() => {
-  const v = document.getElementById("v-about");
+function renderAbout(){
+  const P = prof(); const v = $("v-about"); v.textContent = "";
   const g = el("div","about"); const L = el("div"), R = el("div");
   const sec = (parent, title) => { const s = el("section"); s.appendChild(el("h3",null,title)); parent.appendChild(s); return s; };
   const row = (s, head, meta, desc) => { const r = el("div","row"); r.appendChild(el("b",null,head)); if (meta) r.appendChild(el("div","m",meta)); if (desc) r.appendChild(el("div","d",desc)); s.appendChild(r); };
-  const a = sec(L,"簡介"); (P.bio || []).forEach(t => a.appendChild(el("p",null,t)));
-  const w = sec(L,"研究與作品"); (P.work || []).forEach(x => row(w, x.t, null, x.d));
-  const x = sec(R,"經歷"); (P.experience || []).forEach(e => row(x, e.org + "｜" + e.role, [e.when, e.where].filter(Boolean).join("　"), e.note));
-  const ed = sec(R,"學歷"); (P.education || []).forEach(e => row(ed, e.org, [e.role, e.when].filter(Boolean).join("　"), e.note));
-  const c = sec(R,"聯絡"); (P.links || []).forEach(([n,u]) => { const p = el("p"); const k = el("a",null,n); k.href = u; k.target = "_blank"; k.rel = "noopener"; p.appendChild(k); p.appendChild(document.createTextNode("　" + u.replace("https://www.",""))); c.appendChild(p); });
+  const a = sec(L,t().bio); (P.bio || []).forEach(x => a.appendChild(el("p",null,x)));
+  const w = sec(L,t().work); (P.work || []).forEach(x => row(w, x.t, null, x.d));
+  const x = sec(R,t().exp); (P.experience || []).forEach(e => row(x, e.org + t().sep + e.role, [e.when, e.where].filter(Boolean).join("　"), e.note));
+  const ed = sec(R,t().edu); (P.education || []).forEach(e => row(ed, e.org, [e.role, e.when].filter(Boolean).join("　"), e.note));
+  const c = sec(R,t().contact); (P.links || []).forEach(([n,u]) => { const p = el("p"); const k = el("a",null,n); k.href = u; k.target = "_blank"; k.rel = "noopener"; p.appendChild(k); p.appendChild(document.createTextNode("　" + u.replace("https://www.",""))); c.appendChild(p); });
   g.appendChild(L); g.appendChild(R); v.appendChild(g);
-})();
-
-const HAS_VIEWS = (P.views || []).length > 0;
-if (!HAS_VIEWS) document.querySelector('.tab[data-v="views"]').remove();
-const VIEWS = HAS_VIEWS ? ["daily","views","about"] : ["daily","about"];
-function show(){
-  const h = location.hash.replace("#",""); const cur = VIEWS.includes(h) ? h : "daily";
-  ["daily","views","about"].forEach(n => document.getElementById("v-" + n).classList.toggle("on", n === cur));
-  document.querySelectorAll(".tab").forEach(t => { if (t.dataset.v === cur) t.setAttribute("aria-current","page"); else t.removeAttribute("aria-current"); });
 }
-document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => { location.hash = t.dataset.v; show(); }));
-window.addEventListener("hashchange", show);
-renderDaily(); show();
+
+function renderAll(){ renderMast(); renderDaily(); renderViews(); renderAbout(); }
+function go(lang, view){ location.hash = (lang === "en" ? "en-" : "") + view; route(); }
+function route(){
+  const h = location.hash.replace("#","");
+  const lang = h === "en" || h.indexOf("en-") === 0 ? "en" : "zh";
+  const view = h.replace(/^en-?/, "") || "daily";
+  if (lang !== state.lang){
+    const cur = (EDS[state.lang][state.i] || {}).date;
+    const j = EDS[lang].findIndex(e => e.date === cur);
+    state.i = j >= 0 ? j : 0; state.region = null;
+  }
+  state.lang = lang; state.view = ["daily","views","about"].includes(view) ? view : "daily";
+  renderAll();
+}
+$("edition").addEventListener("change", () => { state.i = Number($("edition").value); state.region = null; renderDaily(); });
+$("prev").addEventListener("click", () => { if (state.i < EDS[state.lang].length - 1){ state.i++; state.region = null; renderDaily(); } });
+$("next").addEventListener("click", () => { if (state.i > 0){ state.i--; state.region = null; renderDaily(); } });
+window.addEventListener("hashchange", route);
+route();
 </script>
 </body>
 </html>
