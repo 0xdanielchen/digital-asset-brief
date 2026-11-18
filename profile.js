@@ -21,7 +21,8 @@ window.PROFILE = {
      note:"每月撰寫市場結構、監理與產業趨勢研究。"}
   ],
   education: [
-    {org:"RMIT University", role:"Bachelor of Business（Finance）", when:"2025/12 畢業", note:"GPA 3.8 / 4.0"}
+    {org:"RMIT University", role:"Bachelor of Business（Finance）", when:"2025/12 畢業", note:"GPA 3.8 / 4.0"},
+    {org:"All-In Summit 2025", role:"獎學金得主", when:"2025"}
   ],
   work: [
     {t:"全球虛擬資產法規日報", d:"本站。每日追蹤台灣、亞洲、美國與歐洲的法規與商業模式，逐則寫出台灣銀行的因應做法。"},
@@ -51,7 +52,8 @@ window.PROFILE = {
        note:"Monthly research on market structure, regulation and industry trends."}
     ],
     education: [
-      {org:"RMIT University", role:"Bachelor of Business (Finance)", when:"Graduated Dec 2025", note:"GPA 3.8 / 4.0"}
+      {org:"RMIT University", role:"Bachelor of Business (Finance)", when:"Graduated Dec 2025", note:"GPA 3.8 / 4.0"},
+      {org:"All-In Summit 2025", role:"Scholarship recipient", when:"2025"}
     ],
     work: [
       {t:"Global Digital Asset Regulation Brief", d:"This site. A daily brief on regulation and business models across Taiwan, Asia, the US and Europe, with a concrete response for Taiwan's banks under each story."},
