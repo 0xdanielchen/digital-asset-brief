@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daniel Chen 虛擬資產研究</title>
-<meta name="description" content="追蹤全球虛擬資產、穩定幣與代幣化法規，整理台灣銀行的因應做法。個人研究筆記。">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap">
 <style>
+/* palette: black, white and a bright green accent; darker green carries text in the light theme for contrast. layout: personal masthead (name, title, tagline) with three views routed on the hash — daily briefing (newspaper: lead + stories + rail), views (numbered theses), about (bio, experience, selected work) */
 :root{
   --paper:#ffffff; --surface:#f4f5f2; --ink:#000000; --muted:#53565a; --rule:#d0d0ce;
   --accent:#2c7a0c; --bright:#86bc25; --accent-soft:#eef6dc;
@@ -14,10 +14,13 @@
   --display:"Noto Serif TC","Songti TC",serif; --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
 }
 @media (prefers-color-scheme: dark){
-  :root{color-scheme:dark;
+  :root:not([data-theme="light"]){color-scheme:dark;
     --paper:#000000; --surface:#141414; --ink:#ffffff; --muted:#a7a8aa; --rule:#333333;
     --accent:#86bc25; --bright:#86bc25; --accent-soft:#1b2709; --p0:#ff8a80; --p1:#efb85c; --p2:#bbbcbc;}
 }
+:root[data-theme="dark"]{color-scheme:dark;
+  --paper:#000000; --surface:#141414; --ink:#ffffff; --muted:#a7a8aa; --rule:#333333;
+  --accent:#86bc25; --bright:#86bc25; --accent-soft:#1b2709; --p0:#ff8a80; --p1:#efb85c; --p2:#bbbcbc;}
 *{box-sizing:border-box}
 body{margin:0;border-top:8px solid var(--bright);background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.75}
 a{color:var(--accent);text-underline-offset:3px}
@@ -34,6 +37,7 @@ button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{
 .tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--bright)}
 .tab.lang{margin-left:auto;font-family:var(--body);font-size:14px;font-weight:700;color:var(--accent)}
 .view{display:none} .view.on{display:block}
+/* daily */
 .bar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--rule)}
 .nav{display:flex;flex-wrap:wrap;gap:4px 6px}
 .navbtn{font:inherit;font-size:14px;border:0;background:none;color:var(--muted);padding:3px 10px;border-radius:5px;cursor:pointer}
@@ -63,6 +67,21 @@ button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{
 .src .sec{color:var(--muted)}
 details{margin-top:8px}
 summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
+.macro{padding:18px 0;border-bottom:1px solid var(--rule)}
+.macro .mh{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.macro h3{font-family:var(--display);font-weight:900;font-size:19px;margin:0}
+.macro .asof{font-size:12.5px;color:var(--muted)}
+.macro .mg{display:grid;grid-template-columns:1fr 1.25fr;gap:10px 28px;margin-top:10px}
+.macro table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+.macro td{padding:5px 8px 5px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.macro td:nth-child(2){font-weight:700;white-space:nowrap}
+.macro td:nth-child(3){color:var(--muted);font-size:13px}
+.macro .reg{display:inline-block;background:var(--ink);color:var(--paper);font-weight:700;font-size:13.5px;padding:3px 10px;border-radius:4px;box-shadow:inset 0 -3px 0 var(--bright)}
+.macro .drv{margin:6px 0 0;font-size:14px;color:var(--muted)}
+.macro h4{margin:10px 0 2px;font-size:12.5px;color:var(--accent);letter-spacing:.06em}
+.macro p{margin:0;font-size:14.5px}
+.macro ul{margin:0;padding-left:18px;font-size:14.5px}
+.macro .mnote{margin-top:8px;font-size:12.5px;color:var(--muted)}
 .rail{display:flex;flex-direction:column;gap:22px;padding-top:18px}
 .box h4{font-family:var(--display);font-size:16px;margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
 .box ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px}
@@ -70,12 +89,15 @@ summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
 .box.todo ul{list-style:disc;padding-left:18px}
 .foot{margin-top:26px;color:var(--muted);font-size:12.5px}
 .empty{color:var(--muted);padding:24px 0}
+/* views */
 .intro{max-width:62ch;color:var(--muted);margin:20px 0 4px}
+.draft{display:inline-block;font-size:12.5px;font-weight:700;color:var(--p1);border:1px solid currentColor;border-radius:4px;padding:1px 8px;margin-left:8px;vertical-align:middle}
 .thesis{display:grid;grid-template-columns:64px 1fr;gap:6px 18px;padding:24px 0;border-bottom:1px solid var(--rule)}
 .thesis .n{font-family:var(--display);font-weight:900;font-size:44px;line-height:1;color:var(--bright);font-variant-numeric:tabular-nums}
 .thesis h3{font-family:var(--display);font-weight:900;font-size:24px;line-height:1.4;margin:0 0 6px;text-wrap:balance}
 .thesis p{margin:0;max-width:62ch}
 .thesis .basis{margin-top:8px;font-size:13px;color:var(--muted)}
+/* about */
 .about{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;padding-top:22px}
 .about h3{font-family:var(--display);font-size:18px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
 .about p{margin:0 0 12px;max-width:62ch}
@@ -84,7 +106,7 @@ summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
 .row b{display:block}
 .row .m{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .row .d{font-size:14.5px}
-@media (max-width:820px){.lead,.grid,.about{grid-template-columns:1fr}.who h1{font-size:28px}.lead h2{font-size:25px}.thesis{grid-template-columns:44px 1fr}.thesis .n{font-size:32px}.tab{padding:8px 10px;font-size:15.5px}}
+@media (max-width:820px){.lead,.grid,.about,.macro .mg{grid-template-columns:1fr}.who h1{font-size:28px}.lead h2{font-size:25px}.thesis{grid-template-columns:44px 1fr}.thesis .n{font-size:32px}.tab{padding:8px 10px;font-size:15.5px}}
 </style>
 </head>
 <body>
@@ -97,6 +119,7 @@ summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
     </div>
     <nav class="tabs" id="tabs" aria-label="Pages"></nav>
   </header>
+
   <div class="view" id="v-daily">
     <div class="bar">
       <nav class="nav" id="nav" aria-label="地區"></nav>
@@ -108,33 +131,38 @@ summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
       </div>
     </div>
     <section class="lead" id="lead"></section>
+    <section class="macro" id="macro"></section>
     <div class="grid">
       <main id="stories"></main>
       <aside class="rail" id="rail"></aside>
     </div>
     <p class="foot" id="foot"></p>
   </div>
+
   <div class="view" id="v-views"></div>
+  <div class="view" id="v-features"></div>
   <div class="view" id="v-about"></div>
 </div>
-<script src="profile.js?v=20261111b"></script>
-<script src="editions.js?v=20261111b"></script>
-<script src="editions.en.js?v=20261111b"></script>
+<script src="profile.js"></script>
+<script src="editions.js"></script>
+<script src="editions.en.js"></script>
+<script src="macro.js"></script>
+<script src="features.js"></script>
 <script>
 const P0 = window.PROFILE || {};
 const byDate = a => (a || []).slice().sort((x,y) => x.date < y.date ? 1 : -1);
 const EDS = {zh: byDate(window.EDITIONS), en: byDate(window.EDITIONS_EN)};
 const T = {
-  zh: {all:"全部", lead:"頭條", bank:"台灣銀行怎麼做", src:"來源", sec:"（次級）", take:"評析　", more:"更多重點與評析", dates:"倒數提醒", todo:"明日追蹤",
+  zh: {mTitle:"美元與美債利差", mView:"看法", mOut:"預期", all:"全部", lead:"頭條", bank:"台灣銀行怎麼做", src:"來源", sec:"（次級）", take:"評析　", more:"更多重點與評析", dates:"倒數提醒", todo:"明日追蹤",
        edition:"期別", prev:"前一期", next:"後一期", none:"還沒有任何一期。", noreg:"這一期沒有這個地區的新聞。",
-       tabs:{daily:"每日重點", views:"我的觀點", about:"關於我"}, other:"English", htmlLang:"zh-Hant",
+       tabs:{daily:"每日重點", views:"我的觀點", features:"專題", about:"關於我"}, other:"English", htmlLang:"zh-Hant",
        intro:"這幾條是我目前對台灣銀行切入虛擬資產業務的判斷，會隨法規進展修正。", draft:"草稿，待本人修訂", basis:"依據：",
        bio:"簡介", work:"研究與作品", exp:"經歷", edu:"學歷", contact:"聯絡", sep:"｜",
        foot:"級別：P0 需立即行動｜P1 本週內評估｜P2 觀察。來源以主管機關官方文件為主；標「次級」者為媒體或律所整理，引用前請再核實。本站為個人研究筆記，不構成法律或投資建議。",
        week:["日","一","二","三","四","五","六"], wk:(d,w) => d + "（" + w + "）"},
-  en: {all:"All", lead:"Lead", bank:"What Taiwan's banks should do", src:"Sources", sec:" (secondary)", take:"Analysis  ", more:"More detail and analysis", dates:"Key dates", todo:"Following up next",
+  en: {mTitle:"Dollar and Treasury curve", mView:"View", mOut:"Outlook", all:"All", lead:"Lead", bank:"What Taiwan's banks should do", src:"Sources", sec:" (secondary)", take:"Analysis  ", more:"More detail and analysis", dates:"Key dates", todo:"Following up next",
        edition:"Edition", prev:"Older edition", next:"Newer edition", none:"No English edition yet.", noreg:"No stories for this region in this edition.",
-       tabs:{daily:"Daily Brief", views:"My Views", about:"About"}, other:"中文", htmlLang:"en",
+       tabs:{daily:"Daily Brief", views:"My Views", features:"Features", about:"About"}, other:"中文", htmlLang:"en",
        intro:"My current judgments on how banks in Taiwan should enter digital assets. They will change as the rules do.", draft:"Draft, pending my revision", basis:"Basis: ",
        bio:"Profile", work:"Research and work", exp:"Experience", edu:"Education", contact:"Contact", sep:" | ",
        foot:"Priority: P0 act now | P1 assess this week | P2 watch. Sources are regulators' own documents first; items marked secondary are media or law-firm summaries and should be verified before use. This site is a personal research notebook and is not legal or investment advice.",
@@ -174,7 +202,7 @@ function renderMast(){
   $("prole").textContent = [P.title, P.location].filter(Boolean).join(t().sep);
   $("ptag").textContent = P.tagline || "";
   const tabs = $("tabs"); tabs.textContent = "";
-  const names = ["daily"].concat((P.views || []).length ? ["views"] : [], ["about"]);
+  const names = ["daily"].concat((P.views || []).length ? ["views"] : [], (window.FEATURES || []).length ? ["features"] : [], ["about"]);
   if (!names.includes(state.view)) state.view = "daily";
   names.forEach(n => {
     const b = el("button","tab",t().tabs[n]); b.type = "button";
@@ -183,7 +211,7 @@ function renderMast(){
   });
   const lb = el("button","tab lang",t().other); lb.type = "button";
   lb.addEventListener("click", () => go(state.lang === "en" ? "zh" : "en", state.view)); tabs.appendChild(lb);
-  ["daily","views","about"].forEach(n => $("v-" + n).classList.toggle("on", n === state.view));
+  ["daily","views","features","about"].forEach(n => $("v-" + n).classList.toggle("on", n === state.view));
   $("foot").textContent = t().foot;
   $("edlabel").textContent = t().edition;
   $("prev").setAttribute("aria-label", t().prev); $("next").setAttribute("aria-label", t().next);
@@ -191,6 +219,7 @@ function renderMast(){
 
 function renderDaily(){
   const ED = EDS[state.lang]; const e = ED[state.i];
+  renderMacro();
   const lead = $("lead"), main = $("stories"), rail = $("rail"), nav = $("nav"), sel = $("edition");
   [lead, main, rail, nav, sel].forEach(x => x.textContent = "");
   ED.forEach((x,i) => { const o = el("option",null,label(x.date)); o.value = String(i); sel.appendChild(o); });
@@ -228,6 +257,24 @@ function renderDaily(){
   $("next").disabled = state.i <= 0;
 }
 
+function renderMacro(){
+  const box = $("macro"); box.textContent = ""; box.style.display = "none";
+  const M = (window.MACRO || []).slice().sort((a,b) => a.date < b.date ? 1 : -1);
+  const e = EDS[state.lang][state.i];
+  const m = (e && M.find(x => x.date === e.date)) || (state.i === 0 ? M[0] : null);
+  const d = m && m[state.lang]; if (!d) return;
+  box.style.display = "";
+  const mh = el("div","mh"); mh.appendChild(el("h3",null,t().mTitle)); mh.appendChild(el("span","asof",d.asof)); box.appendChild(mh);
+  const g = el("div","mg"); const L = el("div"), R = el("div");
+  const tb = el("table"); (d.rows || []).forEach(r => { const tr = el("tr"); r.forEach(c => tr.appendChild(el("td",null,c))); tb.appendChild(tr); }); L.appendChild(tb);
+  R.appendChild(el("span","reg",d.regime)); if (d.driver) R.appendChild(el("p","drv",d.driver));
+  R.appendChild(el("h4",null,t().mView)); R.appendChild(el("p",null,d.view));
+  R.appendChild(el("h4",null,t().mOut)); const ul = el("ul"); (d.outlook || []).forEach(x => ul.appendChild(el("li",null,x))); R.appendChild(ul);
+  g.appendChild(L); g.appendChild(R); box.appendChild(g);
+  if (m.links) box.appendChild(sources(m));
+  if (d.note) box.appendChild(el("div","mnote",d.note));
+}
+
 function renderViews(){
   const P = prof(); const v = $("v-views"); v.textContent = "";
   const intro = el("p","intro",t().intro);
@@ -255,7 +302,7 @@ function renderAbout(){
   g.appendChild(L); g.appendChild(R); v.appendChild(g);
 }
 
-function renderAll(){ renderMast(); renderDaily(); renderViews(); renderAbout(); }
+function renderAll(){ renderMast(); renderDaily(); renderViews(); if (window.renderFeatures) window.renderFeatures($("v-features"), state.lang); renderAbout(); }
 function go(lang, view){ location.hash = (lang === "en" ? "en-" : "") + view; route(); }
 function route(){
   const h = location.hash.replace("#","");
@@ -266,7 +313,7 @@ function route(){
     const j = EDS[lang].findIndex(e => e.date === cur);
     state.i = j >= 0 ? j : 0; state.region = null;
   }
-  state.lang = lang; state.view = ["daily","views","about"].includes(view) ? view : "daily";
+  state.lang = lang; state.view = ["daily","views","features","about"].includes(view) ? view : "daily";
   renderAll();
 }
 $("edition").addEventListener("change", () => { state.i = Number($("edition").value); state.region = null; renderDaily(); });
