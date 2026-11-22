@@ -4,7 +4,8 @@ window.PROFILE = {
   nameZh: "陳世曜",
   title: "虛擬資產與穩定幣研究",
   location: "台北",
-  tagline: "各國正在逐條寫定虛擬資產進入銀行體系的規則。我持續觀察、吸收，一步步協助台灣的銀行轉型。",
+  pitch: "虛擬資產走進銀行，關鍵在於如何落實。",
+  tagline: "我關注穩定幣與虛擬資產如何融入台灣銀行的日常業務。結合交易所與鏈上實務經驗，我從法規、產品與營運出發，研究銀行需要建立哪些能力，才能把新的金融服務做得可靠、讓客戶放心使用。",
   bio: [
     "我研究虛擬資產、穩定幣與現實世界資產代幣化如何進入傳統金融，重點放在台灣的銀行該怎麼設計業務架構。",
     "背景橫跨交易所與傳統金融：在 Binance 亞太區做過成長與研究合作，自己操作鏈上與永續合約部位，也熟悉台股的借券與 ETF 申購買回實務。這個網站是我每天的工作筆記，法規來源以主管機關原文為準。"
@@ -35,7 +36,8 @@ window.PROFILE = {
     nameZh: "",
     title: "Digital Assets & Stablecoin Research",
     location: "Taipei",
-    tagline: "Regulators are writing, clause by clause, the rules that bring digital assets into banking. I watch, absorb, and help Taiwan's banks make the shift one step at a time.",
+    pitch: "Bringing digital assets into banking starts with getting the details right.",
+    tagline: "I research how stablecoins and digital assets can fit into everyday banking in Taiwan. Drawing on my experience with exchanges and on-chain products, I explore the regulatory, product and operational capabilities banks need to deliver reliable services that customers can trust.",
     bio: [
       "I study how digital assets, stablecoins and tokenised real-world assets enter traditional finance, with a focus on how banks in Taiwan should structure these businesses.",
       "My background spans exchanges and traditional finance: growth and research partnerships at Binance APAC, my own on-chain and perpetual-futures book, and hands-on familiarity with securities lending and ETF creation and redemption in Taiwan's equity market. This site is my daily working notebook. Regulatory sources are the regulators' own texts."
