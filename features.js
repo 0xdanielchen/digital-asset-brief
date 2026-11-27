@@ -1,6 +1,140 @@
 // 專題。每篇一個物件，最新的放最前面。圖表資料放在 charts，文字分 zh / en。
 window.FEATURES = [
 {
+ id: "btc-ai-zero",
+ date: "2026-11-27",
+ charts: {
+  exposed: {
+   type: "hbar", max: 200, ticks: [0, 50, 100, 150, 200], fmt: "{v}",
+   rows: [
+    {zh:"P2WPKH 重複使用", en:"P2WPKH reused", v:180.1, lab:"180.1 萬 BTC", labEn:"1.80m BTC", note:"地址重複使用：花費過一次後公鑰已上鏈", noteEn:"Address reuse: the key went on-chain at the first spend"},
+    {zh:"P2PK", en:"P2PK", v:171.7, lab:"171.7 萬 BTC", labEn:"1.72m BTC", note:"公鑰直接寫在輸出裡，不花費也已曝光", noteEn:"Public key sits in the output itself, exposed even if never spent", hl:true},
+    {zh:"P2SH 重複使用", en:"P2SH reused", v:129.9, lab:"129.9 萬 BTC", labEn:"1.30m BTC", note:"地址重複使用", noteEn:"Address reuse"},
+    {zh:"P2PKH 重複使用", en:"P2PKH reused", v:120.2, lab:"120.2 萬 BTC", labEn:"1.20m BTC", note:"地址重複使用", noteEn:"Address reuse"},
+    {zh:"P2WSH 重複使用", en:"P2WSH reused", v:69.1, lab:"69.1 萬 BTC", labEn:"0.69m BTC", note:"地址重複使用", noteEn:"Address reuse"},
+    {zh:"P2TR（Taproot）", en:"P2TR (Taproot)", v:19.8, lab:"19.8 萬 BTC", labEn:"0.20m BTC", note:"地址內含公鑰", noteEn:"The address itself carries the key", hl:true}
+   ]
+  },
+  race: {
+   type: "timeline", x0: 2025.95, x1: 2027.15, today: "2026-11-27",
+   kinds: {law:{zh:"標準定案", en:"Standard finalised"}, launch:{zh:"研究或報告發表", en:"Research or report published"}, draft:{zh:"草案或未經同行審查", en:"Draft or not yet peer-reviewed"}, plan:{zh:"預估", en:"Expected"}},
+   rows: [
+    {zh:"AI 研究", en:"AI research", ev:[
+     {d:"2026-07-28", k:"launch", zh:"Anthropic：7 輪 AES-128 攻擊快 200–800 倍；HAWK 金鑰強度減半［2］", en:"Anthropic: 7-round AES-128 attack 200–800x faster; HAWK key strength halved [2]"},
+     {d:"2026-08-10", k:"launch", zh:"Anthropic：黎曼 ζ 函數臨界線零點比例下界 41.6% → 67.2%［3］", en:"Anthropic: lower bound on zeta zeros on the critical line raised from 41.6% to 67.2% [3]"},
+     {d:"2026-10-26", k:"draft", zh:"OpenAI、Anthropic 各自發表指數時間假說反證（未經同行審查）［4］［5］", en:"OpenAI and Anthropic each publish refutations of the Exponential Time Hypothesis (not yet peer-reviewed) [4][5]"}
+    ]},
+    {zh:"標準與監理", en:"Standards", ev:[
+     {d:"2024-08-13", k:"law", zh:"NIST 發布三項後量子密碼標準（FIPS 203、204、205）［12］", en:"NIST publishes three post-quantum standards (FIPS 203, 204, 205) [12]"},
+     {d:"2026-11-19", k:"launch", zh:"IOSCO 發布量子運算對金融市場影響報告［11］", en:"IOSCO publishes report on quantum computing and financial markets [11]"}
+    ]},
+    {zh:"比特幣協議", en:"Bitcoin", ev:[
+     {d:"2026-02-11", k:"draft", zh:"BIP-360（P2MR）以草案併入 BIP 庫［8］［10］", en:"BIP-360 (P2MR) merged into the BIPs repository as a draft [8][10]"},
+     {d:"2026-04-14", k:"draft", zh:"BIP-361（後量子遷移與舊簽章退場）草案公開［9］［10］", en:"BIP-361 (post-quantum migration and legacy signature sunset) draft published [9][10]"}
+    ]}
+   ]
+  }
+ },
+ zh: {
+  kicker: "專題｜比特幣",
+  title: "AI 會讓比特幣歸零嗎？檢查 Chamath 的論點",
+  dek: "Chamath Palihapitiya 在 Social Capital 研究文章中主張，AI 加速數學與密碼學研究，可能讓比特幣的安全假設失效。他提出的時間差風險值得認真看，但公開段落引用的證據有一項與原始來源不符，另一項尚未經過審查。這篇逐一核對，整理比特幣實際的曝險與升級進度，最後談台灣的銀行該準備什麼。",
+  asof: "資料截至 2026 年 11 月 27 日；Chamath 文章只讀到公開段落，付費部分未讀",
+  orig: ["原文：Chamath Palihapitiya〈Will Bitcoin inevitably go to zero?〉，Social Capital Research，2026 年 11 月 27 日（部分內容需付費）","https://research.socialcapital.com/p/will-bitcoin-inevitably-go-to-zero"],
+  blocks: [
+   {summary:["Chamath 公開段落最有力的論點是時間差：如果 AI 大幅加快密碼學突破，從發現弱點到能實際利用的時間，可能比比特幣完成升級所需的時間短［1］。","但他引用的證據有誤或過度延伸：Anthropic 的成果是提高黎曼 ζ 函數零點比例的下界，不是證明黎曼猜想；AES 攻擊只針對 7 輪簡化版；指數時間假說反證尚未經同行審查；三者都沒有涉及比特幣使用的橢圓曲線［2］［3］［5］。","真正可量化的曝險是約 691 萬 BTC（約占流通量 33%）的公鑰已經公開，而比特幣的後量子提案仍是草案［6］［8］［9］。對台灣的銀行，重點是保管的金鑰管理與加密敏捷度，不是預測 BTC 會不會歸零。"]},
+   {toc:true},
+   {kpis:[["公鑰已曝光的 BTC","約 691 萬","約占流通量 33%（2026 年 2 月）［6］"],["其中 P2PK","約 172 萬","公鑰直接寫在輸出裡［6］"],["BIP-360、361","仍為草案","未選定後量子簽章，也沒有啟用時程［10］"],["IOSCO 估計","2030–2035","可能出現破解現行密碼的量子電腦（次級來源轉述）［10］［11］"]]},
+   {h:"Chamath 的論點"},
+   {p:"文章的前提是：數位系統的「安全」只代表目前已知最快的破解方法需要不切實際的時間。如果新的數學方法能把破解成本降低好幾個數量級，原本不可行的攻擊就會變得可行。他認為 AI 代理正大幅加快這類數學發現，而比特幣除了程式碼之外沒有任何其他保障，是這個風險最典型的測試對象［1］。"},
+   {p:"公開段落把比特幣的安全拆成三部分：鎖的排列方式、鎖本身（SHA-256 雜湊與 ECDSA 簽章），以及維護帳本的工作量證明。他是否認為比特幣能被修補，寫在付費段落，本文沒有讀到［1］。"},
+   {h:"引用的證據核對"},
+   {note:"「判讀」為本文依原始來源的整理。", table:[["文章說法","原始來源","判讀"],["Claude 與數學家 Levent Alpöge 約六週產出黎曼猜想的證明［1］","Anthropic 8 月 10 日發表的是把臨界線上零點比例的下界從 41.6% 提高到 67.2%，已用 Lean 形式化驗證；Alpöge 是檢視者之一。Anthropic 表示不預期這套方法能證明黎曼猜想［3］","與原始來源不符"],["AI 代理推翻了 27 年的指數時間假說［1］","OpenAI 與 Anthropic 10 月各自發表反證，雙方都說模型在 10 月 16 日找到核心演算法。截至 10 月 28 日沒有獨立認證；參與審查的學者表明不代表背書［4］［5］","待核實"],["Claude Mythos Preview 對 7 輪 AES-128 的攻擊快 200 至 800 倍，對現行系統沒有實際影響［1］","與 Anthropic 7 月 28 日原文一致。同一份研究也把後量子簽章候選 HAWK 的有效金鑰強度減半；Anthropic 表示兩者都不影響現行系統［2］","正確"],["1977 年估計分解 125 位數要 4 京年，1994 年 8 個月就分解了 129 位數［1］","史實大致相符［13］。但 RSA 依賴大數分解，比特幣簽章依賴 secp256k1 橢圓曲線，無法用這段歷史推算比特幣的時程","正確，但不能外推"]]},
+   {p:"四項證據裡，兩項站得住，一項與原始來源不符，一項還在審查。更關鍵的是，沒有一項直接涉及橢圓曲線離散對數，也就是比特幣簽章依賴的數學問題。這些成果能支持「AI 正在加快數學研究」，但還不足以推出「比特幣的簽章會被破解」，更推不出必然歸零。"},
+   {h:"比特幣真正的攻擊面"},
+   {table:[["攻擊面","若被攻破會怎樣","能否升級"],["簽章（ECDSA、Schnorr，皆用 secp256k1）","有人能從公開的公鑰算出私鑰，就能轉走公鑰已曝光的幣；節點會照規則接受這些有效簽章，無法分辨誰才是真正持有人","可以新增後量子簽章（BIP-360 是第一步），但持有人必須自己把幣轉到新地址；從不移動的幣最難處理［8］［9］"],["挖礦（SHA-256 工作量證明）","取得壓倒性算力優勢者可以阻擋交易或重組近期區塊；但無法替別人簽章，也無法讓完整節點接受超額發行","可以更換挖礦演算法，但會影響全部礦工的設備投資，需要整個社群共識"]]},
+   {p:"兩個攻擊面的後果不同。簽章被破解，影響的是「誰擁有哪些幣」；挖礦被壓制，影響的是交易確認是否可靠。對持有人而言，前者是直接的財產風險。"},
+   {h:"多少 BTC 的公鑰已經曝光"},
+   {chart:"exposed", h:"圖一｜公鑰已曝光的 BTC，依類型（萬 BTC）", desc:"水平長條依類型列出公鑰已公開的 BTC 數量，單位萬 BTC：P2WPKH 重複使用 180.1、P2PK 171.7、P2SH 重複使用 129.9、P2PKH 重複使用 120.2、P2WSH 重複使用 69.1、Taproot 19.8。合計約 691 萬 BTC。", note:"Project Eleven 依 2026 年 2 月區塊高度 936,882 統計［6］。藍色為地址類型本身就公開公鑰；綠色為地址被重複使用。其他來源估計約 600 萬至 690 萬 BTC，口徑與日期不同［7］［10］。"},
+   {p:"約 72% 的曝光來自地址重複使用，持有人只要把幣轉到新地址就能大幅降低風險。比較難處理的是 P2PK：公鑰直接寫在輸出裡，只要這些幣不移動，就一直曝光。如果遺失或沉睡的幣比例高，社群就要面對兩難：繼續承認舊簽章，攻擊者可能轉走這些幣；停用舊簽章，來不及遷移的合法持有人也會失去動用資產的能力［7］［9］。"},
+   {p:"交易所與保管機構是另一層。保管機構常用多方簽核或多方運算（MPC），但後量子版本的門檻簽章仍在研究階段；據 CoinDesk 報導，BitGo 與 Silence Laboratories 5 月完成模擬交易，尚未進入正式運作［7］。"},
+   {h:"誰跑得快：研究進度與升級進度"},
+   {chart:"race", h:"圖二｜AI 研究、標準與比特幣升級的時間線（2026 年；更早的事件標在左緣）", desc:"時間軸分三列：AI 研究在 2026 年 7 月、8 月、10 月各有一項成果；標準與監理有 2024 年 8 月 NIST 後量子標準與 2026 年 11 月 IOSCO 報告；比特幣協議有 2026 年 2 月 BIP-360 與 4 月 BIP-361 兩項草案。", note:"BIP-360、361 狀態皆為草案；據 TFTC，BIP-361 的部署段落已暫時撤下，等待社群選定後量子簽章［10］。"},
+   {p:"AI 研究的節奏以月計，比特幣的升級以年計。BIP-360 提議新的輸出類型，降低公鑰長期曝光的風險；BIP-361 討論如何遷移與何時停用舊簽章。兩者都還沒選定後量子簽章演算法，也沒有啟用時程［8］［9］［10］。這就是 Chamath 論點中最站得住的部分：風險不在今天，而在警示期可能縮短。"},
+   {h:"兩種情境的差別"},
+   {list:["有預警：弱點先以學術成果出現，錢包、交易所與持有人有時間遷移。市場可能波動，但所有權可以保住。","突襲：第一個公開訊號就是大量舊幣被轉走。市場可能在社群形成共識前先大跌，凍結或承認舊幣的爭議也會在壓力下進行。","兩種情境對估值的影響差很多，關鍵變數是警示期長短，而不是比特幣「必然」怎樣。這是情境示意，不是價格預測。"]},
+   {h:"台灣的銀行可以怎麼看", bank:true, lead:"重點：先把保管的金鑰管理做成可以升級，比判斷比特幣會不會歸零更重要。"},
+   {list:["把加密敏捷度寫進保管業務設計。記錄每個地址的類型，避免地址重複使用，並先演練把資產遷移到新地址或新簽章的流程。","檢查保管與 MPC 供應商的後量子路線圖。盡職調查時詢問門檻簽章的升級計畫與時程；這部分業界仍在研究階段［7］。","風險揭露寫情境，不寫結論。對客戶與內部風控，把「簽章被破解」與「挖礦被壓制」分開列為情境，說明影響與應變，而不是預測歸零。","這不只是加密資產的問題。銀行網站、訊息與憑證用的也是同類公鑰密碼；NIST 標準已經定案，IOSCO 也建議金融業現在就開始準備［11］［12］。","持續追蹤四個指標。BIP-360 是否啟用、比特幣社群選定哪種後量子簽章、指數時間假說反證的審查結果，以及 IOSCO 等國際組織的後續要求。"]},
+   {h:"方法與限制"},
+   {p:"Chamath 文章只讀到公開段落，他對比特幣能否修補的結論在付費段落［1］。黎曼 ζ 與密碼分析成果以 Anthropic 原文為準［2］［3］；指數時間假說反證以 arXiv 預印本與新聞報導為準，尚未經同行審查［4］［5］。曝光 BTC 數量取自 Project Eleven 的 2026 年 2 月統計［6］，不同機構口徑不同，也無法區分遺失或沉睡的幣。BIP 狀態與 IOSCO 報告內容部分來自 TFTC 轉述［10］，IOSCO 原文本次未讀取。本文不構成投資建議。"}
+  ],
+  sources: [
+   ["Social Capital Research：Will Bitcoin inevitably go to zero?（Chamath Palihapitiya，11 月 27 日）","https://research.socialcapital.com/p/will-bitcoin-inevitably-go-to-zero",false],
+   ["Anthropic：用 Claude 找出密碼學弱點（7 月 28 日）","https://www.anthropic.com/research/discovering-cryptographic-weaknesses",false],
+   ["Anthropic：黎曼 ζ 函數臨界線零點下界（8 月 10 日）","https://www.anthropic.com/research/riemann-zeta",false],
+   ["arXiv：ETH is Dead, Long Live SH（MIT 等）","https://arxiv.org/pdf/2611.02650",false],
+   ["Let's Data Science：OpenAI 與 Anthropic 各自推翻指數時間假說","https://letsdatascience.com/blog/openai-anthropic-broke-1999-conjecture-both-found-it-oct-16",true],
+   ["Project Eleven：比特幣橢圓曲線簽章曝險","https://report.projecteleven.com/section-2/elliptic-curve-digital-signatures",true],
+   ["CoinDesk：量子風險延伸到保管機構、跨鏈橋與 600 萬枚幣（11 月 22 日）","https://www.coindesk.com/tech/2026/11/22/bitcoin-s-quantum-security-challenge-extends-to-bridges-custodians-and-millions-of-coins",true],
+   ["BIP-360（GitHub）","https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki",false],
+   ["BIP-361（GitHub）","https://github.com/bitcoin/bips/blob/master/bip-0361.mediawiki",false],
+   ["TFTC：IOSCO 報告與 BIP-360 進度（11 月 21 日）","https://www.tftc.io/iosco-quantum-risk-report-bitcoin-bip-360-post-quantum",true],
+   ["IOSCO：Implications of Quantum Computing on Financial Markets（PDF）","https://www.iosco.org/library/pubdocs/pdf/IOSCOPD833.pdf",false],
+   ["NIST：三項後量子密碼 FIPS 標準核定（2024 年 8 月）","https://csrc.nist.gov/news/2024/postquantum-cryptography-fips-approved",false],
+   ["Wikipedia：RSA numbers（RSA-129）","https://en.wikipedia.org/wiki/RSA_numbers",true]
+  ]
+ },
+ en: {
+  kicker: "Feature | Bitcoin",
+  title: "Will AI send Bitcoin to zero? Checking Chamath's argument",
+  dek: "In a Social Capital research piece, Chamath Palihapitiya argues that AI-accelerated mathematics and cryptography could undermine the assumptions behind Bitcoin's security. His point about timing deserves attention, but one piece of evidence in the public section contradicts its primary source and another has yet to be reviewed. This feature checks each claim, sets out Bitcoin's actual exposure and upgrade progress, and considers what Taiwan's banks should prepare.",
+  asof: "Data as of 27 November 2026; only the public section of Chamath's article was read, not the paywalled part",
+  orig: ["Original article: Chamath Palihapitiya, 'Will Bitcoin inevitably go to zero?', Social Capital Research, 27 November 2026 (partly paywalled)","https://research.socialcapital.com/p/will-bitcoin-inevitably-go-to-zero"],
+  blocks: [
+   {summary:["The strongest point in Chamath's public section is about timing: if AI sharply speeds up cryptographic breakthroughs, the gap between finding a weakness and exploiting it could be shorter than the time Bitcoin needs to upgrade [1].","But some of his evidence is wrong or overstretched: Anthropic raised a lower bound on zeros of the Riemann zeta function rather than proving the Riemann hypothesis; the AES attack targets a 7-round reduced version; the refutation of the Exponential Time Hypothesis has not been peer-reviewed; and none of the three touches the elliptic curve Bitcoin uses [2][3][5].","The exposure that can actually be measured is about 6.91m BTC, roughly 33% of supply, whose public keys are already visible, while Bitcoin's post-quantum proposals are still drafts [6][8][9]. For Taiwan's banks, the priority is key management and crypto-agility in custody, not forecasting whether BTC goes to zero."]},
+   {toc:true},
+   {kpis:[["BTC with exposed public keys","~6.91m","~33% of supply (Feb 2026) [6]"],["Of which P2PK","~1.72m","Public key written into the output [6]"],["BIP-360 and BIP-361","Still drafts","No post-quantum signature chosen, no activation timeline [10]"],["IOSCO estimate","2030–2035","Window in which a cryptographically relevant quantum computer is plausible (as reported, secondary) [10][11]"]]},
+   {h:"Chamath's argument"},
+   {p:"The article starts from the premise that a digital system is 'secure' only because the fastest known way to break it would take an impractically long time. New mathematics that cuts the cost of an attack by several orders of magnitude could make the impractical practical. He argues that AI agents are rapidly accelerating such discoveries, and that Bitcoin, backed by nothing but its code, is the archetypal test of this risk [1]."},
+   {p:"The public section splits Bitcoin's security into three parts: how the locks are arranged, the locks themselves (SHA-256 hashing and ECDSA signatures), and the proof of work that maintains the ledger. Whether he thinks Bitcoin can be patched is in the paywalled section, which this feature has not read [1]."},
+   {h:"Checking the evidence"},
+   {note:"The 'Assessment' column is this feature's reading of the primary sources.", table:[["Claim in the article","Primary source","Assessment"],["Claude produced a proof of the Riemann hypothesis with mathematician Levent Alpöge over about six weeks [1]","On 10 August Anthropic published a result raising the lower bound on the share of zeta zeros on the critical line from 41.6% to 67.2%, formally verified in Lean; Alpöge was one of its examiners. Anthropic says it does not expect these techniques to prove the Riemann hypothesis [3]","Contradicts the source"],["AI agents overturned the 27-year-old Exponential Time Hypothesis [1]","OpenAI and Anthropic each published refutations in October, both saying their models found the core algorithm on 16 October. As of 28 October no one had independently certified either; reviewing academics said their involvement was not an endorsement [4][5]","Unverified"],["Claude Mythos Preview's attack on 7-round AES-128 is 200 to 800 times faster, with no practical effect on systems in use [1]","Matches Anthropic's 28 July post. The same work halved the effective key strength of HAWK, a post-quantum signature candidate; Anthropic says neither affects deployed systems [2]","Accurate"],["A 1977 estimate put factoring a 125-digit number at 40 quadrillion years; a 129-digit number was factored in eight months in 1994 [1]","Broadly matches the historical record [13]. But RSA rests on factoring, while Bitcoin signatures rest on the secp256k1 elliptic curve, so this history gives no timeline for Bitcoin","Accurate, but not transferable"]]},
+   {p:"Of the four pieces of evidence, two hold up, one contradicts its source and one is still under review. More importantly, none of them touches the elliptic-curve discrete logarithm, the problem Bitcoin's signatures rely on. Together they support the claim that AI is speeding up mathematical research. They do not show that Bitcoin's signatures will be broken, let alone that it must go to zero."},
+   {h:"Bitcoin's real attack surfaces"},
+   {table:[["Attack surface","If broken","Can it be upgraded?"],["Signatures (ECDSA and Schnorr, both on secp256k1)","Anyone able to derive private keys from public keys could move coins whose keys are exposed; nodes would accept the valid signatures and could not tell who the rightful owner is","A post-quantum signature can be added (BIP-360 is a first step), but holders must move their own coins to new addresses; coins that never move are the hardest case [8][9]"],["Mining (SHA-256 proof of work)","An attacker with overwhelming hash power could censor transactions or reorganise recent blocks, but could not sign for others or make full nodes accept extra issuance","The mining algorithm can be changed, but that would strand miners' hardware and needs community-wide consensus"]]},
+   {p:"The two surfaces fail differently. A signature break changes who owns which coins; a mining attack undermines how reliable confirmations are. For holders, the first is a direct property risk."},
+   {h:"How much BTC already has an exposed key"},
+   {chart:"exposed", h:"Figure 1 | BTC with exposed public keys, by type (10,000 BTC)", desc:"Horizontal bars show BTC with publicly visible keys by type, in units of 10,000 BTC: P2WPKH reused 180.1, P2PK 171.7, P2SH reused 129.9, P2PKH reused 120.2, P2WSH reused 69.1, Taproot 19.8. Total about 6.91m BTC.", note:"Project Eleven count at block height 936,882, February 2026 [6]. Blue marks address types that reveal the key by design; green marks reused addresses. Other sources estimate roughly 6.0m to 6.9m BTC, using different methods and dates [7][10]."},
+   {p:"About 72% of the exposure comes from address reuse, which holders can largely fix by moving coins to a fresh address. P2PK is harder: the key is written into the output, so the coins stay exposed for as long as they do not move. If many of them are lost or dormant, the community faces a dilemma. Keep honouring old signatures and an attacker might take the coins; retire them and legitimate holders who miss the deadline lose access [7][9]."},
+   {p:"Exchanges and custodians add another layer. Custodians often rely on multi-party approval or multi-party computation (MPC), but post-quantum threshold signatures are still at the research stage. CoinDesk reports that BitGo and Silence Laboratories completed a simulated transaction in May, with no production deployment yet [7]."},
+   {h:"Who moves faster: research or upgrades"},
+   {chart:"race", h:"Figure 2 | AI research, standards and Bitcoin upgrades (2026; earlier events pinned to the left edge)", desc:"A timeline in three rows: AI research has results in July, August and October 2026; standards and supervision have NIST's post-quantum standards in August 2024 and IOSCO's report in November 2026; Bitcoin has two drafts, BIP-360 in February 2026 and BIP-361 in April 2026.", note:"BIP-360 and BIP-361 are both drafts. According to TFTC, BIP-361's deployment section has been pulled until the community settles on a post-quantum signature [10]."},
+   {p:"AI research moves in months; Bitcoin upgrades move in years. BIP-360 proposes a new output type that reduces long-term key exposure, and BIP-361 sets out how to migrate and when to retire old signatures. Neither has chosen a post-quantum signature algorithm or set an activation timeline [8][9][10]. That is the most defensible part of Chamath's argument: the risk is not today, but a warning period that may be shrinking."},
+   {h:"Two scenarios"},
+   {list:["With warning: a weakness first appears as an academic result, giving wallets, exchanges and holders time to migrate. Markets may swing, but ownership can be preserved.","Without warning: the first public signal is a wave of old coins being moved. Prices could fall before the community reaches consensus, and the decision to freeze or honour old coins would be made under pressure.","The valuation impact of the two differs greatly. The key variable is the length of the warning period, not any inevitable outcome. These are illustrations, not price forecasts."]},
+   {h:"What Taiwan's banks can take from this", bank:true, lead:"Bottom line: making custody key management upgradeable matters more than calling whether Bitcoin goes to zero."},
+   {list:["Build crypto-agility into custody design. Record the type of every address, avoid address reuse and rehearse moving assets to new addresses or signature schemes.","Check custody and MPC vendors' post-quantum roadmaps. Ask about plans and timelines for threshold signatures during due diligence; the industry is still at the research stage here [7].","Disclose scenarios, not conclusions. For clients and internal risk, treat a signature break and a mining attack as separate scenarios, with their impact and response, rather than forecasting zero.","This is not only a crypto-asset issue. Bank websites, messaging and certificates use the same kind of public-key cryptography; NIST's standards are final and IOSCO advises the financial sector to start preparing now [11][12].","Track four signals. They are whether BIP-360 activates, which post-quantum signature Bitcoin chooses, the outcome of reviews of the Exponential Time Hypothesis refutations, and follow-up requirements from IOSCO and other international bodies."]},
+   {h:"Method and limitations"},
+   {p:"Only the public section of Chamath's article was read; his conclusion on whether Bitcoin can be patched is behind the paywall [1]. The zeta and cryptanalysis results follow Anthropic's own posts [2][3]. The Exponential Time Hypothesis refutations rely on an arXiv preprint and press coverage and have not been peer-reviewed [4][5]. Exposed BTC figures come from Project Eleven's February 2026 count [6]; methods vary between providers, and the data cannot separate lost or dormant coins. Some BIP status details and the IOSCO findings are as reported by TFTC [10]; the IOSCO report itself was not read for this feature. Nothing here is investment advice."}
+  ],
+  sources: [
+   ["Social Capital Research: Will Bitcoin inevitably go to zero? (Chamath Palihapitiya, 27 November)","https://research.socialcapital.com/p/will-bitcoin-inevitably-go-to-zero",false],
+   ["Anthropic: Discovering cryptographic weaknesses with Claude (28 July)","https://www.anthropic.com/research/discovering-cryptographic-weaknesses",false],
+   ["Anthropic: lower bound on zeta zeros on the critical line (10 August)","https://www.anthropic.com/research/riemann-zeta",false],
+   ["arXiv: ETH is Dead, Long Live SH (MIT and others)","https://arxiv.org/pdf/2611.02650",false],
+   ["Let's Data Science: OpenAI and Anthropic each refute the Exponential Time Hypothesis","https://letsdatascience.com/blog/openai-anthropic-broke-1999-conjecture-both-found-it-oct-16",true],
+   ["Project Eleven: Bitcoin elliptic-curve signature exposure","https://report.projecteleven.com/section-2/elliptic-curve-digital-signatures",true],
+   ["CoinDesk: quantum threat extends to custodians, bridges and 6 million coins (22 November)","https://www.coindesk.com/tech/2026/11/22/bitcoin-s-quantum-security-challenge-extends-to-bridges-custodians-and-millions-of-coins",true],
+   ["BIP-360 (GitHub)","https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki",false],
+   ["BIP-361 (GitHub)","https://github.com/bitcoin/bips/blob/master/bip-0361.mediawiki",false],
+   ["TFTC: IOSCO report and BIP-360 status (21 November)","https://www.tftc.io/iosco-quantum-risk-report-bitcoin-bip-360-post-quantum",true],
+   ["IOSCO: Implications of Quantum Computing on Financial Markets (PDF)","https://www.iosco.org/library/pubdocs/pdf/IOSCOPD833.pdf",false],
+   ["NIST: post-quantum cryptography FIPS approved (August 2024)","https://csrc.nist.gov/news/2024/postquantum-cryptography-fips-approved",false],
+   ["Wikipedia: RSA numbers (RSA-129)","https://en.wikipedia.org/wiki/RSA_numbers",true]
+  ]
+ }
+},
+{
  id: "asia-stablecoin-pace",
  date: "2026-11-27",
  charts: {
@@ -88,7 +222,7 @@ window.FEATURES = [
    {h:"兩套制度比較"},
    {note:"美國部分依 OCC 最終規則與 Gibson Dunn 解析［22］［23］；歐盟部分依 EBA 說明［24］［25］。", table:[["項目","美元（GENIUS Act）","歐元（MiCA 電子貨幣代幣）"],["法律與生效","2025 年 7 月簽署；2027/1/18 生效，OCC 規則同日生效［22］","2024/6/30 起適用［24］"],["誰可以發行","銀行子公司、聯邦核准的非銀行發行人；小型發行人可選州制［23］","信用機構或電子貨幣機構［24］"],["準備資產","一比一，隔離保管，限現金、存款、短期國庫券等高流動資產［22］［23］","一比一；一定比例須存放於銀行，重大代幣比例更高［24］"],["付息","禁止［22］","禁止［24］"],["大型發行人","規模大者原則上納入聯邦監理［23］","重大代幣由 EBA 直接監理；USDC 為首例，11/12 起［25］"],["目前流通量","約 2,836 億美元［1］","約 8.1 億美元［1］"],["銀行聯盟","21 家機構合資，先發美元、2027 上半年上線為目標［26］","Qivalis，37 家銀行，10/14 取得荷蘭央行電子貨幣機構授權（次級來源）［27］"]]},
    {p:"兩套制度在一比一準備與禁止付息上幾乎一致，差在發行人範圍：美國允許非銀行發行人取得聯邦許可，歐盟只限信用機構與電子貨幣機構。另一個共通點是銀行聯盟：美國有 21 家機構的合資案，歐元有 37 家銀行的 Qivalis，亞洲則有韓國要求銀行持股過半、日本三大銀行共同發行。"},
-   {h:"台灣的銀行可以怎麼看"},
+   {h:"台灣的銀行可以怎麼看", bank:true, lead:"重點：先找到用途、評估聯盟發行；準備資產保管與受託銀行業務現在就能先做。"},
    {list:["先想用途，再想發行。歐元的例子說明，規則清楚但沒有使用場景，規模就上不來。新臺幣穩定幣較可能先落在企業支付、代幣化資產交割與跨境收付，這些也正是存款代幣試辦可以先驗證的地方［17］。","評估聯盟發行。韓國、日本、美國、歐元區的銀行都在走聯合發行，台灣的銀行可以比較單獨申請與共同設立發行機構，在成本、治理與通路上的差異。","準備資產保管是現成的業務。央行草案規定準備金補足或提領由受託銀行代為撥轉［15］；不論誰發行，受託銀行的保管、撥轉與報表能力都需要先建好。","美元穩定幣的需求不會等新臺幣。客戶接觸的主要還是 USDT、USDC；銀行在合規通路、出入金與保管上的角色，可能比發行本幣更早帶來收入。","把繳存門檻放進試算。100 億元新臺幣的門檻在初期很可能碰不到，但準備資產收益、贖回流動性與付息禁令，會直接影響發行的商業模式。"]},
    {h:"方法與限制"},
    {p:"流通量取自 DefiLlama［1］，屬次級資料，以美元換算，包含未受當地監理的發行人，也不區分鏈上重複計算；只代表供給，不代表支付使用量。時間軸日期以主管機關文件為主；香港 HKDAP 推出日期只確認到月份，台灣 2027 年第一季施行為媒體報導，韓國草案尚未經國會審議，泰國兩項諮詢的結果尚未公布。美元與歐元制度比較為摘要，引用前請回到原始規則核對。"}
@@ -147,7 +281,7 @@ window.FEATURES = [
    {h:"The two regimes compared"},
    {note:"US details from the OCC final rule and Gibson Dunn's analysis [22][23]; EU details from the EBA [24][25].", table:[["Item","USD (GENIUS Act)","EUR (MiCA e-money tokens)"],["Law and start date","Signed July 2025; effective 18 Jan 2027, with the OCC rule taking effect the same day [22]","Applied since 30 Jun 2024 [24]"],["Who may issue","Bank subsidiaries and federally approved non-bank issuers; smaller issuers may opt for state regimes [23]","Credit institutions or e-money institutions [24]"],["Reserves","1:1, segregated, limited to cash, deposits, short-dated Treasuries and similar liquid assets [22][23]","1:1, with a minimum share held as bank deposits, higher for significant tokens [24]"],["Interest","Prohibited [22]","Prohibited [24]"],["Large issuers","Larger issuers generally move under federal supervision [23]","Significant tokens supervised directly by the EBA; USDC is the first, from 12 Nov [25]"],["Current supply","~$283.6bn [1]","~$810m [1]"],["Bank consortia","21 institutions, dollar first, targeting H1 2027 launch [26]","Qivalis, 37 banks, authorised as an e-money institution by the Dutch central bank on 14 Oct (secondary) [27]"]]},
    {p:"The two regimes align closely on 1:1 reserves and the interest ban. The difference is who may issue: the US lets non-banks obtain federal approval, while the EU limits issuance to credit and e-money institutions. Bank consortia are the other common thread: 21 institutions in the US joint venture, 37 banks behind Qivalis for the euro, and in Asia, Korea's bank-majority requirement and Japan's three-megabank issuance."},
-   {h:"What Taiwan's banks can take from this"},
+   {h:"What Taiwan's banks can take from this", bank:true, lead:"Bottom line: find the use case and weigh a consortium first; reserve custody and custodian-bank services can start now."},
    {list:["Start with use cases, then issuance. The euro shows that clear rules without real uses do not build volume. NT dollar stablecoins are likelier to start in corporate payments, settlement of tokenised assets and cross-border collections, which are exactly what deposit-token pilots can test first [17].","Weigh a consortium. Banks in Korea, Japan, the US and the euro area are issuing together. Taiwan's banks can compare applying alone with setting up a joint issuer on cost, governance and distribution.","Reserve custody is ready-made business. The CBC draft has the custodian bank move funds when reserves are topped up or withdrawn [15]. Whoever issues, custody, payment and reporting capabilities need to be in place.","Demand for dollar stablecoins will not wait for the NT dollar. Clients mainly use USDT and USDC; a bank's role in compliant access, on- and off-ramps and custody may earn revenue before any local issuance.","Model the threshold. The NT$10bn threshold is unlikely to bind early on, but reserve yield, redemption liquidity and the interest ban will shape the business case directly."]},
    {h:"Method and limitations"},
    {p:"Supply figures come from DefiLlama [1], a secondary source. They are converted to US dollars, include issuers not regulated locally and do not adjust for cross-chain double counting; they measure supply, not payment use. Timeline dates rely mainly on regulators' documents. Hong Kong's HKDAP rollout is confirmed only to the month, Taiwan's Q1 2027 start date comes from press reports, Korea's draft has not been through the National Assembly and the outcomes of Thailand's two consultations are not yet public. The US–EU comparison is a summary; check the underlying rules before citing it."}
@@ -413,6 +547,23 @@ window.FEATURES = [
  .feat .toc span{color:var(--muted);font-weight:700;font-size:12.5px;margin-right:4px}
  .feat .toc a{border:1px solid var(--rule);border-radius:999px;padding:2px 10px;text-decoration:none;color:var(--ink)}
  .feat .toc a:hover{border-color:var(--accent);color:var(--accent)}
+.feat .orig{margin:10px 0 0;font-size:14.5px;font-weight:700;max-width:none}
+.feat .orig a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.feat .toc a.hot{background:var(--c-ant);border-color:var(--c-ant);color:#fff;font-weight:700}
+.feat .toc a.hot:hover{color:#fff;opacity:.9}
+.feat .sum .jump{display:inline-block;margin-top:6px;font-weight:700;color:var(--accent);text-decoration:none;font-size:14px}
+.feat .sum .jump:hover{text-decoration:underline}
+.feat .bank{margin:34px 0 8px;border:2px solid var(--c-ant);border-radius:12px;padding:18px 18px 8px;background:var(--surface)}
+.feat .bank .bk{font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--accent);margin:0 0 2px}
+.feat .bank h3{margin:0 0 8px;border:0;padding:0}
+.feat .bank p.blead{font-weight:700;font-size:16.5px;line-height:1.55;color:var(--ink);margin:0 0 14px;max-width:none!important}
+.feat .bank ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:none}
+.feat .bank li{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px 12px 50px;position:relative;margin:0}
+.feat .bank li::before{content:counter(list-item);position:absolute;left:14px;top:12px;width:24px;height:24px;border-radius:50%;background:var(--c-ant);color:#fff;font-weight:700;font-size:13px;line-height:24px;text-align:center}
+.feat .bank li b{display:block;font-size:15px;color:var(--ink);margin-bottom:3px}
+.feat .bank li span{display:block;font-size:14px;line-height:1.6;color:var(--ink-2,var(--ink))}
+.feat .bank li:last-child:nth-child(odd){grid-column:1 / -1}
+@media (max-width:640px){.feat .bank{padding:14px 12px 4px}.feat .bank ol{grid-template-columns:1fr}}
  .feat h3{scroll-margin-top:16px}
  .feat a.ref{font-size:.82em;text-decoration:none;color:var(--accent);margin:0 1px;font-variant-numeric:tabular-nums;white-space:nowrap}
  .feat .badge{font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:8px 12px;margin:4px 0 10px}
@@ -642,8 +793,8 @@ window.FEATURES = [
   else svg.appendChild(s("circle", {cx, cy, r:5.5, fill:"var(--card)", stroke:"var(--muted)", "stroke-width":1.5, "stroke-dasharray":"2 2"}));
  }
  function timeline(fig, c, lang){
-  const narrow = narrowNow(), en = lang === "en";
-  const lg = h("div","legend"); ["law","launch","draft","plan"].forEach(k => { const sp = h("span"); const g = s("svg", {viewBox:"0 0 14 14"}); markShape(g, k, 7, 7); sp.appendChild(g); sp.appendChild(document.createTextNode(en ? KIND[k].en : KIND[k].zh)); lg.appendChild(sp); }); fig.appendChild(lg);
+  const narrow = narrowNow(), en = lang === "en", K = c.kinds ? Object.assign({}, KIND, c.kinds) : KIND;
+  const lg = h("div","legend"); ["law","launch","draft","plan"].forEach(k => { const sp = h("span"); const g = s("svg", {viewBox:"0 0 14 14"}); markShape(g, k, 7, 7); sp.appendChild(g); sp.appendChild(document.createTextNode(en ? K[k].en : K[k].zh)); lg.appendChild(sp); }); fig.appendChild(lg);
   const lw = (narrow ? (en ? 84 : 62) : (en ? 104 : 92)) + (c.rows.some(r => r.ev.some(e => ym(e.d) < c.x0)) ? (narrow ? 34 : 40) : 0), W = narrow ? 360 : 720, rowH = narrow ? 40 : 44, m = {t:20, b:28, r:14};
   const H = m.t + c.rows.length * rowH + m.b;
   const x = v => lw + (v - c.x0) / (c.x1 - c.x0) * (W - lw - m.r);
@@ -664,12 +815,12 @@ window.FEATURES = [
   items.forEach(o => { markShape(svg, o.e.k, o.cx, o.cy); if (o.early) svg.appendChild(s("text", {class:"ann", x:o.cx - 9, y:o.cy + 4, "text-anchor":"end"}, "\u2190" + o.e.d.slice(0, 4))); });
   items.forEach(o => {
    const hit = s("circle", {cx:o.cx, cy:o.cy, r:11, fill:"transparent", tabindex:0, "aria-label": (en ? o.r.en : o.r.zh) + " " + o.e.d + " " + (en ? o.e.en : o.e.zh)});
-   const show = () => { const [fx, fy] = figPos(fig, svg, W, o.cx, o.cy); T.show([(en ? o.r.en : o.r.zh) + "｜" + o.e.d, (en ? o.e.en : o.e.zh).replace(/\s*[［\[]\d+[］\]]/g, ""), en ? KIND[o.e.k].en : KIND[o.e.k].zh], fx, fy); };
+   const show = () => { const [fx, fy] = figPos(fig, svg, W, o.cx, o.cy); T.show([(en ? o.r.en : o.r.zh) + "｜" + o.e.d, (en ? o.e.en : o.e.zh).replace(/\s*[［\[]\d+[］\]]/g, ""), en ? K[o.e.k].en : K[o.e.k].zh], fx, fy); };
    hit.addEventListener("pointerenter", show); hit.addEventListener("pointerdown", show); hit.addEventListener("focus", show); hit.addEventListener("pointerleave", ev => { if (ev.pointerType === "mouse") T.hide(); }); hit.addEventListener("blur", T.hide);
    svg.appendChild(hit);
   });
   fig.appendChild(svg);
-  dataTable(fig, [en ? "Jurisdiction" : "法域", en ? "Date" : "日期", en ? "Milestone" : "里程碑", en ? "Type" : "類型"], items.map(o => [en ? o.r.en : o.r.zh, o.e.d, en ? o.e.en : o.e.zh, en ? KIND[o.e.k].en : KIND[o.e.k].zh]), lang);
+  dataTable(fig, [en ? "Jurisdiction" : "法域", en ? "Date" : "日期", en ? "Milestone" : "里程碑", en ? "Type" : "類型"], items.map(o => [en ? o.r.en : o.r.zh, o.e.d, en ? o.e.en : o.e.zh, en ? K[o.e.k].en : K[o.e.k].zh]), lang);
  }
  // 水平長條：單一數列
  function hbar(fig, c, lang){
@@ -762,17 +913,21 @@ window.FEATURES = [
    hd.appendChild(h("h2", null, d.title));
    hd.appendChild(h("p","dek", d.dek));
    hd.appendChild(h("p","asof", d.asof));
+   if (d.orig){ const op = h("p","orig"); const a = h("a", null, d.orig[0] + " ↗"); a.href = d.orig[1]; a.target = "_blank"; a.rel = "noopener"; op.appendChild(a); hd.appendChild(op); }
    art.appendChild(hd);
    const heads = d.blocks.filter(b => b.h && !b.chart).map(b => b.h).concat([en ? "Sources" : "來源"]);
    const slug = t => uid + "-h" + heads.indexOf(t);
    const tableWrap = (rows, cls, note) => { const w = h("div","tw"); const tb = h("table", cls); const th = h("thead"), tbd = h("tbody"); rows.forEach((r, i) => { const tr = h("tr"); r.forEach(c => tr.appendChild(hr(i === 0 ? "th" : "td", null, c, uid))); (i === 0 ? th : tbd).appendChild(tr); }); tb.appendChild(th); tb.appendChild(tbd); const sw = h("div","swipe", en ? "Swipe sideways to see the full table" : "← 左右滑動看完整表格 →"); art.appendChild(sw); w.appendChild(tb); art.appendChild(w); if (note) art.appendChild(hr("p","tnote", note, uid)); };
+   let bankBox = null; const bankH = (d.blocks.find(b => b.bank) || {}).h;
    d.blocks.forEach(b => {
-    if (b.summary){ const box = h("section","sum"); box.appendChild(h("b", null, en ? "In three sentences" : "三句結論")); const ol = h("ol"); b.summary.forEach(x => ol.appendChild(hr("li", null, x, uid))); box.appendChild(ol); art.appendChild(box); }
-    else if (b.toc){ const nav = h("nav","toc"); nav.setAttribute("aria-label", en ? "Contents" : "目錄"); nav.appendChild(h("span", null, en ? "Contents" : "目錄")); heads.forEach(t => { const a = h("a", null, t); a.href = "#" + slug(t); nav.appendChild(a); }); art.appendChild(nav); }
+    if (b.summary){ const box = h("section","sum"); box.appendChild(h("b", null, en ? "In three sentences" : "三句結論")); const ol = h("ol"); b.summary.forEach(x => ol.appendChild(hr("li", null, x, uid))); box.appendChild(ol); if (bankH){ const j = h("a","jump", "→ " + bankH); j.href = "#" + slug(bankH); box.appendChild(j); } art.appendChild(box); }
+    else if (b.toc){ const nav = h("nav","toc"); nav.setAttribute("aria-label", en ? "Contents" : "目錄"); nav.appendChild(h("span", null, en ? "Contents" : "目錄")); heads.forEach(t => { const a = h("a", t === bankH ? "hot" : null, t); a.href = "#" + slug(t); nav.appendChild(a); }); art.appendChild(nav); }
     else if (b.kpis){ const g = h("div","kpis"); b.kpis.forEach(([l, v, sub]) => { const t = h("div","kpi"); t.appendChild(h("div","kl", l)); t.appendChild(h("div","kv", v)); if (sub) t.appendChild(hr("div","ks", sub, uid)); g.appendChild(t); }); art.appendChild(g); }
     else if (b.chart){ const fig = h("figure"); fig.appendChild(h("figcaption", null, b.h)); art.appendChild(fig); drawFigure(fig, f, b, lang); if (b.note) fig.insertBefore(hr("div","fnote", b.note, uid), fig.querySelector("details")); }
+    else if (b.h && b.bank){ const box = h("section","bank"); box.appendChild(h("div","bk", en ? "FOR TAIWAN'S BANKS" : "給台灣銀行")); const t = h("h3", null, b.h); t.id = slug(b.h); box.appendChild(t); if (b.lead) box.appendChild(hr("p","blead", b.lead, uid)); art.appendChild(box); bankBox = box; }
     else if (b.h){ const t = h("h3", null, b.h); t.id = slug(b.h); art.appendChild(t); }
     else if (b.p) art.appendChild(hr("p", null, b.p, uid));
+    else if (b.list && bankBox){ const ol = h("ol"); b.list.forEach(x => { const li = h("li"); const m = x.match(en ? /^(.+?\.)\s+([\s\S]*)$/ : /^(.+?)。([\s\S]*)$/); if (m){ li.appendChild(h("b", null, en ? m[1].replace(/\.$/, "") : m[1])); li.appendChild(hr("span", null, m[2], uid)); } else li.appendChild(hr("span", null, x, uid)); ol.appendChild(li); }); bankBox.appendChild(ol); bankBox = null; }
     else if (b.list){ const ul = h("ul"); b.list.forEach(x => ul.appendChild(hr("li", null, x, uid))); art.appendChild(ul); }
     else if (b.table) tableWrap(b.table, b.num ? "num" : "wide", b.note);
     else if (b.scen){
