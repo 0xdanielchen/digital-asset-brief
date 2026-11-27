@@ -1,6 +1,189 @@
 // 專題。每篇一個物件，最新的放最前面。圖表資料放在 charts，文字分 zh / en。
 window.FEATURES = [
 {
+ id: "asia-stablecoin-pace",
+ date: "2026-11-27",
+ charts: {
+  pace: {
+   type: "timeline", x0: 2025.0, x1: 2027.3, today: "2026-11-27",
+   rows: [
+    {zh:"香港", en:"Hong Kong", ev:[
+     {d:"2025-08-01", k:"law", zh:"《穩定幣條例》生效［2］", en:"Stablecoins Ordinance commences [2]"},
+     {d:"2026-04-10", k:"launch", zh:"首批牌照：滙豐、碇點金融（Anchorpoint）［3］［4］", en:"First licences: HSBC and Anchorpoint [3][4]"},
+     {d:"2026-08", k:"launch", zh:"港元穩定幣 HKDAP 向機構推出（8 月，日期待核實）［5］", en:"HKDAP rolled out to institutions (August; exact day unverified) [5]"},
+     {d:"2026-10-30", k:"draft", zh:"碇點金融與 Visa、Mastercard 研究卡組織結算［6］", en:"Anchorpoint explores settlement on Visa and Mastercard [6]"}
+    ]},
+    {zh:"日本", en:"Japan", ev:[
+     {d:"2023-06-01", k:"law", zh:"修正《資金決濟法》施行，穩定幣定位為電子決濟手段", en:"Amended Payment Services Act in force; stablecoins become electronic payment instruments"},
+     {d:"2025-10-27", k:"launch", zh:"JPYC 發行（資金移動業，單筆 100 萬日圓上限）［10］", en:"JPYC launches (funds-transfer licence, ¥1m transfer cap) [10]"},
+     {d:"2026-06-24", k:"launch", zh:"JPYSC 發行（SBI 新生信託銀行，信託型）［11］", en:"JPYSC launches (SBI Shinsei Trust Bank, trust type) [11]"},
+     {d:"2026-10-16", k:"draft", zh:"三大銀行完成共同發行概念驗證［13］", en:"Three megabanks complete joint-issuance proof of concept [13]"},
+     {d:"2027-03", k:"plan", zh:"三大銀行目標 2026 會計年度內上線［13］", en:"Megabanks target live use within FY2026 [13]"}
+    ]},
+    {zh:"新加坡", en:"Singapore", ev:[
+     {d:"2023-08-15", k:"law", zh:"MAS 定案單一貨幣穩定幣框架［7］", en:"MAS finalises single-currency stablecoin framework [7]"},
+     {d:"2026-10-16", k:"draft", zh:"《支付服務法》修正諮詢截止［8］", en:"Payment Services Act amendment consultation closes [8]"},
+     {d:"2026-11-18", k:"draft", zh:"發布存款代幣化指引［9］", en:"Guide on deposit tokenisation published [9]"}
+    ]},
+    {zh:"台灣", en:"Taiwan", ev:[
+     {d:"2026-07-22", k:"law", zh:"《虛擬資產服務法》公布［15］", en:"Virtual Asset Service Act promulgated [15]"},
+     {d:"2026-09-22", k:"draft", zh:"銀行可申請試辦存款代幣［17］", en:"Banks may apply to pilot deposit tokens [17]"},
+     {d:"2026-11-03", k:"draft", zh:"穩定幣發行子法草案預告［16］", en:"Draft issuance regulations published [16]"},
+     {d:"2026-11-24", k:"draft", zh:"央行預告準備金繳存及查核辦法草案［15］", en:"CBC publishes draft reserve requirement rules [15]"},
+     {d:"2027-02", k:"plan", zh:"據報 2027 年第一季施行（次級來源）［18］", en:"Reportedly takes effect Q1 2027 (secondary) [18]"}
+    ]},
+    {zh:"韓國", en:"South Korea", ev:[
+     {d:"2026-11-24", k:"draft", zh:"《數位資產基本法》政府版公布［14］", en:"Government Digital Asset Basic Act draft published [14]"}
+    ]},
+    {zh:"泰國", en:"Thailand", ev:[
+     {d:"2026-10-20", k:"draft", zh:"泰國央行泰銖穩定幣原則諮詢（至 11/17）［19］", en:"Bank of Thailand consults on baht stablecoin principles (to 17 Nov) [19]"},
+     {d:"2026-11-13", k:"draft", zh:"泰國證交會擬每日 500 萬泰銖移轉上限（至 11/26）［20］［21］", en:"Thai SEC proposes THB 5m daily transfer cap (to 26 Nov) [20][21]"}
+    ]}
+   ]
+  },
+  nonusd: {
+   type: "hbar", max: 900, ticks: [0, 300, 600, 900], fmt: "{v}",
+   rows: [
+    {zh:"歐元", en:"Euro", v:810, lab:"8.1 億美元", labEn:"$810m", note:"EURC 4.99 億、EURCV 1.87 億美元", noteEn:"EURC $499m, EURCV $187m", hl:true},
+    {zh:"日圓", en:"Yen", v:145, lab:"1.45 億美元", labEn:"$145m", note:"JPYSC 1.27 億、JPYC 0.15 億美元", noteEn:"JPYSC $127m, JPYC $15m"},
+    {zh:"港元", en:"Hong Kong dollar", v:13.2, lab:"1,320 萬美元", labEn:"$13.2m", note:"主要為 HKDAP", noteEn:"Mostly HKDAP"},
+    {zh:"新加坡元", en:"Singapore dollar", v:12.8, lab:"1,280 萬美元", labEn:"$12.8m", note:"主要為 XSGD", noteEn:"Mostly XSGD"},
+    {zh:"韓元", en:"Korean won", v:0.5, lab:"約 50 萬美元", labEn:"~$0.5m", note:"尚無持牌發行人", noteEn:"No licensed issuer yet"}
+   ]
+  },
+  hist: {
+   type: "smallmult",
+   labels: ["2023/12","2024/06","2024/12","2025/06","2025/12","2026/06","2026/11"],
+   panels: [
+    {key:"spcx", zh:"美元穩定幣（億美元）", en:"USD stablecoins ($bn)", unit:" 億美元", unitEn:"bn",
+     v:[130.4,160.7,202.9,247.5,303.0,301.9,282.2], min:100, max:320, ticks:[100,200,300],
+     zhO:{v:[1304,1607,2029,2475,3030,3019,2822], min:1000, max:3200, ticks:[1000,2000,3000]}},
+    {key:"ant", zh:"歐元穩定幣（億美元）", en:"EUR stablecoins ($bn)", unit:" 億美元", unitEn:"bn",
+     v:[0.31,0.24,0.29,0.48,0.66,0.66,0.81], min:0, max:1, ticks:[0,0.5,1],
+     zhO:{v:[3.1,2.4,2.9,4.8,6.6,6.6,8.1], min:0, max:10, ticks:[0,5,10]}}
+   ]
+  }
+ },
+ zh: {
+  kicker: "專題｜穩定幣",
+  title: "亞洲穩定幣誰走得快？再看美元與歐元穩定幣的差距",
+  dek: "香港與日本已有持牌本幣穩定幣上線，新加坡、台灣的法律或框架已定、細則還在走，韓國與泰國仍在草案階段。但亞洲本幣穩定幣合計只有約 1.7 億美元；歐元穩定幣在 MiCA 上路兩年多後，規模也只有美元的約 0.3%。這篇整理六個亞洲法域的進度，並比較美元與歐元兩套制度，最後談台灣的銀行可以怎麼看。",
+  asof: "流通量為 DefiLlama 以美元計的數字，截至 2026 年 11 月 26–27 日；法規進度截至 11 月 27 日",
+  blocks: [
+   {summary:["亞洲進度可分三段：香港、日本已有持牌本幣穩定幣流通；新加坡、台灣法律或框架已定，修法與子法仍在進行；韓國、泰國還在草案與諮詢。","規模都很小：亞洲本幣穩定幣合計約 1.7 億美元，低於台灣央行草案中「單一檔次超過 100 億元新臺幣才須繳存準備金」的門檻（以草案的 28:1 概估約 3.6 億美元）［1］［15］。","歐元穩定幣規模約為美元的 0.3%，說明監理明確不會自動帶來需求；各地共同的方向是由銀行或銀行聯盟擔任發行人。"]},
+   {toc:true},
+   {kpis:[["美元穩定幣流通量","2,836 億美元","USDT 1,736 億、USDC 692 億［1］"],["歐元穩定幣","8.1 億美元","約為美元的 0.3%（約 1/350）［1］"],["亞洲本幣穩定幣合計","約 1.7 億美元","日圓 1.45 億占多數［1］"],["已有持牌本幣穩定幣","香港、日本","新加坡 XSGD 已流通，新制修法未完成"]]},
+   {h:"亞洲六個法域走到哪裡"},
+   {p:"下圖把各法域的法律生效、發牌或上線、草案與諮詢，以及已公布的預計時程放在同一條時間軸上。實心點是法律生效或框架定案，綠色方塊是發牌或上線，空心圈是草案、諮詢或試驗，虛線圈是預計時程。"},
+   {chart:"pace", h:"圖一｜亞洲六個法域的穩定幣里程碑（2025 年至 2027 年初；更早的事件標在左緣）", desc:"時間軸列出香港、日本、新加坡、台灣、韓國與泰國的穩定幣里程碑。香港 2025 年 8 月條例生效、2026 年 4 月首批發牌；日本 2023 年 6 月修法施行、2025 年 10 月 JPYC 與 2026 年 6 月 JPYSC 發行；新加坡 2023 年 8 月框架定案、2026 年修法諮詢；台灣 2026 年 7 月專法公布、11 月子法與央行準備金草案預告；韓國 2026 年 11 月政府版草案；泰國 2026 年 10 至 11 月兩項諮詢。", note:"日期以官方文件為準；香港 HKDAP 推出只確認到月份，台灣 2027 年第一季施行為媒體報導［18］。日本 2027 年 3 月指三大銀行「2026 會計年度內」的目標，不是法定日期。"},
+   {h:"各法域現況"},
+   {note:"流通量來自 DefiLlama［1］，含未受當地監理的發行人，只代表鏈上供給，不代表支付使用量。", table:[["法域","法律狀態","已流通的本幣穩定幣","銀行角色","本幣穩定幣流通量"],["香港","條例 2025/8/1 生效［2］","HKDAP（碇點金融）；滙豐港元穩定幣上線時程待核實［3］［4］［5］","滙豐為首批持牌人；發鈔行參與代幣化存款測試","約 1,320 萬美元"],["日本","2023/6 修法施行；金融廳研究會正檢討準備資產與 100 萬日圓上限［12］","JPYC、JPYSC［10］［11］","信託銀行發行 JPYSC；三大銀行完成共同發行概念驗證［13］","約 1.45 億美元"],["新加坡","2023 年框架定案［7］，《支付服務法》修正諮詢 10/16 截止，擬禁止付息［8］","XSGD 等；新制下的「MAS 監理穩定幣」標示待修法完成［8］","存款代幣化另有指引，上鏈不改變存款性質［9］","約 1,280 萬美元"],["台灣","專法 2026/7/22 公布；子法與央行準備金辦法草案預告中［15］［16］","無","銀行可申請試辦存款代幣［17］；央行草案由受託銀行代為撥轉準備金［15］","無"],["韓國","政府版草案 11/24 公布，尚待國會審議［14］","無持牌發行人","韓元穩定幣須由銀行持股過半的聯盟發行［14］","約 50 萬美元"],["泰國","央行原則與證交會移轉上限兩項諮詢［19］［20］","無持牌發行人","待諮詢結果","未列入統計"]]},
+   {p:"如果只看法規，台灣不算慢：專法已公布，進度在新加坡之後、韓國與泰國之前。真正的差距在市場端，香港與日本已經有人實際發行、有人開始用；台灣要等子法定案、發行人取得許可後，才會出現第一檔新臺幣穩定幣。"},
+   {h:"本幣穩定幣的規模"},
+   {chart:"nonusd", h:"圖二｜非美元穩定幣流通量（百萬美元）", desc:"水平長條比較五種非美元穩定幣的流通量，以百萬美元計：歐元 810、日圓 145、港元 13.2、新加坡元 12.8、韓元約 0.5。", note:"以美元換算，匯率變動會影響數字。美元穩定幣約 2,836 億美元，畫進同一張圖會讓其他長條看不見，所以不列入［1］。"},
+   {p:"亞洲四種本幣合計約 1.7 億美元，其中日圓占八成以上。換個尺度看，台灣央行草案的繳存門檻是單一檔次流通超過 100 億元新臺幣，以草案的 28:1 概估約 3.6 億美元［15］；目前整個亞洲的本幣穩定幣加起來都還沒有到這個數字。對發行人而言，準備金繳存在初期多半不會是成本重點，準備資產的管理與贖回能力才是。"},
+   {h:"美元與歐元：規模差在哪裡"},
+   {chart:"hist", h:"圖三｜美元與歐元穩定幣流通量（各自縱軸）", desc:"兩個小圖分別畫出美元與歐元穩定幣流通量。美元從 2023 年 12 月約 1,304 億美元增加到 2025 年 12 月約 3,030 億美元，2026 年 11 月約 2,822 億美元。歐元從約 3.1 億美元增加到約 8.1 億美元。", note:"兩張圖縱軸不同，不能直接比較線的高低。最後一點為 11 月 26 日，與前一點只隔五個月。歐元穩定幣以美元計，期間歐元升值也會使數字變大［1］。"},
+   {p:"美元穩定幣從高點回落約 7%，歐元穩定幣同期增加約 23%，但兩者規模仍差約 350 倍。MiCA 的電子貨幣代幣規範 2024 年 6 月起適用，制度比美國早到位，規模卻沒有跟上。原因可能包括鏈上交易仍以美元計價、歐元利率較低使發行人收益較少，以及合規要求讓部分交易所下架不合規的穩定幣；這些是推論，本文沒有資料可以拆分各自的影響。"},
+   {h:"兩套制度比較"},
+   {note:"美國部分依 OCC 最終規則與 Gibson Dunn 解析［22］［23］；歐盟部分依 EBA 說明［24］［25］。", table:[["項目","美元（GENIUS Act）","歐元（MiCA 電子貨幣代幣）"],["法律與生效","2025 年 7 月簽署；2027/1/18 生效，OCC 規則同日生效［22］","2024/6/30 起適用［24］"],["誰可以發行","銀行子公司、聯邦核准的非銀行發行人；小型發行人可選州制［23］","信用機構或電子貨幣機構［24］"],["準備資產","一比一，隔離保管，限現金、存款、短期國庫券等高流動資產［22］［23］","一比一；一定比例須存放於銀行，重大代幣比例更高［24］"],["付息","禁止［22］","禁止［24］"],["大型發行人","規模大者原則上納入聯邦監理［23］","重大代幣由 EBA 直接監理；USDC 為首例，11/12 起［25］"],["目前流通量","約 2,836 億美元［1］","約 8.1 億美元［1］"],["銀行聯盟","21 家機構合資，先發美元、2027 上半年上線為目標［26］","Qivalis，37 家銀行，10/14 取得荷蘭央行電子貨幣機構授權（次級來源）［27］"]]},
+   {p:"兩套制度在一比一準備與禁止付息上幾乎一致，差在發行人範圍：美國允許非銀行發行人取得聯邦許可，歐盟只限信用機構與電子貨幣機構。另一個共通點是銀行聯盟：美國有 21 家機構的合資案，歐元有 37 家銀行的 Qivalis，亞洲則有韓國要求銀行持股過半、日本三大銀行共同發行。"},
+   {h:"台灣的銀行可以怎麼看"},
+   {list:["先想用途，再想發行。歐元的例子說明，規則清楚但沒有使用場景，規模就上不來。新臺幣穩定幣較可能先落在企業支付、代幣化資產交割與跨境收付，這些也正是存款代幣試辦可以先驗證的地方［17］。","評估聯盟發行。韓國、日本、美國、歐元區的銀行都在走聯合發行，台灣的銀行可以比較單獨申請與共同設立發行機構，在成本、治理與通路上的差異。","準備資產保管是現成的業務。央行草案規定準備金補足或提領由受託銀行代為撥轉［15］；不論誰發行，受託銀行的保管、撥轉與報表能力都需要先建好。","美元穩定幣的需求不會等新臺幣。客戶接觸的主要還是 USDT、USDC；銀行在合規通路、出入金與保管上的角色，可能比發行本幣更早帶來收入。","把繳存門檻放進試算。100 億元新臺幣的門檻在初期很可能碰不到，但準備資產收益、贖回流動性與付息禁令，會直接影響發行的商業模式。"]},
+   {h:"方法與限制"},
+   {p:"流通量取自 DefiLlama［1］，屬次級資料，以美元換算，包含未受當地監理的發行人，也不區分鏈上重複計算；只代表供給，不代表支付使用量。時間軸日期以主管機關文件為主；香港 HKDAP 推出日期只確認到月份，台灣 2027 年第一季施行為媒體報導，韓國草案尚未經國會審議，泰國兩項諮詢的結果尚未公布。美元與歐元制度比較為摘要，引用前請回到原始規則核對。"}
+  ],
+  sources: [
+   ["DefiLlama 穩定幣數據","https://defillama.com/stablecoins",true],
+   ["香港特區政府：《穩定幣條例》8 月 1 日生效","https://www.info.gov.hk/gia/general/202506/06/P2025060600275.htm",false],
+   ["香港金管局：持牌穩定幣發行人名冊","https://www.hkma.gov.hk/eng/regulatory-resources/registers/register-of-licensed-stablecoin-issuers/",false],
+   ["滙豐：取得香港穩定幣發行人牌照","https://www.about.hsbc.com.hk/news-and-media/hsbc-welcomes-hkmas-grant-of-a-hong-kong-stablecoin-issuer-licence",false],
+   ["碇點金融新聞稿","https://anchorpoint.hk/media-press/",false],
+   ["碇點金融：與 Visa、Mastercard 研究 HKDAP（PDF）","https://anchorpoint.hk/uploads/2026/10/Anchorpoint-to-Explore-Enabling-HKDAP-as-The-First-Regulated-Stablecoin-in-Asia-Supported-Across-Both-Mastercard-and-Visas-Global-Networks.pdf",false],
+   ["MAS：定案穩定幣監理框架（2023）","https://www.mas.gov.sg/news/media-releases/2023/mas-finalises-stablecoin-regulatory-framework",false],
+   ["MAS：穩定幣修法諮詢","https://www.mas.gov.sg/news/media-releases/2026/mas-consults-on-legislative-amendments-to-implement-stablecoin-regulatory-framework",false],
+   ["MAS：存款代幣化指引（PDF）","https://www.mas.gov.sg/-/media/mas-media-library/regulation/guidelines/ppd/guide-on-the-tokenisation-of-bank-deposits/guide-on-the-tokenisation-of-bank-deposits_18-nov-2026vf.pdf",false],
+   ["The Block：JPYC 發行","https://theblock.co/news/business/2025-10-27-japan-jpyc-launches-yen-stablecoin-376199",true],
+   ["The Block：SBI 發行 JPYSC","https://www.theblock.co/news/defi/2026-06-24-japan-sbi-group-launches-jpysc-405952",true],
+   ["金融廳研究會事務局資料（日文）","https://www.fsa.go.jp/singi/digital_2026/shiryo/261102/jimukyoku.pdf",false],
+   ["三菱日聯銀行：三行共同發行概念驗證（PDF）","https://www.bk.mufg.jp/global/newsroom/news2026/pdf/newse1016_1.pdf",false],
+   ["韓國金融委員會：數位資產基本法政府版（韓文）","https://www.fsc.go.kr/no010101/88199",false],
+   ["中央銀行：穩定幣發行準備金繳存及查核辦法草案","https://www.cbc.gov.tw/tw/cp-302-195226-fa371-1.html",false],
+   ["金管會 11 月 3 日新聞稿：穩定幣發行子法草案","https://www.fsc.gov.tw/ch/home.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202611030002&dtable=News",false],
+   ["金管會 9 月 22 日新聞稿：存款代幣試辦","https://www.fsc.gov.tw/ch/home.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202609220001&dtable=News",false],
+   ["聯合報：專法預計第一季施行","https://udn.com/news/story/7239/9871143",true],
+   ["泰國央行：泰銖穩定幣原則諮詢（泰文）","https://www.bot.or.th/th/laws-and-rules/public-hearing/public-hearing-20261020-Stablecoin.html",false],
+   ["泰國證交會：穩定幣每日移轉上限諮詢","https://www.sec.or.th/EN/Pages/News_Detail.aspx?SECID=13562&NewsNo=253&NewsYear=2026&Lang=EN",false],
+   ["The Block：泰國擬設每日上限","https://www.theblock.co/news/regulation/2026-11-13-thailand-seeks-daily-stablecoin-cap-439676",true],
+   ["OCC：GENIUS Act 最終規則","https://www.occ.gov/news-issuances/news-releases/2026/nr-occ-2026-92.html",false],
+   ["Gibson Dunn：OCC 支付穩定幣框架解析","https://www.gibsondunn.com/the-genius-act-occ-finalizes-its-payment-stablecoin-framework/",true],
+   ["EBA：MiCA 資產參考代幣與電子貨幣代幣","https://www.eba.europa.eu/regulation-and-policy/asset-referenced-and-e-money-tokens-mica",false],
+   ["EBA：USDC 列為首個重大電子貨幣代幣","https://www.eba.europa.eu/publications-and-media/press-releases/eba-classifies-usdc-first-significant-e-money-token-european-union",false],
+   ["桑坦德：21 家機構籌設穩定幣公司","https://www.santander.com/en/press-room/press-releases/2026/09/group-of-leading-international-financial-institutions-to-establish-stablecoin-enterprise",false],
+   ["The Block：德銀託管上線與 Qivalis 授權","https://www.theblock.co/news/business/2026-11-11-deutsche-bank-goes-live-with-digital-asset-custody-service-signs-asset-management-deal-437851",true]
+  ]
+ },
+ en: {
+  kicker: "Feature | Stablecoins",
+  title: "Who is moving fastest on stablecoins in Asia, and how far behind the dollar is the euro?",
+  dek: "Hong Kong and Japan already have licensed local-currency stablecoins in circulation. Singapore and Taiwan have a framework or law in place, with rules still being finalised, while South Korea and Thailand remain at the draft stage. Yet Asian local-currency stablecoins add up to only about $170m, and more than two years after MiCA took effect, euro stablecoins are about 0.3% the size of dollar ones. This feature maps progress across six Asian jurisdictions, compares the US and EU regimes, and sets out what Taiwan's banks might take from it.",
+  asof: "Supply figures are DefiLlama USD values as of 26–27 November 2026; regulatory status as of 27 November",
+  blocks: [
+   {summary:["Asia moves in three groups: Hong Kong and Japan have licensed local-currency stablecoins in circulation; Singapore and Taiwan have a framework or law, with amendments and rules still in progress; South Korea and Thailand are at draft and consultation stage.","Volumes are tiny: Asian local-currency stablecoins total about $170m, below the NT$10bn per-token threshold above which Taiwan's central bank draft requires reserves (roughly $360m at the draft's 28:1 estimate) [1][15].","Euro stablecoins are about 0.3% the size of dollar ones, a sign that regulatory clarity does not create demand on its own; the shared direction everywhere is banks or bank consortia acting as issuers."]},
+   {toc:true},
+   {kpis:[["USD stablecoin supply","$283.6bn","USDT $173.6bn, USDC $69.2bn [1]"],["EUR stablecoins","$810m","About 0.3% of USD (roughly 1/350) [1]"],["Asian local-currency total","~$170m","Yen accounts for $145m [1]"],["Licensed local coins live","Hong Kong, Japan","Singapore's XSGD circulates; its new regime awaits legislation"]]},
+   {h:"Where six Asian jurisdictions stand"},
+   {p:"The chart puts each jurisdiction's laws in force, licences or launches, drafts and consultations, and announced targets on a single timeline. A solid dot marks a law in force or a finalised framework, a green square a licence or launch, an open ring a draft, consultation or pilot, and a dashed ring an expected date."},
+   {chart:"pace", h:"Figure 1 | Stablecoin milestones in six Asian jurisdictions (2025 to early 2027; earlier events pinned to the left edge)", desc:"Timeline of stablecoin milestones in Hong Kong, Japan, Singapore, Taiwan, South Korea and Thailand. Hong Kong's ordinance took effect in August 2025 and first licences followed in April 2026; Japan's amended law took effect in June 2023, with JPYC launching in October 2025 and JPYSC in June 2026; Singapore finalised its framework in August 2023 and consulted on amendments in 2026; Taiwan promulgated its act in July 2026 and published draft rules and central bank reserve rules in November; South Korea published a government draft in November 2026; Thailand ran two consultations in October and November 2026.", note:"Dates follow official documents. Hong Kong's HKDAP rollout is confirmed only to the month, and Taiwan's Q1 2027 start date comes from press reports [18]. Japan's March 2027 marker reflects the megabanks' target of going live within FY2026, not a statutory date."},
+   {h:"Status by jurisdiction"},
+   {note:"Supply figures from DefiLlama [1] include issuers not regulated locally and reflect on-chain supply, not payment use.", table:[["Jurisdiction","Legal status","Local-currency coins in circulation","Role of banks","Local-currency supply"],["Hong Kong","Ordinance in force since 1 Aug 2025 [2]","HKDAP (Anchorpoint); HSBC's HKD coin launch timing unverified [3][4][5]","HSBC among first licensees; note-issuing banks in tokenised deposit trials","~$13.2m"],["Japan","Amended law in force since June 2023; FSA study group reviewing reserves and the ¥1m cap [12]","JPYC, JPYSC [10][11]","Trust bank issues JPYSC; three megabanks completed a joint-issuance proof of concept [13]","~$145m"],["Singapore","Framework finalised in 2023 [7]; PSA amendment consultation closed 16 Oct, proposing an interest ban [8]","XSGD and others; the 'MAS-regulated stablecoin' label awaits legislation [8]","Separate guide on deposit tokenisation: going on-chain does not change a deposit's nature [9]","~$12.8m"],["Taiwan","Act promulgated 22 Jul 2026; draft rules and CBC reserve rules out for comment [15][16]","None","Banks may pilot deposit tokens [17]; under the CBC draft, the custodian bank moves reserve funds [15]","None"],["South Korea","Government draft published 24 Nov; awaits National Assembly approval [14]","No licensed issuer","Won stablecoins to be issued by consortia majority-owned by banks [14]","~$0.5m"],["Thailand","Two consultations: central bank principles and SEC transfer cap [19][20]","No licensed issuer","Pending consultation outcomes","Not tracked"]]},
+   {p:"On regulation alone, Taiwan is not slow: its act is law, putting it behind Singapore but ahead of South Korea and Thailand. The real gap is in the market. Hong Kong and Japan already have issuers and early users; Taiwan's first NT dollar stablecoin can only appear once the rules are final and an issuer is licensed."},
+   {h:"How big local-currency stablecoins are"},
+   {chart:"nonusd", h:"Figure 2 | Non-USD stablecoin supply ($m)", desc:"Horizontal bars compare the supply of five non-USD stablecoins in millions of US dollars: euro 810, yen 145, Hong Kong dollar 13.2, Singapore dollar 12.8, Korean won about 0.5.", note:"Converted to US dollars, so exchange-rate moves affect the figures. USD stablecoins, at about $283.6bn, are left out because they would make every other bar invisible [1]."},
+   {p:"The four Asian currencies total about $170m, more than 80% of it in yen. For scale, Taiwan's central bank draft only requires reserves on supply above NT$10bn per token, roughly $360m at the draft's 28:1 estimate [15]. All of Asia's local-currency stablecoins combined have yet to reach that figure. For early issuers, reserve deposits are unlikely to be the main cost; managing reserve assets and meeting redemptions will be."},
+   {h:"Dollar versus euro: where the gap lies"},
+   {chart:"hist", h:"Figure 3 | USD and EUR stablecoin supply (separate axes)", desc:"Two small charts show USD and EUR stablecoin supply. USD supply rose from about $130bn in December 2023 to about $303bn in December 2025 and stood at about $282bn in November 2026. EUR supply rose from about $0.31bn to about $0.81bn.", note:"The two charts use different vertical axes, so line heights cannot be compared directly. The last point is 26 November, only five months after the previous one. EUR supply is measured in US dollars, so euro appreciation also lifts the figure [1]."},
+   {p:"USD stablecoins are about 7% below their peak while EUR stablecoins grew about 23% over the same period, yet the dollar side is still roughly 350 times larger. MiCA's e-money token rules have applied since June 2024, earlier than the US regime, but volumes have not followed. Possible reasons include on-chain trading still being priced in dollars, lower euro rates leaving issuers less income, and exchanges delisting non-compliant tokens. These are inferences; the data here cannot separate their effects."},
+   {h:"The two regimes compared"},
+   {note:"US details from the OCC final rule and Gibson Dunn's analysis [22][23]; EU details from the EBA [24][25].", table:[["Item","USD (GENIUS Act)","EUR (MiCA e-money tokens)"],["Law and start date","Signed July 2025; effective 18 Jan 2027, with the OCC rule taking effect the same day [22]","Applied since 30 Jun 2024 [24]"],["Who may issue","Bank subsidiaries and federally approved non-bank issuers; smaller issuers may opt for state regimes [23]","Credit institutions or e-money institutions [24]"],["Reserves","1:1, segregated, limited to cash, deposits, short-dated Treasuries and similar liquid assets [22][23]","1:1, with a minimum share held as bank deposits, higher for significant tokens [24]"],["Interest","Prohibited [22]","Prohibited [24]"],["Large issuers","Larger issuers generally move under federal supervision [23]","Significant tokens supervised directly by the EBA; USDC is the first, from 12 Nov [25]"],["Current supply","~$283.6bn [1]","~$810m [1]"],["Bank consortia","21 institutions, dollar first, targeting H1 2027 launch [26]","Qivalis, 37 banks, authorised as an e-money institution by the Dutch central bank on 14 Oct (secondary) [27]"]]},
+   {p:"The two regimes align closely on 1:1 reserves and the interest ban. The difference is who may issue: the US lets non-banks obtain federal approval, while the EU limits issuance to credit and e-money institutions. Bank consortia are the other common thread: 21 institutions in the US joint venture, 37 banks behind Qivalis for the euro, and in Asia, Korea's bank-majority requirement and Japan's three-megabank issuance."},
+   {h:"What Taiwan's banks can take from this"},
+   {list:["Start with use cases, then issuance. The euro shows that clear rules without real uses do not build volume. NT dollar stablecoins are likelier to start in corporate payments, settlement of tokenised assets and cross-border collections, which are exactly what deposit-token pilots can test first [17].","Weigh a consortium. Banks in Korea, Japan, the US and the euro area are issuing together. Taiwan's banks can compare applying alone with setting up a joint issuer on cost, governance and distribution.","Reserve custody is ready-made business. The CBC draft has the custodian bank move funds when reserves are topped up or withdrawn [15]. Whoever issues, custody, payment and reporting capabilities need to be in place.","Demand for dollar stablecoins will not wait for the NT dollar. Clients mainly use USDT and USDC; a bank's role in compliant access, on- and off-ramps and custody may earn revenue before any local issuance.","Model the threshold. The NT$10bn threshold is unlikely to bind early on, but reserve yield, redemption liquidity and the interest ban will shape the business case directly."]},
+   {h:"Method and limitations"},
+   {p:"Supply figures come from DefiLlama [1], a secondary source. They are converted to US dollars, include issuers not regulated locally and do not adjust for cross-chain double counting; they measure supply, not payment use. Timeline dates rely mainly on regulators' documents. Hong Kong's HKDAP rollout is confirmed only to the month, Taiwan's Q1 2027 start date comes from press reports, Korea's draft has not been through the National Assembly and the outcomes of Thailand's two consultations are not yet public. The US–EU comparison is a summary; check the underlying rules before citing it."}
+  ],
+  sources: [
+   ["DefiLlama stablecoin data","https://defillama.com/stablecoins",true],
+   ["Hong Kong Government: Stablecoins Ordinance to commence on 1 August","https://www.info.gov.hk/gia/general/202506/06/P2025060600275.htm",false],
+   ["HKMA: register of licensed stablecoin issuers","https://www.hkma.gov.hk/eng/regulatory-resources/registers/register-of-licensed-stablecoin-issuers/",false],
+   ["HSBC: Hong Kong stablecoin issuer licence","https://www.about.hsbc.com.hk/news-and-media/hsbc-welcomes-hkmas-grant-of-a-hong-kong-stablecoin-issuer-licence",false],
+   ["Anchorpoint press releases","https://anchorpoint.hk/media-press/",false],
+   ["Anchorpoint: exploring HKDAP with Visa and Mastercard (PDF)","https://anchorpoint.hk/uploads/2026/10/Anchorpoint-to-Explore-Enabling-HKDAP-as-The-First-Regulated-Stablecoin-in-Asia-Supported-Across-Both-Mastercard-and-Visas-Global-Networks.pdf",false],
+   ["MAS: stablecoin framework finalised (2023)","https://www.mas.gov.sg/news/media-releases/2023/mas-finalises-stablecoin-regulatory-framework",false],
+   ["MAS: consultation on stablecoin legislative amendments","https://www.mas.gov.sg/news/media-releases/2026/mas-consults-on-legislative-amendments-to-implement-stablecoin-regulatory-framework",false],
+   ["MAS: guide on the tokenisation of bank deposits (PDF)","https://www.mas.gov.sg/-/media/mas-media-library/regulation/guidelines/ppd/guide-on-the-tokenisation-of-bank-deposits/guide-on-the-tokenisation-of-bank-deposits_18-nov-2026vf.pdf",false],
+   ["The Block: JPYC launches","https://theblock.co/news/business/2025-10-27-japan-jpyc-launches-yen-stablecoin-376199",true],
+   ["The Block: SBI launches JPYSC","https://www.theblock.co/news/defi/2026-06-24-japan-sbi-group-launches-jpysc-405952",true],
+   ["FSA study group secretariat paper (Japanese)","https://www.fsa.go.jp/singi/digital_2026/shiryo/261102/jimukyoku.pdf",false],
+   ["MUFG Bank: three-bank joint issuance proof of concept (PDF)","https://www.bk.mufg.jp/global/newsroom/news2026/pdf/newse1016_1.pdf",false],
+   ["Korea FSC: government Digital Asset Basic Act draft (Korean)","https://www.fsc.go.kr/no010101/88199",false],
+   ["Central Bank of the Republic of China (Taiwan): draft stablecoin reserve rules (Chinese)","https://www.cbc.gov.tw/tw/cp-302-195226-fa371-1.html",false],
+   ["FSC press release, 3 November: draft issuance regulations (Chinese)","https://www.fsc.gov.tw/ch/home.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202611030002&dtable=News",false],
+   ["FSC press release, 22 September: deposit-token pilots (Chinese)","https://www.fsc.gov.tw/ch/home.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202609220001&dtable=News",false],
+   ["UDN: act expected to take effect in Q1 (Chinese)","https://udn.com/news/story/7239/9871143",true],
+   ["Bank of Thailand: baht stablecoin consultation (Thai)","https://www.bot.or.th/th/laws-and-rules/public-hearing/public-hearing-20261020-Stablecoin.html",false],
+   ["Thai SEC: consultation on daily stablecoin transfer cap","https://www.sec.or.th/EN/Pages/News_Detail.aspx?SECID=13562&NewsNo=253&NewsYear=2026&Lang=EN",false],
+   ["The Block: Thailand seeks daily stablecoin cap","https://www.theblock.co/news/regulation/2026-11-13-thailand-seeks-daily-stablecoin-cap-439676",true],
+   ["OCC: GENIUS Act final rule","https://www.occ.gov/news-issuances/news-releases/2026/nr-occ-2026-92.html",false],
+   ["Gibson Dunn: OCC payment stablecoin framework","https://www.gibsondunn.com/the-genius-act-occ-finalizes-its-payment-stablecoin-framework/",true],
+   ["EBA: asset-referenced and e-money tokens under MiCA","https://www.eba.europa.eu/regulation-and-policy/asset-referenced-and-e-money-tokens-mica",false],
+   ["EBA: USDC classified as first significant e-money token","https://www.eba.europa.eu/publications-and-media/press-releases/eba-classifies-usdc-first-significant-e-money-token-european-union",false],
+   ["Santander: 21 institutions to establish a stablecoin enterprise","https://www.santander.com/en/press-room/press-releases/2026/09/group-of-leading-international-financial-institutions-to-establish-stablecoin-enterprise",false],
+   ["The Block: Deutsche Bank custody launch and Qivalis authorisation","https://www.theblock.co/news/business/2026-11-11-deutsche-bank-goes-live-with-digital-asset-custody-service-signs-asset-management-deal-437851",true]
+  ]
+ }
+},
+{
  id: "ant-vs-spcx",
  date: "2026-11-19",
  charts: {
@@ -187,6 +370,7 @@ window.FEATURES = [
  .feat th{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.04em;border-bottom:1.5px solid var(--ink)}
  .feat table.num td:not(:first-child),.feat table.num th:not(:first-child){text-align:right;white-space:nowrap;padding-left:12px}
  .feat table.num td:first-child{color:var(--ink)}
+.feat table.wide td:first-child,.feat table.wide th:first-child{min-width:5.2em}
  .feat tbody tr:hover td{background:var(--surface)}
  .feat figure{margin:26px 0 18px;padding:18px 18px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--card);position:relative}
  .feat figcaption{font-family:var(--display);font-weight:900;font-size:17px;margin:0 0 4px}
@@ -212,6 +396,12 @@ window.FEATURES = [
  .feat .sc .px{font-family:var(--body);font-weight:700;font-size:24px;line-height:1.3}
  .feat .sc .v{font-size:12.5px;color:var(--muted);margin-bottom:6px}
  .feat .sc p{font-size:14px;margin:0}
+ .fpick{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:22px 0 0;max-width:820px}
+ .fcard{font:inherit;text-align:left;background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--rule);border-radius:0 8px 8px 0;padding:10px 14px;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;gap:2px}
+ .fcard:hover{border-left-color:var(--muted)}
+ .fcard[aria-pressed="true"]{border-left-color:var(--bright);background:var(--surface)}
+ .fcard .fd{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.04em}
+ .fcard .ft{font-family:var(--display);font-weight:600;font-size:15.5px;line-height:1.45}
  .feat .fsrc{font-size:13px;color:var(--muted);display:grid;gap:4px;margin-top:6px;counter-reset:s}
  .feat .fsrc a{counter-increment:s}
  .feat .fsrc a::before{content:counter(s) ". ";color:var(--muted)}
@@ -442,10 +632,108 @@ window.FEATURES = [
   dataTable(fig, [en ? "Scenario" : "情境", en ? "Price" : "股價", en ? "Valuation" : "估值"], c.rows.map(r => [en ? r.tEn : r.t, en ? r.labEn : r.lab, en ? r.vEn : r.v]), lang);
  }
 
+ // 時間軸：各法域里程碑（列＝法域，橫軸＝時間）
+ const KIND = {law:{zh:"生效或定稿", en:"In force or finalised"}, launch:{zh:"發牌或上線", en:"Licensed or launched"}, draft:{zh:"草案、諮詢或試驗", en:"Draft, consultation or pilot"}, plan:{zh:"預計", en:"Expected"}};
+ const ym = s => { const [y,m,d] = s.split("-").map(Number); return y + ((m || 1) - 1) / 12 + ((d || 15) - 1) / 365; };
+ function markShape(svg, kind, cx, cy){
+  if (kind === "law") svg.appendChild(s("circle", {cx, cy, r:6, fill:"var(--ink)", stroke:"var(--card)", "stroke-width":2}));
+  else if (kind === "launch") svg.appendChild(s("rect", {x:cx - 6, y:cy - 6, width:12, height:12, rx:2.5, fill:"var(--c-ant)", stroke:"var(--card)", "stroke-width":2}));
+  else if (kind === "draft") svg.appendChild(s("circle", {cx, cy, r:5.5, fill:"var(--card)", stroke:"var(--muted)", "stroke-width":2.25}));
+  else svg.appendChild(s("circle", {cx, cy, r:5.5, fill:"var(--card)", stroke:"var(--muted)", "stroke-width":1.5, "stroke-dasharray":"2 2"}));
+ }
+ function timeline(fig, c, lang){
+  const narrow = narrowNow(), en = lang === "en";
+  const lg = h("div","legend"); ["law","launch","draft","plan"].forEach(k => { const sp = h("span"); const g = s("svg", {viewBox:"0 0 14 14"}); markShape(g, k, 7, 7); sp.appendChild(g); sp.appendChild(document.createTextNode(en ? KIND[k].en : KIND[k].zh)); lg.appendChild(sp); }); fig.appendChild(lg);
+  const lw = (narrow ? (en ? 84 : 62) : (en ? 104 : 92)) + (c.rows.some(r => r.ev.some(e => ym(e.d) < c.x0)) ? (narrow ? 34 : 40) : 0), W = narrow ? 360 : 720, rowH = narrow ? 40 : 44, m = {t:20, b:28, r:14};
+  const H = m.t + c.rows.length * rowH + m.b;
+  const x = v => lw + (v - c.x0) / (c.x1 - c.x0) * (W - lw - m.r);
+  const svg = s("svg", {class:"ch", viewBox:`0 0 ${W} ${H}`});
+  for (let y = Math.ceil(c.x0); y <= c.x1; y++){ svg.appendChild(s("line", {x1:x(y), x2:x(y), y1:m.t - 6, y2:H - m.b, stroke:"var(--rule)", "stroke-width":1})); svg.appendChild(s("text", {x:x(y) + 4, y:H - m.b + 18}, String(y))); }
+  const tx = x(ym(c.today));
+  svg.appendChild(s("line", {x1:tx, x2:tx, y1:m.t - 10, y2:H - m.b, stroke:"var(--accent)", "stroke-width":1.25}));
+  svg.appendChild(s("text", {class:"ann", x:tx - 4, y:m.t - 12, "text-anchor":"end"}, (en ? "Today " : "今天 ") + c.today.slice(5).replace("-","/")));
+  const T = tipper(fig); const items = [];
+  c.rows.forEach((r, i) => {
+   const cy = m.t + i * rowH + rowH / 2;
+   if (i % 2 === 0) svg.appendChild(s("rect", {x:0, y:cy - rowH/2, width:W, height:rowH, fill:"var(--surface)", opacity:.55}));
+   svg.appendChild(s("text", {class:"lab", x:0, y:cy + 4}, en ? r.en : r.zh));
+   const xs = r.ev.map(e => x(Math.max(c.x0, ym(e.d))));
+   if (xs.length > 1) svg.appendChild(s("line", {x1:Math.min(...xs), x2:Math.max(...xs), y1:cy, y2:cy, stroke:"var(--rule)", "stroke-width":2}));
+   r.ev.forEach(e => { const v = ym(e.d), early = v < c.x0; items.push({r, e, cx:x(early ? c.x0 : v), cy, early}); });
+  });
+  items.forEach(o => { markShape(svg, o.e.k, o.cx, o.cy); if (o.early) svg.appendChild(s("text", {class:"ann", x:o.cx - 9, y:o.cy + 4, "text-anchor":"end"}, "\u2190" + o.e.d.slice(0, 4))); });
+  items.forEach(o => {
+   const hit = s("circle", {cx:o.cx, cy:o.cy, r:11, fill:"transparent", tabindex:0, "aria-label": (en ? o.r.en : o.r.zh) + " " + o.e.d + " " + (en ? o.e.en : o.e.zh)});
+   const show = () => { const [fx, fy] = figPos(fig, svg, W, o.cx, o.cy); T.show([(en ? o.r.en : o.r.zh) + "｜" + o.e.d, (en ? o.e.en : o.e.zh).replace(/\s*[［\[]\d+[］\]]/g, ""), en ? KIND[o.e.k].en : KIND[o.e.k].zh], fx, fy); };
+   hit.addEventListener("pointerenter", show); hit.addEventListener("pointerdown", show); hit.addEventListener("focus", show); hit.addEventListener("pointerleave", ev => { if (ev.pointerType === "mouse") T.hide(); }); hit.addEventListener("blur", T.hide);
+   svg.appendChild(hit);
+  });
+  fig.appendChild(svg);
+  dataTable(fig, [en ? "Jurisdiction" : "法域", en ? "Date" : "日期", en ? "Milestone" : "里程碑", en ? "Type" : "類型"], items.map(o => [en ? o.r.en : o.r.zh, o.e.d, en ? o.e.en : o.e.zh, en ? KIND[o.e.k].en : KIND[o.e.k].zh]), lang);
+ }
+ // 水平長條：單一數列
+ function hbar(fig, c, lang){
+  const narrow = narrowNow(), en = lang === "en";
+  const lw = narrow ? 96 : 170, W = narrow ? 360 : 720, rowH = 34, m = {t:6, b:26, r: narrow ? 70 : 90};
+  const H = m.t + c.rows.length * rowH + m.b;
+  const max = c.max || Math.max(...c.rows.map(r => r.v));
+  const x = v => lw + v / max * (W - lw - m.r);
+  const svg = s("svg", {class:"ch", viewBox:`0 0 ${W} ${H}`});
+  (c.ticks || []).forEach(v => { svg.appendChild(s("line", {x1:x(v), x2:x(v), y1:m.t, y2:H - m.b, stroke: v === 0 ? "var(--muted)" : "var(--rule)", "stroke-width": v === 0 ? 1.25 : 1})); svg.appendChild(s("text", {x:x(v), y:H - m.b + 18, "text-anchor":"middle"}, c.fmt ? c.fmt.replace("{v}", v.toLocaleString("en-US")) : String(v))); });
+  const T = tipper(fig);
+  c.rows.forEach((r, i) => {
+   const cy = m.t + i * rowH + rowH / 2, bh = 16, x0 = x(0), x1 = Math.max(x(r.v), x0 + 2);
+   svg.appendChild(s("text", {class:"lab", x:0, y:cy + 4}, en ? r.en : r.zh));
+   svg.appendChild(s("path", {d:`M${x0},${cy - bh/2}H${x1 - Math.min(4, x1 - x0)}a${Math.min(4, x1 - x0)},${Math.min(4, x1 - x0)} 0 0 1 ${Math.min(4, x1 - x0)},${Math.min(4, x1 - x0)}V${cy + bh/2 - Math.min(4, x1 - x0)}a${Math.min(4, x1 - x0)},${Math.min(4, x1 - x0)} 0 0 1 -${Math.min(4, x1 - x0)},${Math.min(4, x1 - x0)}H${x0}Z`, fill: r.hl ? "var(--c-spcx)" : "var(--c-ant)"}));
+   svg.appendChild(s("text", {class:"lab", x:x1 + 8, y:cy + 4}, en ? r.labEn : r.lab));
+   const hit = s("rect", {x:0, y:cy - rowH/2, width:W, height:rowH, fill:"transparent", tabindex:0, "aria-label": (en ? r.en : r.zh) + " " + (en ? r.labEn : r.lab)});
+   const show = () => { const [fx, fy] = figPos(fig, svg, W, x1, cy); T.show([en ? r.en : r.zh, en ? r.labEn : r.lab, (en ? r.noteEn : r.note) || ""].filter(Boolean), fx, fy); };
+   hit.addEventListener("pointerenter", show); hit.addEventListener("pointerdown", show); hit.addEventListener("focus", show); hit.addEventListener("pointerleave", ev => { if (ev.pointerType === "mouse") T.hide(); }); hit.addEventListener("blur", T.hide);
+   svg.appendChild(hit);
+  });
+  fig.appendChild(svg);
+  dataTable(fig, [en ? "Item" : "項目", en ? "Value" : "數值", en ? "Note" : "說明"], c.rows.map(r => [en ? r.en : r.zh, en ? r.labEn : r.lab, (en ? r.noteEn : r.note) || ""]), lang);
+ }
+ // 小倍數：每個面板各自的縱軸，不共用尺度
+ function smallmult(fig, c, lang){
+  const narrow = narrowNow(), en = lang === "en";
+  const wrap = h("div"); wrap.style.display = "grid"; wrap.style.gridTemplateColumns = narrow ? "1fr" : "1fr 1fr"; wrap.style.gap = "14px 22px"; fig.appendChild(wrap);
+  const T = tipper(fig); const rowsAll = [];
+  c.panels.forEach(pn0 => {
+   const pn = Object.assign({}, pn0, (en ? pn0.enO : pn0.zhO) || {});
+   const box = h("div"); wrap.appendChild(box);
+   const hd = h("div", null, en ? pn.en : pn.zh); hd.style.fontWeight = "700"; hd.style.fontSize = "13.5px"; hd.style.margin = "0 0 2px"; box.appendChild(hd);
+   const W = 340, H = 190, m = {l:42, r:50, t:14, b:26};
+   const n = c.labels.length, x = i => m.l + i / (n - 1) * (W - m.l - m.r);
+   const y = v => m.t + (pn.max - v) / (pn.max - pn.min) * (H - m.t - m.b);
+   const svg = s("svg", {class:"ch", viewBox:`0 0 ${W} ${H}`}); box.appendChild(svg);
+   pn.ticks.forEach(v => { svg.appendChild(s("line", {x1:m.l, x2:W - m.r, y1:y(v), y2:y(v), stroke:"var(--rule)", "stroke-width":1})); svg.appendChild(s("text", {x:m.l - 6, y:y(v) + 4, "text-anchor":"end"}, v.toLocaleString("en-US"))); });
+   [0, Math.floor((n - 1) / 2), n - 1].forEach(i => svg.appendChild(s("text", {x:x(i), y:H - 6, "text-anchor":"middle"}, c.labels[i])));
+   const col = "var(--c-" + pn.key + ")";
+   let d = ""; pn.v.forEach((v, i) => d += (i ? "L" : "M") + x(i) + "," + y(v));
+   svg.appendChild(s("path", {d: d + `L${x(n - 1)},${y(pn.min)}L${x(0)},${y(pn.min)}Z`, fill:col, opacity:.1}));
+   svg.appendChild(s("path", {d, fill:"none", stroke:col, "stroke-width":2, "stroke-linejoin":"round"}));
+   pn.v.forEach((v, i) => {
+    svg.appendChild(s("circle", {cx:x(i), cy:y(v), r: i === n - 1 ? 4.5 : 3, fill:col, stroke:"var(--card)", "stroke-width":2}));
+    const hit = s("circle", {cx:x(i), cy:y(v), r:12, fill:"transparent", tabindex:0, "aria-label": (en ? pn.en : pn.zh) + " " + c.labels[i] + " " + v});
+    const show = () => { const [fx, fy] = figPos(fig, svg, W, x(i), y(v)); T.show([en ? pn.en : pn.zh, c.labels[i] + "：" + v + (en ? pn.unitEn : pn.unit)], fx, fy); };
+    hit.addEventListener("pointerenter", show); hit.addEventListener("pointerdown", show); hit.addEventListener("focus", show); hit.addEventListener("pointerleave", ev => { if (ev.pointerType === "mouse") T.hide(); }); hit.addEventListener("blur", T.hide);
+    svg.appendChild(hit);
+    rowsAll.push([en ? pn.en : pn.zh, c.labels[i], v + (en ? pn.unitEn : pn.unit)]);
+   });
+   svg.appendChild(s("text", {class:"lab", x:x(n - 1) + 8, y:y(pn.v[n - 1]) + 4}, pn.v[n - 1].toLocaleString("en-US")));
+  });
+  dataTable(fig, [en ? "Series" : "數列", en ? "Date" : "時間", en ? "Value" : "數值"], rowsAll, lang);
+ }
+
  function drawFigure(fig, f, b, lang){
   const c = f.charts[b.chart];
   fig.dataset.desc = b.desc || "";
-  if (b.chart === "dayone") dayone(fig, c, lang);
+  const type = c.type || b.chart;
+  if (type === "timeline") timeline(fig, c, lang);
+  else if (type === "hbar") hbar(fig, c, lang);
+  else if (type === "smallmult") smallmult(fig, c, lang);
+  else if (type === "dayone") dayone(fig, c, lang);
   else if (b.chart === "phases") phases(fig, c, lang);
   else if (b.chart === "ladder") ladder(fig, c, lang);
   else lineChart(fig, c, lang, b.chart);
@@ -455,11 +743,18 @@ window.FEATURES = [
  function rich(el, text, uid){ const re = /[［\[](\d{1,2})[］\]]/g; let last = 0, m; while ((m = re.exec(text))){ if (m.index > last) el.appendChild(document.createTextNode(text.slice(last, m.index))); const a = h("a","ref", "[" + m[1] + "]"); a.href = "#" + uid + "-s" + m[1]; a.setAttribute("aria-label", "source " + m[1]); el.appendChild(a); last = re.lastIndex; } if (last < text.length) el.appendChild(document.createTextNode(text.slice(last))); return el; }
  const hr = (tag, cls, text, uid) => rich(h(tag, cls), text, uid);
 
- let lastArgs = null, rT = null;
+ let lastArgs = null, rT = null, selId = null;
  window.renderFeatures = function(root, lang){
   lastArgs = [root, lang];
   root.textContent = "";
-  const F = window.FEATURES || [], en = lang === "en";
+  const all = window.FEATURES || [], en = lang === "en";
+  if (!all.some(f => f.id === selId)) selId = all.length ? all[0].id : null;
+  if (all.length > 1){
+   const nav = h("nav","fpick"); nav.setAttribute("aria-label", en ? "Features" : "專題列表");
+   all.forEach(f => { const d = f[lang] || f.zh; const b = h("button","fcard"); b.type = "button"; b.setAttribute("aria-pressed", String(f.id === selId)); b.appendChild(h("span","fd", d.kicker + "　" + f.date)); b.appendChild(h("span","ft", d.title)); b.addEventListener("click", () => { selId = f.id; window.renderFeatures(root, lang); root.scrollIntoView({block:"start"}); }); nav.appendChild(b); });
+   root.appendChild(nav);
+  }
+  const F = all.filter(f => f.id === selId);
   F.forEach(f => {
    const d = f[lang] || f.zh, uid = f.id + "-" + lang; const art = h("article","feat"); root.appendChild(art);
    const hd = h("header","fhead");
