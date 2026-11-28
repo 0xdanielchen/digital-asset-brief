@@ -1,332 +1,1161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daniel Chen 虛擬資產研究</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Noto+Sans+TC:wght@300..700&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>陳世曜｜虛擬資產研究</title>
+<meta name="description" content="陳世曜的虛擬資產研究：近期新聞總覽、依期別與地區瀏覽的每日重點、專題與關於我。">
 <style>
-/* palette: black, white and a bright green accent; darker green carries text in the light theme for contrast. layout: personal masthead (name, title, tagline) with three views routed on the hash — daily briefing (newspaper: lead + stories + rail), views (numbered theses), about (bio, experience, selected work) */
-:root{
-  --paper:#ffffff; --surface:#f4f5f2; --ink:#000000; --muted:#53565a; --rule:#d0d0ce;
-  --accent:#2c7a0c; --bright:#86bc25; --accent-soft:#eef6dc;
-  --p0:#b3261e; --p1:#8a5a00; --p2:#53565a;
-  --display:"Noto Serif TC","Songti TC",serif; --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){color-scheme:dark;
-    --paper:#000000; --surface:#141414; --ink:#ffffff; --muted:#a7a8aa; --rule:#333333;
-    --accent:#86bc25; --bright:#86bc25; --accent-soft:#1b2709; --p0:#ff8a80; --p1:#efb85c; --p2:#bbbcbc;}
-}
-:root[data-theme="dark"]{color-scheme:dark;
-  --paper:#000000; --surface:#141414; --ink:#ffffff; --muted:#a7a8aa; --rule:#333333;
-  --accent:#86bc25; --bright:#86bc25; --accent-soft:#1b2709; --p0:#ff8a80; --p1:#efb85c; --p2:#bbbcbc;}
+:root{color-scheme:dark;--bg:#000000;--ink:#ffffff;--ink2:#d6d6d6;--mute:#a7a8aa;--pill:#141414;--pill-h:#1f1f1f;--line:#333333;--accent:#86bc25;--deep:#2c7a0c;--soft:#1b2709;--glass:rgba(18,18,18,.78);--glass-line:rgba(255,255,255,.1);--hover:rgba(255,255,255,.07);--active:rgba(134,188,37,.16);--scrim:rgba(0,0,0,.88);--shadow:0 12px 40px rgba(0,0,0,.6);--p0:#ff8a80;--p1:#efb85c;--p2:#bbbcbc;
+  --ease:cubic-bezier(.16,1,.3,1);--sans:"Open Sans","Noto Sans TC","PingFang TC","Microsoft JhengHei",Aptos,Helvetica,Arial,sans-serif;--serif:var(--sans)}
 *{box-sizing:border-box}
-body{margin:0;border-top:8px solid var(--bright);background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.75}
-a{color:var(--accent);text-underline-offset:3px}
-button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.wrap{max-width:1040px;margin:0 auto;padding:26px 18px 64px}
-.mast{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:14px}
-.who h1{font-family:var(--display);font-weight:900;font-size:36px;line-height:1.2;margin:0}
-.who h1 span{font-size:22px;font-weight:600;margin-left:10px}
-.who .role{font-weight:700;color:var(--accent);margin-top:4px}
-.who .pitch{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.45;color:var(--ink);margin-top:12px;max-width:40em;text-wrap:balance}
-.who .pitch:empty{display:none}
-.who .tag{color:var(--muted);font-size:14.5px;line-height:1.8;max-width:46em;margin-top:6px}
-.who .pitch:empty + .tag{margin-top:0}
-html[lang="zh-Hant"] .who .tag{max-width:40em}
-.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:3px double var(--ink);width:100%}
-.tab{font:inherit;font-family:var(--display);font-weight:600;font-size:16.5px;border:0;background:none;color:var(--muted);padding:8px 16px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-3px}
-.tab:hover{color:var(--ink)}
-.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--bright)}
-.tab.lang{margin-left:auto;font-family:var(--body);font-size:14px;font-weight:700;color:var(--accent)}
-.view{display:none} .view.on{display:block}
-/* daily */
-.bar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--rule)}
-.nav{display:flex;flex-wrap:wrap;gap:4px 6px}
-.navbtn{font:inherit;font-size:14px;border:0;background:none;color:var(--muted);padding:3px 10px;border-radius:5px;cursor:pointer}
-.navbtn:hover{color:var(--ink)}
-.navbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:700;box-shadow:inset 0 -3px 0 var(--bright)}
-.pick{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--muted)}
-.pick select,.pick button{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:4px 10px;cursor:pointer}
-.pick button:disabled{opacity:.4;cursor:default}
-.kick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;font-weight:700;letter-spacing:.06em}
-.kick .reg{color:var(--accent)}
-.kick .pri{padding:1px 8px;border-radius:4px;border:1px solid currentColor}
-.P0{color:var(--p0)} .P1{color:var(--p1)} .P2{color:var(--p2)}
-.lead{padding:22px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1.6fr 1fr;gap:26px}
-.lead h2{font-family:var(--display);font-weight:900;font-size:31px;line-height:1.35;margin:8px 0 10px;text-wrap:balance}
-.lead .lede{font-size:17px;margin:0 0 12px}
-.grid{display:grid;grid-template-columns:1fr 280px;gap:30px;padding-top:6px}
-.story{padding:18px 0;border-bottom:1px solid var(--rule)}
-.story h3{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.45;margin:6px 0 6px;text-wrap:balance}
-.lede{margin:0 0 10px}
-.bank{background:var(--accent-soft);border-left:4px solid var(--bright);padding:10px 14px;border-radius:0 6px 6px 0}
-.bank h4{margin:0 0 2px;font-size:12.5px;color:var(--accent);letter-spacing:.06em}
-.bank ul,.pts{margin:0;padding-left:18px}
-.pts{margin:0 0 10px}
-.take{margin:10px 0 0;font-size:14.5px}
-.take b{color:var(--accent)}
-.src{margin-top:8px;font-size:13px;display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--muted)}
-.src .sec{color:var(--muted)}
-details{margin-top:8px}
-summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:fit-content}
-.macro{padding:18px 0;border-bottom:1px solid var(--rule)}
-.macro .mh{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
-.macro h3{font-family:var(--display);font-weight:900;font-size:19px;margin:0}
-.macro .asof{font-size:12.5px;color:var(--muted)}
-.macro .mg{display:grid;grid-template-columns:1fr 1.25fr;gap:10px 28px;margin-top:10px}
-.macro table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
-.macro td{padding:5px 8px 5px 0;border-bottom:1px solid var(--rule);vertical-align:top}
-.macro td:nth-child(2){font-weight:700;white-space:nowrap}
-.macro td:nth-child(3){color:var(--muted);font-size:13px}
-.macro .reg{display:inline-block;background:var(--ink);color:var(--paper);font-weight:700;font-size:13.5px;padding:3px 10px;border-radius:4px;box-shadow:inset 0 -3px 0 var(--bright)}
-.macro .drv{margin:6px 0 0;font-size:14px;color:var(--muted)}
-.macro h4{margin:10px 0 2px;font-size:12.5px;color:var(--accent);letter-spacing:.06em}
-.macro p{margin:0;font-size:14.5px}
-.macro ul{margin:0;padding-left:18px;font-size:14.5px}
-.macro .mnote{margin-top:8px;font-size:12.5px;color:var(--muted)}
-.rail{display:flex;flex-direction:column;gap:22px;padding-top:18px}
-.box h4{font-family:var(--display);font-size:16px;margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
-.box ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px}
-.box time{display:block;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
-.box.todo ul{list-style:disc;padding-left:18px}
-.foot{margin-top:26px;color:var(--muted);font-size:12.5px}
-.empty{color:var(--muted);padding:24px 0}
-/* views */
-.intro{max-width:62ch;color:var(--muted);margin:20px 0 4px}
-.draft{display:inline-block;font-size:12.5px;font-weight:700;color:var(--p1);border:1px solid currentColor;border-radius:4px;padding:1px 8px;margin-left:8px;vertical-align:middle}
-.thesis{display:grid;grid-template-columns:64px 1fr;gap:6px 18px;padding:24px 0;border-bottom:1px solid var(--rule)}
-.thesis .n{font-family:var(--display);font-weight:900;font-size:44px;line-height:1;color:var(--bright);font-variant-numeric:tabular-nums}
-.thesis h3{font-family:var(--display);font-weight:900;font-size:24px;line-height:1.4;margin:0 0 6px;text-wrap:balance}
-.thesis p{margin:0;max-width:62ch}
-.thesis .basis{margin-top:8px;font-size:13px;color:var(--muted)}
-/* about */
-.about{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;padding-top:22px}
-.about h3{font-family:var(--display);font-size:18px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
-.about p{margin:0 0 12px;max-width:62ch}
-.about section{margin-bottom:26px}
-.row{padding:10px 0;border-bottom:1px solid var(--rule)}
-.row b{display:block}
-.row .m{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-.row .d{font-size:14.5px}
-@media (max-width:820px){.lead,.grid,.about,.macro .mg{grid-template-columns:1fr}.who h1{font-size:28px}.who .pitch{font-size:17px}.lead h2{font-size:25px}.thesis{grid-template-columns:44px 1fr}.thesis .n{font-size:32px}.tab{padding:8px 10px;font-size:15.5px}}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body::before{content:"";position:fixed;left:0;right:0;top:0;height:6px;background:var(--accent);z-index:70;pointer-events:none}
+button,select{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.view{position:fixed;inset:0;opacity:0;visibility:hidden}
+.stage{position:absolute;inset:0}
+.stage canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
+.ov{position:absolute;pointer-events:none}
+.mask{display:inline-block;overflow:hidden;vertical-align:top}
+.mask>span{display:inline-block;will-change:transform}
+
+/* dock: every section labelled, active one marked in green */
+#dock{position:fixed;bottom:18px;left:0;right:0;margin:auto;width:max-content;max-width:calc(100vw - 16px);display:flex;align-items:center;gap:2px;padding:5px;border-radius:12px;background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--glass-line);box-shadow:var(--shadow);z-index:50;opacity:0;pointer-events:none}
+#dock .mark{font-weight:700;font-size:14px;letter-spacing:-.01em;padding:6px 10px 6px 8px;white-space:nowrap}
+#dock .div{width:1px;height:18px;background:var(--line);margin:0 4px;flex:none}
+.tab{height:32px;display:flex;align-items:center;gap:5px;padding:0 10px;border-radius:7px;color:var(--mute);font-size:14px;font-weight:600;white-space:nowrap;transition:background .3s var(--ease),color .3s var(--ease)}
+.tab .nm{font-size:10px;font-weight:700;color:var(--mute);transform:translateY(-5px)}
+.tab:hover{background:var(--hover);color:var(--ink)}
+.tab.on{background:var(--active);color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
+.tab.on .nm{color:var(--accent)}
+#langBtn{height:32px;display:inline-flex;align-items:center;padding:0 10px;border-radius:7px;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap}
+#langBtn:hover{background:var(--hover)}
+@media (max-width:560px){#dock .mark,#dock .div.first{display:none}.tab{padding:0 7px;font-size:13px}.tab .nm{display:none}#langBtn{padding:0 7px}}
+
+/* gallery */
+#g-mark{left:50%;top:50%;width:110px;transform:translate(-50%,-50%);opacity:0}
+.g-side{top:50%;transform:translateY(-50%);font-size:13px;white-space:nowrap}
+#g-left{left:9%}#g-right{right:9%;color:var(--mute)}
+@media (max-width:1024px){.g-side{display:none}}
+#g-counter{left:0;right:0;bottom:40px;text-align:center;font-size:14px;font-variant-numeric:tabular-nums}
+#g-caption{left:0;right:0;bottom:100px;text-align:center}
+#g-caption .t{font-size:13px;font-weight:600}
+#g-caption .c{font-size:13px;color:var(--mute);margin-left:8px}
+#g-hint{left:16px;right:16px;bottom:74px;text-align:center;font-size:12px;letter-spacing:.06em;color:var(--mute);opacity:0}
+#g-ov{left:0;right:0;margin:auto;bottom:78px;width:calc(100% - 32px);max-width:640px;opacity:0}
+#g-ov.open{pointer-events:auto}
+.ov-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ov-title{font-size:16px;font-weight:600;line-height:1.4}
+.ov-title em{font-style:normal;color:var(--mute);font-weight:400;margin-left:8px;font-size:14px}
+.btn{font-size:12.5px;height:28px;padding:0 11px;border-radius:6px;background:var(--pill);border:1px solid var(--line);display:inline-flex;align-items:center;white-space:nowrap;transition:background .3s var(--ease)}
+.btn:hover{background:var(--pill-h)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+.btn.go:hover{background:#9bd23a}
+.ov-desc{font-size:15px;line-height:1.6;color:var(--ink2);max-width:60ch;margin:10px 0 12px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tags span{font-size:11.5px;padding:4px 8px;border-radius:4px;background:var(--pill);border:1px solid var(--line)}
+.tags span.p0{color:var(--p0)}.tags span.p1{color:var(--p1)}
+.ov-head .acts{display:flex;gap:6px;flex:none}
+#g-cur{position:fixed;left:0;top:0;font-size:12px;font-weight:600;color:#000;background:var(--ink);padding:6px 9px;border-radius:4px;pointer-events:none;z-index:40;opacity:0;transform-origin:0 0;white-space:nowrap}
+
+/* grid views */
+#p-bubble{position:fixed;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;color:#000;background:var(--accent);pointer-events:none;z-index:40;opacity:0;transform:scale(.6)}
+.ctrl{position:absolute;top:20px;left:0;right:0;margin:auto;width:max-content;max-width:calc(100vw - 16px);z-index:20;display:flex;flex-direction:column;align-items:center;gap:8px}
+.ctrl .ed{display:flex;align-items:center;gap:4px;padding:4px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-line);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.ctrl .ed label{display:flex;align-items:center;gap:8px;padding:0 6px;font-size:12px;color:var(--mute)}
+.ctrl select{background:var(--pill);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+.ctrl .nav{width:32px;height:32px;border-radius:7px;font-size:18px;color:var(--ink);display:grid;place-items:center}
+.ctrl .nav:hover:not(:disabled){background:var(--hover)}
+.ctrl .nav:disabled{opacity:.3;cursor:default}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:min(760px,calc(100vw - 16px))}
+.chip{height:30px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--glass);border:1px solid var(--line);color:var(--ink2);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);white-space:nowrap}
+.chip b{font-weight:700;color:var(--mute);margin-left:5px;font-size:11.5px}
+.chip:hover{border-color:var(--mute)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#000}
+.chip[aria-pressed="true"] b{color:#1b2709}
+.gridnote{position:absolute;left:0;right:0;bottom:78px;text-align:center;font-size:12px;color:var(--mute);pointer-events:none}
+
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:60;overflow-y:auto;padding:40px 20px 110px;background:var(--scrim);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;visibility:hidden}
+#lb .in{width:min(980px,100%);margin:0 auto}
+#lb img{display:block;width:100%;max-width:820px;aspect-ratio:16/9;object-fit:contain;border-radius:8px;box-shadow:0 0 0 1px var(--line)}
+#lb .meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-top:18px}
+#lb .t{font-size:20px;font-weight:700;line-height:1.4;max-width:46ch}
+#lb .sub{font-size:13px;color:var(--mute);margin-top:4px}
+#lb .acts{display:flex;gap:6px;flex:none}
+#lb .d{font-size:16px;line-height:1.7;color:var(--ink2);margin:14px 0 0;max-width:70ch}
+#lb .more h4{margin:22px 0 6px;font-size:12px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+#lb .more ul{margin:0;padding-left:20px;max-width:70ch;line-height:1.7;color:var(--ink2);font-size:15px}
+#lb .more .bankbox{background:var(--soft);border-left:4px solid var(--accent);border-radius:0 6px 6px 0;padding:10px 14px;max-width:70ch}
+#lb .more .bankbox ul{padding-left:18px}
+#lb .more p{max-width:70ch;line-height:1.7;color:var(--ink2);font-size:15px;margin:0}
+#lb .more .src{display:flex;flex-direction:column;gap:6px;font-size:14px}
+#lb .more .src a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+#lb .more .src a.sec::after{content:" （次級）";color:var(--mute);text-decoration:none}
+
+/* about: a plain, readable page */
+#v-about{overflow-y:auto;overscroll-behavior:contain}
+.about{max-width:1040px;margin:0 auto;padding:56px 24px 140px}
+.a-hero{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center;min-height:min(560px,calc(100vh - 140px))}
+.a-kicker{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+.a-hero h1{font-size:44px;line-height:1.15;margin:10px 0 0;font-weight:700;letter-spacing:-.01em}
+.a-hero h1 span{display:block;font-size:20px;font-weight:400;color:var(--mute);margin-top:6px;letter-spacing:0}
+.a-role{margin:14px 0 0;font-size:14px;font-weight:600;color:var(--accent)}
+.a-pitch{margin:22px 0 0;font-size:26px;line-height:1.45;font-weight:300;max-width:24em}
+.a-tag{margin:12px 0 0;font-size:15.5px;line-height:1.8;color:var(--ink2);max-width:40em}
+.a-cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.a-cta a{height:38px;padding:0 16px;border-radius:8px;display:inline-flex;align-items:center;font-size:14px;font-weight:700;border:1px solid var(--line);background:var(--pill)}
+.a-cta a.go{background:var(--accent);border-color:var(--accent);color:#000}
+.a-cta a:hover{border-color:var(--mute)}
+.bot-stage{position:relative;height:420px;cursor:pointer}
+.bot-stage canvas{display:block;width:100%;height:100%}
+.bot-hint{position:absolute;left:0;right:0;bottom:4px;text-align:center;font-size:11.5px;color:var(--mute)}
+.a-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:8px 0 48px}
+.a-stats div{background:var(--bg);padding:16px 18px}
+.a-stats b{display:block;font-size:30px;font-weight:700;line-height:1.1}
+.a-stats span{font-size:13px;color:var(--mute)}
+.a-sec{margin:0 0 44px}
+.a-sec>h2{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.a-two{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.a-sec p{margin:0 0 10px;font-size:15.5px;line-height:1.8;color:var(--ink2);max-width:62ch}
+.a-chipline{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.a-chipline span{font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink2)}
+.a-view{display:block;padding:14px 16px;border-radius:8px;background:var(--pill);border:1px solid var(--line);margin-bottom:10px}
+.a-view:hover{border-color:var(--accent)}
+.a-view small{display:block;font-size:12px;color:var(--accent);font-weight:700;margin-bottom:4px}
+.a-view span{font-size:16px;line-height:1.6}
+.a-view em{display:block;font-style:normal;font-size:12.5px;color:var(--mute);margin-top:6px}
+.a-row{display:grid;grid-template-columns:200px 1fr;gap:18px;padding:14px 0;border-bottom:1px solid var(--line)}
+.a-row:last-child{border-bottom:0}
+.a-row .when{font-size:13px;color:var(--mute);line-height:1.6}
+.a-row .what b{display:block;font-size:16px;font-weight:700}
+.a-row .what i{display:block;font-style:normal;font-size:14px;color:var(--accent);margin-top:2px}
+.a-row .what p{margin:6px 0 0;font-size:14.5px;line-height:1.7;color:var(--ink2)}
+.a-work{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.a-work div{padding:14px 16px;border-radius:8px;border:1px solid var(--line)}
+.a-work b{display:block;font-size:15px}
+.a-work span{display:block;font-size:13.5px;line-height:1.65;color:var(--mute);margin-top:4px}
+.a-contact a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:15.5px}
+.a-note{font-size:12.5px;color:var(--mute);border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:820px){.a-hero{grid-template-columns:1fr;min-height:0}.bot-stage{height:300px;order:-1}.a-two,.a-work{grid-template-columns:1fr}.a-stats{grid-template-columns:repeat(2,1fr)}.a-row{grid-template-columns:1fr;gap:4px}.a-hero h1{font-size:34px}.a-pitch{font-size:22px}.about{padding-top:36px}}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
-</head>
-<body>
-<div class="wrap">
-  <header class="mast">
-    <div class="who">
-      <h1 id="pname"></h1>
-      <div class="role" id="prole"></div>
-      <div class="pitch" id="ppitch"></div>
-      <div class="tag" id="ptag"></div>
-    </div>
-    <nav class="tabs" id="tabs" aria-label="Pages"></nav>
-  </header>
-
-  <div class="view" id="v-daily">
-    <div class="bar">
-      <nav class="nav" id="nav" aria-label="地區"></nav>
-      <div class="pick">
-        <button type="button" id="prev">‹</button>
-        <label for="edition" id="edlabel"></label>
-        <select id="edition"></select>
-        <button type="button" id="next">›</button>
-      </div>
-    </div>
-    <section class="lead" id="lead"></section>
-    <section class="macro" id="macro"></section>
-    <div class="grid">
-      <main id="stories"></main>
-      <aside class="rail" id="rail"></aside>
-    </div>
-    <p class="foot" id="foot"></p>
-  </div>
-
-  <div class="view" id="v-views"></div>
-  <div class="view" id="v-features"></div>
-  <div class="view" id="v-about"></div>
-</div>
 <script src="profile.js"></script>
 <script src="editions.js"></script>
-<script src="editions.en.js"></script>
-<script src="macro.js"></script>
 <script src="features.js"></script>
-<script>
-const P0 = window.PROFILE || {};
-const byDate = a => (a || []).slice().sort((x,y) => x.date < y.date ? 1 : -1);
-const EDS = {zh: byDate(window.EDITIONS), en: byDate(window.EDITIONS_EN)};
-const T = {
-  zh: {mTitle:"美元與美債利差", mView:"看法", mOut:"預期", all:"全部", lead:"頭條", bank:"台灣銀行怎麼做", src:"來源", sec:"（次級）", take:"評析　", more:"更多重點與評析", dates:"倒數提醒", todo:"明日追蹤",
-       edition:"期別", prev:"前一期", next:"後一期", none:"還沒有任何一期。", noreg:"這一期沒有這個地區的新聞。",
-       tabs:{daily:"每日重點", views:"我的觀點", features:"專題", about:"關於我"}, other:"English", htmlLang:"zh-Hant",
-       intro:"這幾條是我目前對台灣銀行切入虛擬資產業務的判斷，會隨法規進展修正。", draft:"草稿，待本人修訂", basis:"依據：",
-       bio:"簡介", work:"研究與作品", exp:"經歷", edu:"學歷", contact:"聯絡", sep:"｜",
-       foot:"級別：P0 需立即行動｜P1 本週內評估｜P2 觀察。來源以主管機關官方文件為主；標「次級」者為媒體或律所整理，引用前請再核實。本站為個人研究筆記，不構成法律或投資建議。",
-       week:["日","一","二","三","四","五","六"], wk:(d,w) => d + "（" + w + "）"},
-  en: {mTitle:"Dollar and Treasury curve", mView:"View", mOut:"Outlook", all:"All", lead:"Lead", bank:"What Taiwan's banks should do", src:"Sources", sec:" (secondary)", take:"Analysis  ", more:"More detail and analysis", dates:"Key dates", todo:"Following up next",
-       edition:"Edition", prev:"Older edition", next:"Newer edition", none:"No English edition yet.", noreg:"No stories for this region in this edition.",
-       tabs:{daily:"Daily Brief", views:"My Views", features:"Features", about:"About"}, other:"中文", htmlLang:"en",
-       intro:"My current judgments on how banks in Taiwan should enter digital assets. They will change as the rules do.", draft:"Draft, pending my revision", basis:"Basis: ",
-       bio:"Profile", work:"Research and work", exp:"Experience", edu:"Education", contact:"Contact", sep:" | ",
-       foot:"Priority: P0 act now | P1 assess this week | P2 watch. Sources are regulators' own documents first; items marked secondary are media or law-firm summaries and should be verified before use. This site is a personal research notebook and is not legal or investment advice.",
-       week:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], wk:(d,w) => d + " (" + w + ")"}
-};
-const state = {lang:"zh", view:"daily", i:0, region:null};
-const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-const $ = id => document.getElementById(id);
-const t = () => T[state.lang];
-const prof = () => state.lang === "en" ? Object.assign({}, P0, P0.en || {}) : P0;
-const label = d => { const x = new Date(d + "T00:00:00"); return isNaN(x) ? d : t().wk(d, t().week[x.getDay()]); };
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
 
-function kicker(s, lead){
-  const k = el("div","kick");
-  if (lead) k.appendChild(el("span",null,t().lead));
-  k.appendChild(el("span","reg",s.region));
-  k.appendChild(el("span","pri " + s.p, s.p));
-  return k;
-}
-function bankBox(s){
-  const b = el("div","bank"); b.appendChild(el("h4",null,t().bank));
-  const ul = el("ul"); s.bank.forEach(x => ul.appendChild(el("li",null,x))); b.appendChild(ul); return b;
-}
-function sources(s){
-  const d = el("div","src"); d.appendChild(el("span",null,t().src));
-  s.links.forEach(([n,u,sec]) => { const a = el("a", sec ? "sec" : null, n + (sec ? t().sec : "")); a.href = u; a.target = "_blank"; a.rel = "noopener"; d.appendChild(a); });
-  return d;
-}
-function points(s){ const ul = el("ul","pts"); s.points.forEach(x => ul.appendChild(el("li",null,x))); return ul; }
-function take(s){ const p = el("p","take"); p.appendChild(el("b",null,t().take)); p.appendChild(document.createTextNode(s.view)); return p; }
+<section class="view" id="v-gallery" aria-label="總覽">
+  <div class="stage"></div>
+  <img id="g-mark" class="ov" alt="D.CHEN">
+  <div id="g-left" class="ov g-side"><span class="mask"><span>陳世曜</span></span></div>
+  <div id="g-right" class="ov g-side"><span class="mask"><span>虛擬資產與穩定幣顧問</span></span></div>
+  <div id="g-counter" class="ov"><span class="mask"><span>001</span></span></div>
+  <div id="g-caption" class="ov"><span class="mask"><span></span></span></div>
+  <div id="g-hint" class="ov">拖曳旋轉　·　點卡片放大　·　再點一次看摘要</div>
+  <div id="g-ov" class="ov" role="dialog" aria-label="概覽">
+    <div class="ov-head"><div class="ov-title"></div><div class="acts"><a class="btn go" id="g-read">在每日重點查看</a><button class="btn" id="g-close" type="button">關閉</button></div></div>
+    <p class="ov-desc"></p>
+    <div class="tags"></div>
+  </div>
+</section>
 
-function renderMast(){
-  const P = prof();
-  document.documentElement.lang = t().htmlLang;
-  const h = $("pname"); h.textContent = P.name || "";
-  if (P.nameZh) h.appendChild(el("span",null,P.nameZh));
-  $("prole").textContent = [P.title, P.location].filter(Boolean).join(t().sep);
-  $("ppitch").textContent = P.pitch || "";
-  $("ptag").textContent = P.tagline || "";
-  const tabs = $("tabs"); tabs.textContent = "";
-  const names = ["daily"].concat((P.views || []).length ? ["views"] : [], (window.FEATURES || []).length ? ["features"] : [], ["about"]);
-  if (!names.includes(state.view)) state.view = "daily";
-  names.forEach(n => {
-    const b = el("button","tab",t().tabs[n]); b.type = "button";
-    if (n === state.view) b.setAttribute("aria-current","page");
-    b.addEventListener("click", () => go(state.lang, n)); tabs.appendChild(b);
+<section class="view" id="v-daily" aria-label="每日重點">
+  <div class="stage"></div>
+  <div class="ctrl">
+    <div class="ed">
+      <button class="nav" id="d-prev" type="button" aria-label="較早一期">‹</button>
+      <label><span>期別</span><select id="d-ed"></select></label>
+      <button class="nav" id="d-next" type="button" aria-label="較新一期">›</button>
+    </div>
+    <div class="chips" id="d-chips" role="group" aria-label="依地區篩選"></div>
+  </div>
+</section>
+
+<section class="view" id="v-features" aria-label="專題"><div class="stage"></div></section>
+
+<section class="view" id="v-about" aria-label="關於我"><div class="about"></div></section>
+
+<div id="g-cur">概覽</div>
+<div id="p-bubble">查看</div>
+<div id="lb" role="dialog" aria-modal="true" aria-label="新聞內容">
+  <div class="in">
+    <img alt="">
+    <div class="meta"><div><div class="t"></div><div class="sub"></div></div><div class="acts"><a class="btn go" id="lb-read" target="_blank" rel="noopener">到研究網站閱讀 ↗</a><button class="btn" type="button" id="lb-close">關閉</button></div></div>
+    <p class="d"></p>
+    <div class="more"></div>
+  </div>
+</div>
+
+<nav id="dock" aria-label="網站分區">
+  <a class="mark" href="#gallery">D.CHEN</a>
+  <span class="div first"></span>
+  <a class="tab" href="#gallery" data-v="gallery">總覽<span class="nm">1</span></a>
+  <a class="tab" href="#daily" data-v="daily">每日重點<span class="nm">2</span></a>
+  <a class="tab" href="#features" data-v="features">專題<span class="nm">3</span></a>
+  <a class="tab" href="#about" data-v="about">關於我<span class="nm">4</span></a>
+  <span class="div"></span>
+  <a id="langBtn" href="index-en.html" lang="en">EN</a>
+</nav>
+
+<script type="module">
+
+import * as THREE from 'three';
+const gsap = window.gsap;
+const $ = s => document.querySelector(s);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const mq = q => matchMedia(q).matches;
+const isTouch = mq('(hover: none)') || mq('(pointer: coarse)');
+const reduced = mq('(prefers-reduced-motion: reduce)');
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const SANS = '"Open Sans", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Aptos, Helvetica, Arial, sans-serif';
+const SERIF = SANS;
+const TH = {bg: 0x000000, ink: '#ffffff', mute: '#a7a8aa', surface: 0x141414, skel: 0.007, shim: 0.03, chip: 0.02, label: '#ffffff', glow: [0.525, 0.737, 0.145], liquid: [0.80, 0.92, 0.55], ring: [0.240, 0.503, 0.017]};
+const INK = TH.ink, MUTE = TH.mute, BG = TH.bg;
+const PUB = 'https://0xdanielchen.github.io/digital-asset-brief/';
+
+// ---------- content: the published Digital Asset Brief (English edition) ----------
+const LP = {"zh": true, "italic": false, "classic": "classic.html", "dailyHash": "#daily", "featHash": "#features", "featureCat": "專題", "cardFeature": "專題", "bottomLine": "重點", "forBanks": "台灣銀行怎麼做", "cardFooter": "陳世曜  ·  虛擬資產研究", "overview": "概覽", "close": "關閉", "tagFeature": "專題", "tagDaily": "每日重點", "footer": "陳世曜 — 虛擬資產研究 2026", "footerPhone": ["陳世曜", "虛擬資產研究 2026"], "points": "補充重點", "forBanksTitle": "台灣銀行怎麼做", "viewTitle": "評析", "sources": "來源", "inShort": "三句結論", "read": "到研究網站閱讀 ↗", "readFeature": "閱讀完整專題 ↗", "storiesUnit": " 則", "all": "全部", "dailyHead": "每日重點", "featHead": "專題", "featSub": "深入分析  ·  共 3 篇", "aboutKicker": "關於我", "ctaDaily": "看每日重點", "ctaFeatures": "看專題", "botHint": "點一下機器人", "statsLabel": "目前累積", "statEds": "期每日重點", "statStories": "則追蹤新聞", "statFeats": "篇專題", "statMarkets": "個追蹤市場", "secFocus": "研究方向", "coverage": ["台灣", "香港", "新加坡", "日本", "韓國", "美國", "歐洲"], "method": "法規來源以主管機關原文為準，尚未確認的內容一律標示。", "secViews": "目前觀點", "secExp": "經歷", "secEdu": "學歷", "secBio": "背景", "secWork": "精選作品", "secContact": "聯絡", "briefSite": "舊版網頁（含完整專題與圖表）→", "note": "本站為個人研究筆記，內容不代表任職機構立場。"};
+// Content is read at runtime from the same files the daily brief already publishes
+// (profile.js, editions.js / editions.en.js, features.js), so new editions appear here automatically.
+const DATA = (() => {
+  const E = (LP.zh ? window.EDITIONS : window.EDITIONS_EN) || [];
+  const k = LP.zh ? 'zh' : 'en';
+  const F = (window.FEATURES || []).map(f => { const d = f[k] || f.zh; return {id: f.id, date: f.date, kicker: d.kicker, title: d.title, dek: d.dek, lead: ((d.blocks || []).find(b => b.bank) || {}).lead || '', summary: ((d.blocks || []).find(b => b.summary) || {}).summary || []}; });
+  const S = []; E.forEach(e => (e.stories || []).forEach((s, i) => S.push({date: e.date, i, p: s.p, region: s.region, headline: s.headline, lede: s.lede || '', points: s.points || [], bankAll: s.bank || [], bank: (s.bank || [])[0] || '', view: s.view || '', links: (s.links || []).slice(0, 6)})));
+  const P0 = window.PROFILE || {}, P = LP.zh ? P0 : Object.assign({}, P0, P0.en || {});
+  return {F, S, editions: E.map(e => e.date), eds: E.length, stories: S.length,
+    profile: {name: P0.name || '', nameZh: P0.nameZh || '', title: P.title || '', pitch: P.pitch || '', tagline: P.tagline || '', bio: P.bio || [], experience: P.experience || [], education: P.education || [], work: P.work || [], links: P0.links || [['LinkedIn', 'https://www.linkedin.com/in/0xdanielchen']]}};
+})();
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmtDate = d => { const [y, m, dd] = d.split('-').map(Number); return LP.zh ? `${y}/${m}/${dd}` : `${dd} ${MON[m - 1]} ${y}`; };
+const shortT = h => { let s = h.split(/[:;：；]/)[0].trim(); const max = LP.zh ? 30 : 66; if (s.length > max) s = LP.zh ? s.slice(0, max - 1) + '…' : s.slice(0, max - 3).replace(/\s+\S*$/, '') + '…'; return s; };
+const firstSentence = s => (s.match(/^.*?(?:[.?!](?:\s|$)|[。？！])/) || [s])[0].trim();
+const STORIES = DATA.S.map((s, k) => ({kind: 'story', key: 's' + s.date + '-' + s.i, title: shortT(s.headline), full: s.headline, cat: s.region, year: fmtDate(s.date), date: s.date, p: s.p, region: s.region, desc: s.lede, bank: s.bank, bankAll: s.bankAll, points: s.points, view: s.view, links: s.links, href: PUB + LP.dailyHash}));
+const FEATS = DATA.F.map(f => ({kind: 'feature', key: 'f' + f.id, id: f.id, title: shortT(f.title), full: f.title, cat: LP.featureCat, year: fmtDate(f.date), date: f.date, p: '', region: f.kicker.replace(/^(Feature\s*\|\s*|專題｜)/, ''), desc: firstSentence(f.dek), dek: f.dek, summary: f.summary, bank: f.lead.replace(/^(Bottom line:\s*|重點：)/, ''), href: PUB + LP.featHash}));
+const WD = {zh: ['日','一','二','三','四','五','六'], en: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']};
+const edLabel = d => { const w = new Date(d + 'T12:00:00').getDay(); return LP.zh ? `${d.replace(/-/g, '/')}（${WD.zh[w]}）` : `${fmtDate(d)} (${WD.en[w]})`; };
+const GALLERY = STORIES.slice(0, 20);
+
+// 16:9 cards drawn in the brief's palette stand in for preview videos
+const CARD = {feature: {bg: '#86bc25', fg: '#000000', sub: '#1b2709', kick: '#000000', bar: '#000000'},
+              P0: {bg: '#1c1c1c', fg: '#ffffff', sub: '#a7a8aa', kick: '#86bc25', p0: '#ff8a80', bar: '#86bc25'},
+              P1: {bg: '#141414', fg: '#ffffff', sub: '#a7a8aa', kick: '#86bc25', p1: '#efb85c', bar: '#86bc25'},
+              P2: {bg: '#101010', fg: '#e6e6e6', sub: '#a7a8aa', kick: '#86bc25', p2: '#bbbcbc', bar: '#3b4f18'}};
+const CJK_RE = /[⺀-鿿　-〿＀-￯]/;
+const NOSTART = /^[，。、；：！？）」』%,.;:!?)]/;
+function tokens(text){ return text.match(/[⺀-鿿　-〿＀-￯]|[^\s⺀-鿿　-〿＀-￯]+|\s+/g) || []; }
+function wrapBy(mw, text, maxW){
+  const out = []; let line = '';
+  for (const tk of tokens(text)){
+    if (/^\s+$/.test(tk)){ if (line) line += ' '; continue; }
+    const t2 = line + tk;
+    if (line.trim() && mw(t2) > maxW && !NOSTART.test(tk)){ out.push(line.trimEnd()); line = tk; } else line = t2;
+  }
+  if (line.trim()) out.push(line.trimEnd());
+  return out;
+}
+function wrapLines(ctx, text, maxW){ return wrapBy(s => ctx.measureText(s).width, text, maxW); }
+function makeCard(it, detail){
+  const Wc = 1280, Hc = 720, c = document.createElement('canvas'); c.width = Wc; c.height = Hc;
+  const x = c.getContext('2d');
+  const pal = CARD[it.kind === 'feature' ? 'feature' : (it.p || 'P2')];
+  x.fillStyle = pal.bg; x.fillRect(0, 0, Wc, Hc);
+  x.strokeStyle = 'rgba(255,255,255,.16)'; x.lineWidth = 4; x.strokeRect(2, 2, Wc - 4, Hc - 4);
+  x.fillStyle = pal.bar; x.fillRect(0, 0, Wc, 14);
+  // kicker
+  x.textBaseline = 'alphabetic'; x.font = `600 26px ${SANS}`; x.letterSpacing = '2px';
+  let kx = 72; const ky = 150;
+  if (it.p){ x.fillStyle = pal[it.p.toLowerCase()]; x.fillText(it.p, kx, ky); kx += x.measureText(it.p).width + 22; }
+  x.fillStyle = pal.kick; const kt = (it.kind === 'feature' ? LP.cardFeature + '  ·  ' + it.region : it.region).toUpperCase(); x.fillText(kt, kx, ky); kx += x.measureText(kt).width + 22;
+  x.fillStyle = pal.sub; x.fillText(it.year.toUpperCase(), kx, ky);
+  x.letterSpacing = '0px';
+  if (!detail){
+    let fs = 66, lines;
+    for (; fs >= 44; fs -= 4){ x.font = `500 ${fs}px ${SERIF}`; lines = wrapLines(x, it.full, Wc - 144); if (lines.length * fs * 1.12 <= 360) break; }
+    x.fillStyle = pal.fg; lines.slice(0, 5).forEach((l, i) => x.fillText(l, 72, 230 + fs + i * fs * 1.12));
+  } else {
+    x.font = `400 40px ${SERIF}`; x.fillStyle = pal.fg;
+    let lines = wrapLines(x, it.desc, Wc - 144).slice(0, 5); lines.forEach((l, i) => x.fillText(l, 72, 250 + i * 52));
+    if (it.bank){
+      const y0 = 250 + lines.length * 52 + 36;
+      x.font = `600 24px ${SANS}`; x.letterSpacing = '2px'; x.fillStyle = pal.kick; x.fillText(it.kind === 'feature' ? LP.bottomLine : LP.forBanks, 72, y0); x.letterSpacing = '0px';
+      x.font = `400 32px ${SERIF}`; x.fillStyle = pal.sub;
+      wrapLines(x, it.bank, Wc - 144).slice(0, Math.max(1, Math.floor((Hc - 110 - y0) / 42))).forEach((l, i) => x.fillText(l, 72, y0 + 50 + i * 42));
+    }
+  }
+  x.font = `500 24px ${SANS}`; x.fillStyle = pal.sub; x.fillText(LP.cardFooter, 72, Hc - 56);
+  return c;
+}
+function cardTexture(it, detail){ const t = new THREE.CanvasTexture(makeCard(it, detail)); t.colorSpace = THREE.SRGBColorSpace; t.minFilter = THREE.LinearFilter; t.generateMipmaps = false; return t; }
+
+// ---------- text helpers ----------
+const mctx = document.createElement('canvas').getContext('2d');
+function measure(font, text, ls = '0px'){ mctx.font = font; mctx.letterSpacing = ls; return mctx.measureText(text).width; }
+function textCanvas(w, h, draw, dpr = DPR){
+  const c = document.createElement('canvas');
+  c.width = Math.max(1, Math.ceil(w * dpr)); c.height = Math.max(1, Math.ceil(h * dpr));
+  const ctx = c.getContext('2d', {willReadFrequently: true});
+  ctx.scale(dpr, dpr); draw && draw(ctx);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace; t.minFilter = THREE.LinearFilter; t.magFilter = THREE.LinearFilter; t.generateMipmaps = false;
+  return {c, ctx, t, w, h};
+}
+const SAMPLE = Array.from(new Set((JSON.stringify(DATA) + JSON.stringify(LP) + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789').split(''))).join('');
+const fontsReady = Promise.all([
+  ...[300, 400, 500, 600].map(w => document.fonts.load(`${w} 24px ${SANS}`, SAMPLE)),
+  document.fonts.load(`italic 300 40px ${SANS}`, SAMPLE)
+]).then(() => document.fonts.ready).catch(() => {});
+
+
+// =====================================================================
+// VIEW 1 — GALLERY
+// =====================================================================
+function initGallery(){
+  const root = $('#v-gallery'), stage = root.querySelector('.stage');
+  const renderer = new THREE.WebGLRenderer({alpha: true, antialias: !isTouch});
+  renderer.setPixelRatio(DPR); renderer.setClearColor(BG, 1);
+  stage.appendChild(renderer.domElement);
+  const canvas = renderer.domElement;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, 1, .1, 200); camera.position.z = 12;
+  const group = new THREE.Group(); scene.add(group);
+  let W = 1, H = 1, planeSize = 104, R = 250, centerScale = 150;
+  const px = v => v * (2 * 12 * Math.tan(Math.PI / 6)) / H;
+  const N = 20, geo = new THREE.PlaneGeometry(1, 1);
+
+  const items = GALLERY.slice(0, N).map((it, i) => {
+    const mat = new THREE.MeshBasicMaterial({color: TH.surface, transparent: true, side: THREE.DoubleSide, depthWrite: false, opacity: 0});
+    const mesh = new THREE.Mesh(geo, mat); mesh.userData.i = i; mesh.visible = false; group.add(mesh);
+    return {...it, i, mat, mesh, aspect: 16 / 9, video: null, ready: false, sph: new THREE.Vector3(), s: .01, o: 0, c: 0};
   });
-  const lb = el("button","tab lang",t().other); lb.type = "button";
-  lb.addEventListener("click", () => go(state.lang === "en" ? "zh" : "en", state.view)); tabs.appendChild(lb);
-  ["daily","views","features","about"].forEach(n => $("v-" + n).classList.toggle("on", n === state.view));
-  $("foot").textContent = t().foot;
-  $("edlabel").textContent = t().edition;
-  $("prev").setAttribute("aria-label", t().prev); $("next").setAttribute("aria-label", t().next);
-}
-
-function renderDaily(){
-  const ED = EDS[state.lang]; const e = ED[state.i];
-  renderMacro();
-  const lead = $("lead"), main = $("stories"), rail = $("rail"), nav = $("nav"), sel = $("edition");
-  [lead, main, rail, nav, sel].forEach(x => x.textContent = "");
-  ED.forEach((x,i) => { const o = el("option",null,label(x.date)); o.value = String(i); sel.appendChild(o); });
-  if (!e){ lead.style.display = "none"; main.appendChild(el("p","empty",t().none)); $("prev").disabled = $("next").disabled = true; return; }
-  [null, ...Array.from(new Set(e.stories.map(s => s.region)))].forEach(r => {
-    const b = el("button","navbtn", r === null ? t().all : r); b.type = "button"; b.setAttribute("aria-pressed", String(state.region === r));
-    b.addEventListener("click", () => { state.region = r; renderDaily(); }); nav.appendChild(b);
-  });
-  const list = e.stories.filter(s => state.region === null || s.region === state.region);
-  if (!list.length){ lead.style.display = "none"; main.appendChild(el("p","empty",t().noreg)); }
-  else {
-    lead.style.display = "";
-    const top = list[0];
-    const L = el("div"); L.appendChild(kicker(top, true)); L.appendChild(el("h2",null,top.headline)); L.appendChild(el("p","lede",top.lede));
-    if (top.points.length) L.appendChild(points(top)); L.appendChild(take(top)); L.appendChild(sources(top));
-    const R = el("div"); R.appendChild(bankBox(top));
-    lead.appendChild(L); lead.appendChild(R);
-    list.slice(1).forEach(s => {
-      const a = el("article","story");
-      a.appendChild(kicker(s)); a.appendChild(el("h3",null,s.headline)); a.appendChild(el("p","lede",s.lede));
-      a.appendChild(bankBox(s));
-      const det = el("details"); det.appendChild(el("summary",null,t().more));
-      if (s.points.length) det.appendChild(points(s)); det.appendChild(take(s)); a.appendChild(det);
-      a.appendChild(sources(s));
-      main.appendChild(a);
+  function sphereLayout(){
+    items.forEach((m, i) => {
+      const y = i * (2 / N) - 1 + 1 / N, r = Math.sqrt(1 - y * y), a = Math.PI * (3 - Math.sqrt(5)) * i;
+      m.sph.set(Math.cos(a) * r * R, y * R, Math.sin(a) * r * R);
     });
   }
-  const box = (title, cls) => { const b = el("section","box" + (cls ? " " + cls : "")); b.appendChild(el("h4",null,title)); const ul = el("ul"); b.appendChild(ul); rail.appendChild(b); return ul; };
-  const du = box(t().dates);
-  (e.dates || []).forEach(([d,x]) => { const li = el("li"); li.appendChild(el("time",null,d)); li.appendChild(document.createTextNode(x)); du.appendChild(li); });
-  const tu = box(t().todo,"todo");
-  (e.todo || []).forEach(x => tu.appendChild(el("li",null,x)));
-  sel.value = String(state.i);
-  $("prev").disabled = state.i >= ED.length - 1;
-  $("next").disabled = state.i <= 0;
+  function layout(){
+    W = innerWidth; H = innerHeight;
+    const mid = W >= 1025 && W <= 1440;
+    planeSize = W <= 640 ? 72 : 104 * (mid ? .8 : 1);
+    R = W <= 640 ? W / 2 - 24 - planeSize / 2 : 250 * (mid ? .8 : 1);
+    centerScale = planeSize * 120 / 82;
+    renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix();
+    sphereLayout();
+  }
+  layout();
+
+  // wordmark
+  (async () => { await fontsReady; const f = `600 64px ${SANS}`; const w = measure(f, 'D.CHEN', '-1.28px') + 8;
+    const {c} = textCanvas(w, 80, ctx => { ctx.font = f; ctx.letterSpacing = '-1.28px'; ctx.fillStyle = INK; ctx.textBaseline = 'middle'; ctx.fillText('D.CHEN', 4, 42); }, 2);
+    $('#g-mark').src = c.toDataURL(); })();
+
+  // videos
+  let loadedCircle = 0;
+  function loadVideo(m){
+    if (m.video) return; m.video = true;
+    fontsReady.then(() => { m.mat.map = cardTexture(m); m.mat.color.set(0xffffff); m.mat.needsUpdate = true; m.ready = true; onLoaded(); });
+  }
+  function setPlay(){}
+
+  // ---------- intro ----------
+  let phase = 'intro', introDone = false, started = false, goStarted = false, counterDone = false, t0 = 0;
+  const counterEl = $('#g-counter .mask>span'), cnt = {v: 1};
+  const setCnt = () => { counterEl.textContent = String(Math.round(cnt.v)).padStart(3, '0'); };
+  const circ = {rot: 0, mul: 1, on: false};
+  const ex = {t: 0};
+  function onLoaded(){
+    loadedCircle = items.slice(0, 10).filter(m => m.ready).length;
+    if (phase === 'intro' && !counterDone) gsap.to(cnt, {v: clamp(loadedCircle / 10 * 100, 1, 99), duration: .5, ease: 'power1.out', onUpdate: setCnt, overwrite: true});
+    checkGo();
+  }
+  function runIntro(){
+    t0 = performance.now();
+    gsap.to('#g-mark', {opacity: 1, duration: .6, delay: .2});
+    gsap.fromTo('.g-side .mask>span', {yPercent: 100}, {yPercent: 0, duration: .9, ease: 'expo.out', stagger: .07, delay: .5});
+    gsap.fromTo(counterEl, {yPercent: 100}, {yPercent: 0, duration: .75, ease: 'power4.out', delay: .5});
+    setTimeout(() => items.forEach(loadVideo), 200);
+    setTimeout(checkGo, 2000);
+    setTimeout(() => goIntro(), 30000);
+  }
+  function checkGo(){ if (!goStarted && phase === 'intro' && t0 && performance.now() - t0 >= 2000 && loadedCircle >= 10) goIntro(); }
+  function goIntro(){
+    if (goStarted) return; goStarted = true; counterDone = true;
+    gsap.to(cnt, {v: 100, duration: .5, ease: 'power1.out', onUpdate: setCnt, overwrite: true,
+      onComplete: () => gsap.to(counterEl, {yPercent: -100, duration: .6, ease: 'power4.in'})});
+    circ.on = true;
+    items.slice(0, 10).forEach((m, i) => {
+      m.s = .01; m.o = 0; m.mesh.visible = true;
+      gsap.to(m, {o: 1, duration: 1, ease: 'power3.out', delay: i * .1});
+      gsap.to(m, {s: 70, duration: 1, ease: 'back.out(1.7)', delay: i * .1});
+    });
+    gsap.to(circ, {mul: 7.3, duration: 1, ease: 'power2.in', delay: 1.3, onComplete: () => gsap.delayedCall(.8, collapseCircle)});
+  }
+  function collapseCircle(){
+    gsap.to('#g-mark', {opacity: 0, duration: .75, ease: 'power2.inOut'});
+    gsap.to('.g-side .mask>span', {yPercent: -100, duration: .6, ease: 'power3.in', stagger: .05});
+    items.slice(0, 10).forEach((m, i) => gsap.to(m, {c: 1, duration: 1.25, ease: 'power2.inOut', delay: i * .05}));
+    gsap.delayedCall(1.25 + 9 * .05 + .2, explode);
+  }
+  function explode(){
+    items.forEach((m, i) => {
+      const inCircle = i < 10;
+      m.start = new THREE.Vector3(0, 0, inCircle ? i * 1.5 : 0); m.startS = centerScale; m.startO = inCircle ? 1 : 0; m.mesh.visible = true;
+    });
+    phase = 'explode'; circ.on = false; ex.t = 0;
+    gsap.to(ex, {t: 1, duration: 1, ease: 'none', onComplete: () => { phase = 'sphere'; }});
+    gsap.fromTo('.g-side .mask>span', {yPercent: 100}, {yPercent: 0, duration: .9, ease: 'expo.out', stagger: .07});
+    gsap.to('#g-hint', {opacity: 1, duration: .8, delay: .4});
+    introDone = true; if (current === 'gallery') showDock();
+  }
+  function skipIntro(){
+    phase = 'sphere'; introDone = true; goStarted = true; counterDone = true;
+    items.forEach(m => { m.mesh.visible = true; loadVideo(m); });
+    gsap.set('.g-side .mask>span', {yPercent: 0}); gsap.set('#g-hint', {opacity: 1});
+    if (current === 'gallery') showDock();
+  }
+
+  // ---------- spin ----------
+  const spin = {vx: 0, vy: 0, ax: 0, ay: 0, sx: 0, sy: 0, interacted: reduced};
+  const AX = new THREE.Vector3(Math.sin(23 * Math.PI / 180), Math.cos(23 * Math.PI / 180), 0).normalize();
+  const qT = new THREE.Quaternion(), YA = new THREE.Vector3(0, 1, 0), XA = new THREE.Vector3(1, 0, 0);
+
+  // ---------- zoom / overview ----------
+  let zoomed = null, ovOpen = false;
+  const ze = {v: 0}, zf = {v: 0};
+  const ov = $('#g-ov'), cur = $('#g-cur');
+  const curX = gsap.quickTo(cur, 'x', {duration: .5, ease: 'power3.out'}), curY = gsap.quickTo(cur, 'y', {duration: .5, ease: 'power3.out'});
+  gsap.set(cur, {scale: .6});
+  let curShown = false;
+  function showCur(on){ if (on === curShown) return; curShown = on; gsap.to(cur, {opacity: on ? 1 : 0, scale: on ? 1 : .6, duration: on ? .6 : .3, ease: on ? 'power4.out' : 'power2.out', overwrite: 'auto'}); }
+  function zoom(m){
+    if (leaving && leaving !== m) leaving.mesh.renderOrder = 0;
+    zoomed = m; leaving = null; m.mesh.renderOrder = 1;
+    gsap.to(ze, {v: 1, duration: .8, ease: 'power4.out', overwrite: true});
+    items.forEach(o => setPlay(o, o === m));
+    cur.textContent = LP.overview;
+    gsap.to('#g-hint', {opacity: 0, duration: .3, overwrite: 'auto'});
+  }
+  function collapseZoom(){
+    if (!zoomed) return;
+    if (ovOpen) closeOv();
+    const m = zoomed; zoomed = null; leaving = m;
+    gsap.to(ze, {v: 0, duration: .8, ease: 'power4.out', overwrite: true, onComplete: () => { if (zoomed !== m) m.mesh.renderOrder = 0; }});
+    showCur(false); setCaption(null);
+    gsap.to('#g-hint', {opacity: 1, duration: .6, delay: .3, overwrite: 'auto'});
+  }
+  let leaving = null;
+  function openOv(){
+    if (!zoomed) return; ovOpen = true;
+    ov.querySelector('.ov-title').innerHTML = `${zoomed.full}<em>${zoomed.cat}, ${zoomed.year}</em>`;
+    ov.querySelector('.ov-title').title = zoomed.full;
+    ov.querySelector('.ov-desc').textContent = zoomed.desc;
+    ov.querySelector('.tags').innerHTML = (zoomed.p ? `<span class="${zoomed.p.toLowerCase()}">${zoomed.p}</span>` : '') + `<span>${zoomed.region}</span><span>${zoomed.kind === 'feature' ? LP.tagFeature : LP.tagDaily}</span>`;
+    $('#g-read').href = `#daily/${zoomed.date}/${encodeURIComponent(zoomed.region)}`;
+    gsap.to(zf, {v: 1, duration: .8, ease: 'power4.out', overwrite: true});
+    ov.classList.add('open');
+    gsap.fromTo(ov, {y: 16, opacity: 0}, {y: 0, opacity: 1, duration: .7, ease: 'expo.out', delay: .12, overwrite: true});
+    cur.textContent = LP.close;
+  }
+  function closeOv(){
+    ovOpen = false;
+    gsap.to(zf, {v: 0, duration: .8, ease: 'power4.out', overwrite: true});
+    ov.classList.remove('open');
+    gsap.to(ov, {y: 16, opacity: 0, duration: .35, ease: 'power2.in', overwrite: true});
+    cur.textContent = LP.overview;
+  }
+  $('#g-close').addEventListener('click', e => { e.stopPropagation(); collapseZoom(); });
+
+  // ---------- caption ----------
+  const capIn = $('#g-caption .mask>span'); let capItem = null;
+  function setCaption(m){
+    if (m === capItem) return; capItem = m;
+    gsap.to(capIn, {yPercent: -110, duration: .25, ease: 'power2.in', overwrite: true, onComplete: () => {
+      capIn.innerHTML = m ? `<span class="t">${m.title}</span><span class="c">${m.cat}</span>` : '';
+      if (m) gsap.fromTo(capIn, {yPercent: 110}, {yPercent: 0, duration: .6, ease: 'expo.out'});
+    }});
+  }
+
+  // ---------- pointer ----------
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  const ptr = {x: -1e4, y: -1e4, down: false, sx: 0, sy: 0, lx: 0, ly: 0, path: 0, id: null};
+  let hoverPending = false;
+  const touches = new Map(); let pinch = 0;
+  function pick(x, y){
+    ndc.set(x / W * 2 - 1, -(y / H) * 2 + 1); ray.setFromCamera(ndc, camera);
+    const vis = items.filter(m => m.mesh.visible && m.mat.opacity > .5).map(m => m.mesh);
+    const hits = ray.intersectObjects(vis, false);
+    if (!hits.length) return null;
+    if (zoomed){ const z = hits.find(h => h.object === zoomed.mesh); if (z) return zoomed; }
+    return items[hits[0].object.userData.i];
+  }
+  canvas.addEventListener('pointerdown', e => {
+    touches.set(e.pointerId, {x: e.clientX, y: e.clientY});
+    if (touches.size === 2){ const [a, b] = [...touches.values()]; pinch = Math.hypot(a.x - b.x, a.y - b.y); ptr.down = false; return; }
+    if (phase !== 'sphere') return;
+    Object.assign(ptr, {down: true, sx: e.clientX, sy: e.clientY, lx: e.clientX, ly: e.clientY, path: 0, id: e.pointerId});
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', e => {
+    ptr.x = e.clientX; ptr.y = e.clientY; hoverPending = true;
+    curX(e.clientX + 14); curY(e.clientY + 14);
+    if (touches.has(e.pointerId)) touches.set(e.pointerId, {x: e.clientX, y: e.clientY});
+    if (touches.size === 2 && phase === 'sphere' && !zoomed){
+      const [a, b] = [...touches.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y);
+      spin.vx += (pinch - d) * 0.0002; pinch = d; spin.interacted = true; return;
+    }
+    if (ptr.down && e.pointerId === ptr.id){
+      const dx = e.clientX - ptr.lx, dy = e.clientY - ptr.ly;
+      ptr.path += Math.hypot(dx, dy); ptr.lx = e.clientX; ptr.ly = e.clientY;
+      if (!zoomed){ spin.vx += dx * 0.001; spin.vy += dy * 0.001; if (dx || dy) spin.interacted = true; }
+    }
+  });
+  const endPtr = e => {
+    touches.delete(e.pointerId);
+    if (!ptr.down || e.pointerId !== ptr.id) return; ptr.down = false;
+    if (e.type === 'pointerup' && Math.hypot(e.clientX - ptr.sx, e.clientY - ptr.sy) < 6 && ptr.path < 10) click(e.clientX, e.clientY);
+  };
+  canvas.addEventListener('pointerup', endPtr); canvas.addEventListener('pointercancel', endPtr);
+  canvas.addEventListener('pointerleave', () => { if (!ptr.down){ ptr.x = ptr.y = -1e4; hoverPending = true; } });
+  canvas.addEventListener('wheel', e => { e.preventDefault(); if (phase !== 'sphere' || zoomed) return; spin.vx += e.deltaY * 0.0002; spin.interacted = true; }, {passive: false});
+  function click(x, y){
+    const m = pick(x, y);
+    if (zoomed && ze.v > 0){ if (m === zoomed) ovOpen ? closeOv() : openOv(); else collapseZoom(); return; }
+    if (m) zoom(m);
+  }
+
+  // far hemisphere pause
+  const tmpV = new THREE.Vector3();
+  setInterval(() => {
+    if (!running || phase === 'intro') return;
+    items.forEach(m => {
+      if (!m.ready) return;
+      if (zoomed){ setPlay(m, m === zoomed); return; }
+      tmpV.copy(m.sph).applyQuaternion(group.quaternion).normalize();
+      if (tmpV.z < -.25) setPlay(m, false); else if (tmpV.z > -.1) setPlay(m, true);
+    });
+  }, 300);
+
+  // ---------- loop ----------
+  let running = false, raf = 0;
+  const invQ = new THREE.Quaternion(), P = new THREE.Vector3(), T = new THREE.Vector3(), SP = new THREE.Vector3();
+  function frame(){
+    raf = requestAnimationFrame(frame);
+    if (phase === 'sphere' && !zoomed){
+      spin.ax += spin.vx; spin.ay += spin.vy; spin.vx *= .94; spin.vy *= .94;
+      const nx = spin.sx + (spin.ax - spin.sx) * .11, ny = spin.sy + (spin.ay - spin.sy) * .11;
+      const dYaw = nx - spin.sx, dPitch = ny - spin.sy; spin.sx = nx; spin.sy = ny;
+      if (dYaw) group.quaternion.premultiply(qT.setFromAxisAngle(YA, dYaw));
+      if (dPitch) group.quaternion.premultiply(qT.setFromAxisAngle(XA, dPitch));
+      if (!spin.interacted) group.quaternion.premultiply(qT.setFromAxisAngle(AX, .001));
+    }
+    if (circ.on) circ.rot += .5 * Math.PI / 180 * circ.mul;
+    invQ.copy(group.quaternion).invert();
+    const E = ze.v, F = zf.v, zm = zoomed || (E > 0 ? leaving : null);
+    const tt = ex.t, ee = 1 - Math.pow(1 - tt, 3), mult = 1 + .1 * Math.sin(Math.PI * tt);
+    const Rc = 240 * (W <= 640 ? .75 : 1);
+    items.forEach((m, i) => {
+      let s, o;
+      if (phase === 'intro'){
+        if (i >= 10){ m.mesh.visible = false; return; }
+        const a = -Math.PI / 2 + i * 36 * Math.PI / 180 + circ.rot;
+        P.set(Math.cos(a) * Rc, Math.sin(a) * Rc, 0).lerp(SP.set(0, 0, i * 1.5), m.c);
+        s = lerp(m.s, centerScale, m.c); o = m.o;
+      } else if (phase === 'explode'){
+        P.copy(m.start).lerp(m.sph, ee).multiplyScalar(mult);
+        s = lerp(m.startS, planeSize, ee); o = lerp(m.startO, 1, ee);
+      } else { P.copy(m.sph); s = planeSize; o = 1; }
+      if (zm && E > 0){
+        if (m === zm){
+          const band = 290 * F, avail = H - band;
+          let th = .7 * avail, tw = th * m.aspect;
+          if (W <= 640 && tw > W - 16){ tw = W - 16; th = tw / m.aspect; }
+          T.set(0, band / 2, 0).applyQuaternion(invQ);
+          P.lerp(T, E); s = lerp(s, Math.max(tw, th), E);
+        } else { P.multiplyScalar(1 + (1.8 - 1) * E); o *= 1 - (1 - .1) * E; }
+      }
+      const w = m.aspect >= 1 ? s : s * m.aspect, h = m.aspect >= 1 ? s / m.aspect : s;
+      m.mesh.position.set(px(P.x), px(P.y), px(P.z));
+      m.mesh.scale.set(px(w), px(h), 1);
+      m.mesh.quaternion.copy(invQ);
+      m.mat.opacity = o; m.mesh.visible = o > .002;
+    });
+    if (hoverPending && phase === 'sphere'){
+      hoverPending = false;
+      const h = ptr.x > -1e3 ? pick(ptr.x, ptr.y) : null;
+      if (!zoomed) setCaption(h); else setCaption(zoomed);
+      const dc = Math.hypot(ptr.x - W / 2, ptr.y - H / 2);
+      canvas.style.cursor = ptr.down && ptr.path > 6 ? 'grabbing' : h ? 'pointer' : dc < 250 ? 'grab' : 'default';
+      showCur(!!(zoomed && h === zoomed && ze.v > .5));
+    }
+    renderer.render(scene, camera);
+  }
+  return {
+    start(){
+      if (running) return; running = true; frame();
+      if (!started){ started = true; reduced ? skipIntro() : runIntro(); }
+    },
+    stop(){ running = false; cancelAnimationFrame(raf); showCur(false); items.forEach(m => setPlay(m, false)); },
+    get introDone(){ return introDone; },
+    resize(){ layout(); },
+    esc(){ collapseZoom(); }
+  };
 }
 
-function renderMacro(){
-  const box = $("macro"); box.textContent = ""; box.style.display = "none";
-  const M = (window.MACRO || []).slice().sort((a,b) => a.date < b.date ? 1 : -1);
-  const e = EDS[state.lang][state.i];
-  const m = (e && M.find(x => x.date === e.date)) || (state.i === 0 ? M[0] : null);
-  const d = m && m[state.lang]; if (!d) return;
-  box.style.display = "";
-  const mh = el("div","mh"); mh.appendChild(el("h3",null,t().mTitle)); mh.appendChild(el("span","asof",d.asof)); box.appendChild(mh);
-  const g = el("div","mg"); const L = el("div"), R = el("div");
-  const tb = el("table"); (d.rows || []).forEach(r => { const tr = el("tr"); r.forEach(c => tr.appendChild(el("td",null,c))); tb.appendChild(tr); }); L.appendChild(tb);
-  R.appendChild(el("span","reg",d.regime)); if (d.driver) R.appendChild(el("p","drv",d.driver));
-  R.appendChild(el("h4",null,t().mView)); R.appendChild(el("p",null,d.view));
-  R.appendChild(el("h4",null,t().mOut)); const ul = el("ul"); (d.outlook || []).forEach(x => ul.appendChild(el("li",null,x))); R.appendChild(ul);
-  g.appendChild(L); g.appendChild(R); box.appendChild(g);
-  if (m.links) box.appendChild(sources(m));
-  if (d.note) box.appendChild(el("div","mnote",d.note));
+
+// =====================================================================
+// VIEWS 2 & 3 — DAILY BRIEF and FEATURES (WebGL grid)
+// =====================================================================
+const VS = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+async function initGrid(cfg){
+  await fontsReady;
+  const root = cfg.root, stage = root.querySelector('.stage');
+  const renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer.setPixelRatio(DPR); renderer.setClearColor(BG, 1);
+  stage.appendChild(renderer.domElement);
+  const canvas = renderer.domElement;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 1, 20000);
+  const blank = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1); blank.needsUpdate = true;
+  const plane = new THREE.PlaneGeometry(1, 1);
+  const cache = new Map();
+  const mediaOf = it => { if (!cache.has(it.key)) cache.set(it.key, {...it, video: null, still: null, vtex: null, loading: false, reveal: {v: 0}, mix: {v: 0}, playing: false}); return cache.get(it.key); };
+  let media = [];
+
+  // post pass
+  let rt = null;
+  const postScene = new THREE.Scene(), postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const postMat = new THREE.ShaderMaterial({
+    uniforms: {tDiffuse: {value: null}},
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+    fragmentShader: `uniform sampler2D tDiffuse; varying vec2 vUv;
+      void main(){
+        vec2 uv = vUv; const float band = 0.08; float t = 0.0; float dir = 0.0;
+        if (uv.y < band){ t = (band - uv.y) / band; dir = 1.0; }
+        else if (uv.y > 1.0 - band){ t = (uv.y - (1.0 - band)) / band; dir = -1.0; }
+        vec3 col;
+        if (t > 0.0){
+          float sag = 1.0 - sqrt(max(0.0, 1.0 - t * t));
+          vec2 s = uv; s.y += dir * sag * band * 1.0;
+          vec3 acc = vec3(0.0); vec3 ws = vec3(0.0);
+          for (int i = 0; i < 16; i++){
+            float f = float(i) / 15.0;
+            float off = (f - 0.5) * 0.01 * sag * 30.0 * (t - 0.5) * dir;
+            vec3 w = vec3(smoothstep(0.8, 0.2, f), smoothstep(0.0, 0.5, f) * smoothstep(1.0, 0.5, f), smoothstep(0.2, 0.8, f));
+            acc += texture2D(tDiffuse, vec2(s.x, clamp(s.y + off, 0.001, 0.999))).rgb * w; ws += w;
+          }
+          col = acc / ws;
+        } else col = texture2D(tDiffuse, uv).rgb;
+        gl_FragColor = linearToOutputTexel(vec4(col, 1.0));
+      }`,
+    depthTest: false, depthWrite: false
+  });
+  postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
+
+  const SKEL = TH.skel.toFixed(3), SHIM = TH.shim.toFixed(3), CHIP = TH.chip.toFixed(3);
+  const tileFS = `uniform sampler2D uTex, uTex2; uniform float uMix, uReveal, uTime, uAlpha; varying vec2 vUv;
+    void main(){
+      vec3 sk = vec3(${SKEL}); float sweep = fract(uTime * 0.6);
+      sk += smoothstep(0.18, 0.0, abs((vUv.x + (1.0 - vUv.y)) * 0.5 - sweep)) * (${SHIM});
+      vec3 m = mix(texture2D(uTex, vUv).rgb, texture2D(uTex2, vUv).rgb, uMix);
+      gl_FragColor = vec4(mix(sk, m, uReveal), uAlpha);
+    }`;
+  const chipFS = `uniform sampler2D uTex, uTex2, uLabel; uniform float uMix, uReveal, uAlpha; uniform vec2 uTile, uPos, uSize; varying vec2 vUv;
+    vec3 media(vec2 uv){ return mix(texture2D(uTex, uv).rgb, texture2D(uTex2, uv).rgb, uMix); }
+    void main(){
+      vec2 p = uPos + vec2(vUv.x, 1.0 - vUv.y) * uSize;
+      vec2 tuv = vec2(p.x / uTile.x, 1.0 - p.y / uTile.y);
+      vec3 acc = vec3(0.0);
+      for (int i = 0; i < 32; i++){
+        float fi = float(i); float r = sqrt((fi + 0.5) / 32.0) * 40.0; float th = fi * 2.39996323;
+        acc += media(clamp(tuv + vec2(cos(th), sin(th)) * r / uTile, 0.001, 0.999));
+      }
+      acc /= 32.0;
+      vec3 col = mix(vec3(${SKEL}), acc, uReveal);
+      col = mix(col, vec3(${CHIP}), 0.45);
+      vec4 l = texture2D(uLabel, vUv); col = mix(col, l.rgb, l.a);
+      vec2 q = abs((vUv - 0.5) * uSize) - (uSize * 0.5 - 4.0);
+      float sd = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - 4.0;
+      gl_FragColor = vec4(col, uAlpha * clamp(0.5 - sd, 0.0, 1.0));
+    }`;
+
+  let W = 1, H = 1, cols = 3, tileW = 1, tileH = 1, pageH = 1, maxScroll = 0;
+  let tiles = [], texts = [], headline = null, footer = [];
+  const scroll = {y: 0, target: 0, vel: 0};
+  let built = false, entered = false;
+
+  function textMesh(text, font, color, ls = '0px', h){
+    const w = Math.ceil(measure(font, text, ls)) + 4; h = h || Math.ceil(parseFloat(font.match(/(\d+)px/)[1]) * 1.4);
+    const tc = textCanvas(w, h, ctx => { ctx.font = font; ctx.letterSpacing = ls; ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.fillText(text, 2, h / 2 + 1); });
+    const mat = new THREE.MeshBasicMaterial({map: tc.t, transparent: true, depthWrite: false, opacity: 0});
+    const mesh = new THREE.Mesh(plane, mat); mesh.scale.set(w, h, 1);
+    return {mesh, mat, w, h};
+  }
+  const place = (o, x, y) => o.mesh.position.set(x + o.w / 2, -(y + o.h / 2), 0);
+
+  // headline with scramble
+  const GLY = '.:·,;_';
+  function buildHeadline(){
+    const phone = W <= 640;
+    const fA = `500 16px ${SANS}`, fB = `400 17px ${SERIF}`;
+    const pick = a => a.map(line => line.map(([txt, k]) => [txt, k === 'a' ? fA : fB, k === 'a' ? '-0.16px' : '0px']));
+    const segs = pick(cfg.head(phone));
+    const hh = phone ? 44 : 24;
+    const chars = [];
+    segs.forEach((line, li) => {
+      const lw = line.reduce((s, [t, f, ls]) => s + measure(f, t, ls), 0);
+      let x = (W - lw) / 2;
+      line.forEach(([t, f, ls]) => { for (const ch of t){ const cw = measure(f, ch, ls); chars.push({ch, f, ls, x, y: 12 + li * 20, r: Math.random()}); x += cw; } });
+    });
+    chars.forEach((c, j) => c.thr = .7 * j / chars.length + .3 * c.r);
+    const tc = textCanvas(W, hh, null);
+    const mat = new THREE.MeshBasicMaterial({map: tc.t, transparent: true, depthWrite: false, opacity: 0});
+    const mesh = new THREE.Mesh(plane, mat); mesh.scale.set(W, hh, 1);
+    const o = {mesh, mat, w: W, h: hh, p: {v: reduced ? 1 : 0},
+      draw(){ const ctx = tc.ctx; ctx.clearRect(0, 0, W, hh); ctx.fillStyle = INK; ctx.textBaseline = 'middle';
+        chars.forEach(c => { ctx.font = c.f; ctx.letterSpacing = c.ls; const ch = (o.p.v > c.thr || c.ch === ' ') ? c.ch : GLY[(Math.random() * GLY.length) | 0]; ctx.fillText(ch, c.x, c.y); });
+        tc.t.needsUpdate = true; }};
+    o.draw(); return o;
+  }
+
+  function build(){
+    tiles.forEach(t => { scene.remove(t.mesh, t.chip, t.title.mesh, t.cat.mesh); });
+    if (headline) scene.remove(headline.mesh); footer.forEach(f => scene.remove(f.mesh));
+    W = innerWidth; H = innerHeight;
+    renderer.setSize(W, H, false);
+    if (rt) rt.dispose();
+    rt = new THREE.WebGLRenderTarget(Math.floor(W * DPR), Math.floor(H * DPR), {samples: 4, type: THREE.HalfFloatType});
+    cols = W > 1024 ? 3 : W > 640 ? 2 : 1;
+    tileW = (W - 16 - (cols - 1) * 8) / cols; tileH = tileW * 9 / 16;
+    camera.aspect = W / H; camera.updateProjectionMatrix();
+    headline = buildHeadline(); place(headline, 0, 200); scene.add(headline.mesh);
+    const gridTop = 200 + headline.h + 80;
+    const rowStep = tileH + 12 + 16 + 6 + 18 + 40;
+    media = cfg.items().map(mediaOf);
+    tiles = media.map((m, i) => {
+      const col = i % cols, row = Math.floor(i / cols);
+      const x = 8 + col * (tileW + 8), y = gridTop + row * rowStep;
+      const u = {uTex: {value: m.still || blank}, uTex2: {value: m.vtex || blank}, uMix: {value: m.mix.v}, uReveal: {value: m.reveal.v}, uTime: {value: 0}, uAlpha: {value: 0}};
+      const mesh = new THREE.Mesh(plane, new THREE.ShaderMaterial({uniforms: u, vertexShader: VS, fragmentShader: tileFS, transparent: true, depthWrite: false}));
+      mesh.scale.set(tileW, tileH, 1);
+      const label = String(i + 1).padStart(2, '0') + '  ' + m.cat, lf = `500 12px ${SANS}`;
+      const lw = Math.ceil(measure(lf, label)), cw = lw + 16, ch = 22;
+      const lt = textCanvas(cw, ch, ctx => { ctx.font = lf; ctx.fillStyle = INK; ctx.textBaseline = 'alphabetic'; ctx.fillText(label, 8, 15); });
+      const cu = {uTex: u.uTex, uTex2: u.uTex2, uMix: u.uMix, uReveal: u.uReveal, uAlpha: {value: 0}, uLabel: {value: lt.t}, uTile: {value: new THREE.Vector2(tileW, tileH)}, uPos: {value: new THREE.Vector2(8, 8)}, uSize: {value: new THREE.Vector2(cw, ch)}};
+      const chip = new THREE.Mesh(plane, new THREE.ShaderMaterial({uniforms: cu, vertexShader: VS, fragmentShader: chipFS, transparent: true, depthWrite: false}));
+      chip.scale.set(cw, ch, 1); chip.renderOrder = 1;
+      const title = textMesh(m.title, `500 12px ${SANS}`, INK, '0px', 16);
+      const cat = textMesh(`${m.cat}, ${m.year}`, `400 13px ${SERIF}`, MUTE, '0px', 18);
+      const t = {m, i, col, row, x, y, mesh, chip, title, cat, u, cu, cw, ch, st: {a: entered ? 1 : 0, dy: entered ? 0 : 60}};
+      scene.add(mesh, chip, title.mesh, cat.mesh);
+      return t;
+    });
+    const rows = Math.ceil(media.length / cols);
+    const lastBottom = gridTop + (rows - 1) * rowStep + tileH + 12 + 16 + 6 + 18;
+    const fy = lastBottom + 240, ff = `400 13px ${SERIF}`;
+    footer = W <= 640 ? [textMesh(LP.footerPhone[0], ff, MUTE), textMesh(LP.footerPhone[1], ff, MUTE)] : [textMesh(LP.footer, ff, MUTE)];
+    if (footer.length === 2){ place(footer[0], 8, fy); place(footer[1], W - 8 - footer[1].w, fy); } else place(footer[0], (W - footer[0].w) / 2, fy);
+    footer.forEach(f => { f.mat.opacity = 1; scene.add(f.mesh); });
+    pageH = fy + 20 + 110; maxScroll = Math.max(0, pageH - H);
+    scroll.target = clamp(scroll.target, 0, maxScroll); scroll.y = clamp(scroll.y, 0, maxScroll);
+    built = true;
+  }
+
+  function enter(){
+    if (entered) return; entered = true;
+    if (reduced){ headline.p.v = 1; headline.mat.opacity = 1; headline.draw(); tiles.forEach(t => { t.st.a = 1; t.st.dy = 0; }); return; }
+    gsap.to(headline.mat, {opacity: 1, duration: .3});
+    gsap.to(headline.p, {v: 1, duration: 1.1, ease: 'power2.out'});
+    tiles.forEach(t => {
+      const d = .35 + .08 * t.col + .06 * t.row;
+      gsap.to(t.st, {a: 1, duration: .9, ease: 'power2.out', delay: d});
+      gsap.to(t.st, {dy: 0, duration: 1.2, ease: 'expo.out', delay: d});
+    });
+  }
+
+  function load(m){
+    if (m.loading) return; m.loading = true;
+    fontsReady.then(() => {
+      m.still = cardTexture(m); m.vtex = cardTexture(m, true);
+      const t = tiles.find(x => x.m === m); if (t){ t.u.uTex.value = m.still; t.u.uTex2.value = m.vtex; }
+      gsap.to(m.reveal, {v: 1, duration: .8, ease: 'power2.out'});
+    });
+  }
+  function play(m, on){
+    if (on === m.playing) return; m.playing = on;
+    if (on){ if (m.video){ m.video.play().catch(() => {}); } gsap.to(m.mix, {v: 1, duration: .45, ease: 'power2.out', overwrite: true}); }
+    else gsap.to(m.mix, {v: 0, duration: .45, ease: 'power2.out', overwrite: true, onComplete: () => { if (!m.playing && m.video) m.video.pause(); }});
+  }
+
+  // input
+  const bubble = $('#p-bubble');
+  const bx = gsap.quickTo(bubble, 'x', {duration: .5, ease: 'power3.out'}), by = gsap.quickTo(bubble, 'y', {duration: .5, ease: 'power3.out'});
+  let bubbleOn = false;
+  function showBubble(on){ if (on === bubbleOn) return; bubbleOn = on; gsap.to(bubble, {opacity: on ? 1 : 0, scale: on ? 1 : .6, duration: on ? .75 : .6, ease: 'power4.out', overwrite: 'auto'}); }
+  const ptr = {x: -1, y: -1, in: false};
+  let drag = null;
+  canvas.addEventListener('wheel', e => { e.preventDefault(); const k = e.deltaMode === 1 ? 16 : 1; scroll.target = clamp(scroll.target + e.deltaY * k, 0, maxScroll); }, {passive: false});
+  canvas.addEventListener('pointerdown', e => {
+    drag = {x: e.clientX, y: e.clientY, ly: e.clientY, path: 0, t: performance.now(), touch: e.pointerType !== 'mouse'};
+    scroll.vel = 0; canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', e => {
+    ptr.x = e.clientX; ptr.y = e.clientY; ptr.in = true; bx(e.clientX); by(e.clientY);
+    if (drag){
+      const dy = e.clientY - drag.ly; drag.ly = e.clientY; drag.path += Math.abs(dy) + 0;
+      if (drag.touch){ scroll.target = clamp(scroll.target - dy, 0, maxScroll); scroll.vel = -dy; }
+    }
+  });
+  canvas.addEventListener('pointerup', e => {
+    if (!drag) return;
+    const moved = Math.hypot(e.clientX - drag.x, e.clientY - drag.y);
+    if (moved < 6 && drag.path < 10){ const t = tileAt(e.clientX, e.clientY); if (t) openLB(t.m); }
+    else if (!drag.touch) scroll.vel = 0;
+    drag = null;
+  });
+  canvas.addEventListener('pointerleave', () => { ptr.in = false; });
+  function tileAt(x, y){
+    const wx = x, wy = y + scroll.y;
+    return tiles.find(t => wx >= t.x && wx <= t.x + tileW && wy >= t.y && wy <= t.y + tileH);
+  }
+
+  const openLB = m => { showBubble(false); openLightbox(m); }, closeLB = closeLightbox;
+
+  // loop
+  let running = false, raf = 0; const clock = new THREE.Clock();
+  function frame(){
+    raf = requestAnimationFrame(frame);
+    const time = clock.getElapsedTime();
+    if (!drag || !drag.touch){ if (Math.abs(scroll.vel) > .05){ scroll.target = clamp(scroll.target + scroll.vel, 0, maxScroll); scroll.vel *= .95; } else scroll.vel = 0; }
+    scroll.y += (scroll.target - scroll.y) * .12;
+    scroll.y = clamp(scroll.y, 0, maxScroll);
+    const d = (H / 2) / Math.tan(THREE.MathUtils.degToRad(17.5));
+    camera.position.set(W / 2, -H / 2 - scroll.y, d); camera.lookAt(W / 2, -H / 2 - scroll.y, 0);
+    if (entered && headline.p.v !== headline.drawn){ headline.drawn = headline.p.v; headline.draw(); }
+    const desktopHover = !isTouch && W > 1024;
+    const hov = desktopHover && ptr.in && !lbIsOpen() ? tileAt(ptr.x, ptr.y) : null;
+    let centerT = null;
+    if (!desktopHover){ const cy = scroll.y + H / 2; let best = 1e9; tiles.forEach(t => { const dd = Math.abs(t.y + tileH / 2 - cy); if (dd < best){ best = dd; centerT = t; } }); }
+    showBubble(!!hov);
+    canvas.style.cursor = hov ? 'pointer' : 'default';
+    tiles.forEach(t => {
+      const m = t.m, top = t.y, bot = t.y + tileH;
+      if (!m.loading && top < scroll.y + H + 1.6 * H && bot > scroll.y - .6 * H) load(m);
+      play(m, (hov === t || centerT === t) && !!m.still);
+      const yy = t.y + t.st.dy;
+      t.mesh.position.set(t.x + tileW / 2, -(yy + tileH / 2), 0);
+      t.chip.position.set(t.x + 8 + t.cw / 2, -(yy + 8 + t.ch / 2), .1);
+      place(t.title, t.x - 2, yy + tileH + 12 - 2); place(t.cat, t.x - 2, yy + tileH + 12 + 16 + 6 - 4);
+      t.u.uAlpha.value = t.cu.uAlpha.value = t.st.a; t.title.mat.opacity = t.cat.mat.opacity = t.st.a;
+      t.u.uMix.value = m.mix.v; t.u.uReveal.value = m.reveal.v; t.u.uTime.value = time;
+    });
+    renderer.setRenderTarget(rt); renderer.render(scene, camera);
+    renderer.setRenderTarget(null); postMat.uniforms.tDiffuse.value = rt.texture; renderer.render(postScene, postCam);
+  }
+  build();
+  return {
+    start(){ if (running) return; running = true; clock.start(); frame(); enter(); },
+    stop(){ running = false; cancelAnimationFrame(raf); showBubble(false); closeLB(); media.forEach(m => { if (m.playing) play(m, false); }); },
+    resize(){ build(); },
+    esc(){ closeLB(); },
+    rebuild(){ entered = false; scroll.target = scroll.y = 0; build(); if (running) enter(); }
+  };
 }
 
-function renderViews(){
-  const P = prof(); const v = $("v-views"); v.textContent = "";
-  const intro = el("p","intro",t().intro);
-  if (P.viewsDraft) intro.appendChild(el("span","draft",t().draft));
-  v.appendChild(intro);
-  (P.views || []).forEach((x,i) => {
-    const a = el("article","thesis");
-    a.appendChild(el("div","n", String(i + 1).padStart(2,"0")));
-    const b = el("div"); b.appendChild(el("h3",null,x.h)); b.appendChild(el("p",null,x.p));
-    if (x.basis) b.appendChild(el("div","basis",t().basis + x.basis));
-    a.appendChild(b); v.appendChild(a);
+
+// =====================================================================
+// SHARED LIGHTBOX — full story or feature, readable text
+// =====================================================================
+const lb = $('#lb'), lbi = lb.querySelector('img'), lbMore = lb.querySelector('.more');
+let lbOpenFlag = false;
+function lbIsOpen(){ return lbOpenFlag; }
+const escH = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const noRefs = s => String(s).replace(/\s*[［\[]\d{1,2}[］\]]/g, '');
+function openLightbox(m){
+  lbOpenFlag = true;
+  lbi.src = makeCard(m).toDataURL('image/jpeg', .9); lbi.alt = m.full;
+  lb.querySelector('.t').textContent = m.full;
+  lb.querySelector('.sub').textContent = [m.p, m.kind === 'feature' ? LP.featureCat + '｜' + m.region : m.region, m.year].filter(Boolean).join('  ·  ');
+  lb.querySelector('.d').textContent = noRefs(m.kind === 'feature' ? m.dek : m.desc);
+  let html = '';
+  const ul = arr => `<ul>${arr.map(x => `<li>${escH(noRefs(x))}</li>`).join('')}</ul>`;
+  if (m.kind === 'story'){
+    if (m.points && m.points.length) html += `<h4>${LP.points}</h4>${ul(m.points)}`;
+    if (m.bankAll && m.bankAll.length) html += `<h4>${LP.forBanksTitle}</h4><div class="bankbox">${ul(m.bankAll)}</div>`;
+    if (m.view) html += `<h4>${LP.viewTitle}</h4><p>${escH(m.view)}</p>`;
+    if (m.links && m.links.length) html += `<h4>${LP.sources}</h4><div class="src">${m.links.map(([n, u, s]) => `<a href="${escH(u)}" target="_blank" rel="noopener"${s ? ' class="sec"' : ''}>${escH(n)}</a>`).join('')}</div>`;
+  } else {
+    if (m.summary && m.summary.length) html += `<h4>${LP.inShort}</h4>${ul(m.summary)}`;
+    if (m.bank) html += `<h4>${LP.forBanksTitle}</h4><div class="bankbox"><p>${escH(m.bank.replace(/^./, c => c.toUpperCase()))}</p></div>`;
+  }
+  lbMore.innerHTML = html;
+  const rd = $('#lb-read'); rd.style.display = m.kind === 'feature' ? '' : 'none';
+  rd.href = LP.classic + LP.featHash; rd.textContent = LP.readFeature;
+  lb.scrollTop = 0; lb.style.visibility = 'visible';
+  gsap.to(lb, {opacity: 1, duration: .4, overwrite: true});
+  gsap.fromTo(lb.querySelector('.in'), {y: 20, scale: .97}, {y: 0, scale: 1, duration: .8, ease: 'expo.out'});
+  setTimeout(() => $('#lb-close').focus({preventScroll: true}), 50);
+}
+function closeLightbox(){
+  if (!lbOpenFlag) return; lbOpenFlag = false;
+  gsap.to(lb, {opacity: 0, duration: .3, overwrite: true, onComplete: () => { lb.style.visibility = 'hidden'; lbi.removeAttribute('src'); }});
+}
+$('#lb-close').addEventListener('click', closeLightbox);
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+// =====================================================================
+// DAILY BRIEF controls: edition stepper + region chips
+// =====================================================================
+const daily = {date: DATA.editions[0], region: 'all'};
+STORIES.forEach((s, k) => { s.i = DATA.S[k].i; });
+const edStories = d => STORIES.filter(s => s.date === d);
+const dailyItems = () => edStories(daily.date).filter(s => daily.region === 'all' || s.region === daily.region);
+const dailyHash = (d, r, i) => `#daily/${d}/${encodeURIComponent(r || 'all')}` + (i !== undefined ? '/' + i : '');
+const edSel = $('#d-ed'), chips = $('#d-chips');
+DATA.editions.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = edLabel(d) + '  ·  ' + edStories(d).length + LP.storiesUnit; edSel.appendChild(o); });
+edSel.addEventListener('change', () => { location.hash = dailyHash(edSel.value, 'all'); });
+$('#d-prev').addEventListener('click', () => { const k = DATA.editions.indexOf(daily.date); if (k < DATA.editions.length - 1) location.hash = dailyHash(DATA.editions[k + 1], 'all'); });
+$('#d-next').addEventListener('click', () => { const k = DATA.editions.indexOf(daily.date); if (k > 0) location.hash = dailyHash(DATA.editions[k - 1], 'all'); });
+function renderCtrl(){
+  edSel.value = daily.date;
+  const k = DATA.editions.indexOf(daily.date);
+  $('#d-prev').disabled = k >= DATA.editions.length - 1; $('#d-next').disabled = k <= 0;
+  const list = edStories(daily.date), counts = {};
+  list.forEach(s => counts[s.region] = (counts[s.region] || 0) + 1);
+  chips.textContent = '';
+  [['all', LP.all, list.length]].concat(Object.keys(counts).map(r => [r, r, counts[r]])).forEach(([key, label, n]) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'chip';
+    b.setAttribute('aria-pressed', String(daily.region === key));
+    b.innerHTML = `${escH(label)}<b>${n}</b>`;
+    b.addEventListener('click', () => { location.hash = dailyHash(daily.date, key); });
+    chips.appendChild(b);
   });
 }
-
-function renderAbout(){
-  const P = prof(); const v = $("v-about"); v.textContent = "";
-  const g = el("div","about"); const L = el("div"), R = el("div");
-  const sec = (parent, title) => { const s = el("section"); s.appendChild(el("h3",null,title)); parent.appendChild(s); return s; };
-  const row = (s, head, meta, desc) => { const r = el("div","row"); r.appendChild(el("b",null,head)); if (meta) r.appendChild(el("div","m",meta)); if (desc) r.appendChild(el("div","d",desc)); s.appendChild(r); };
-  const a = sec(L,t().bio); (P.bio || []).forEach(x => a.appendChild(el("p",null,x)));
-  const w = sec(L,t().work); (P.work || []).forEach(x => row(w, x.t, null, x.d));
-  const x = sec(R,t().exp); (P.experience || []).forEach(e => row(x, e.org + t().sep + e.role, [e.when, e.where].filter(Boolean).join("　"), e.note));
-  const ed = sec(R,t().edu); (P.education || []).forEach(e => row(ed, e.org, [e.role, e.when].filter(Boolean).join("　"), e.note));
-  const c = sec(R,t().contact); (P.links || []).forEach(([n,u]) => { const p = el("p"); const k = el("a",null,n); k.href = u; k.target = "_blank"; k.rel = "noopener"; p.appendChild(k); p.appendChild(document.createTextNode("　" + u.replace("https://www.",""))); c.appendChild(p); });
-  g.appendChild(L); g.appendChild(R); v.appendChild(g);
-}
-
-function renderAll(){ renderMast(); renderDaily(); renderViews(); if (window.renderFeatures) window.renderFeatures($("v-features"), state.lang); renderAbout(); }
-function go(lang, view){ location.hash = (lang === "en" ? "en-" : "") + view; route(); }
-function route(){
-  const h = location.hash.replace("#","");
-  const lang = h === "en" || h.indexOf("en-") === 0 ? "en" : "zh";
-  const view = h.replace(/^en-?/, "") || "daily";
-  if (lang !== state.lang){
-    const cur = (EDS[state.lang][state.i] || {}).date;
-    const j = EDS[lang].findIndex(e => e.date === cur);
-    state.i = j >= 0 ? j : 0; state.region = null;
+const DAILY_CFG = {
+  root: $('#v-daily'),
+  items: dailyItems,
+  head: phone => {
+    const n = dailyItems().length, lab = edLabel(daily.date) + '  ·  ' + n + LP.storiesUnit;
+    return phone ? [[[LP.dailyHead, 'a']], [[lab, 'b']]] : [[[LP.dailyHead + '  ', 'a'], [lab, 'b']]];
   }
-  state.lang = lang; state.view = ["daily","views","features","about"].includes(view) ? view : "daily";
-  renderAll();
+};
+const FEAT_CFG = {
+  root: $('#v-features'),
+  items: () => FEATS,
+  head: phone => phone ? [[[LP.featHead, 'a']], [[LP.featSub, 'b']]] : [[[LP.featHead + '  ', 'a'], [LP.featSub, 'b']]]
+};
+
+// =====================================================================
+// VIEW 4 — ABOUT: a plain page, with the chrome bot as the hero
+// =====================================================================
+async function initAbout(){
+  await fontsReady;
+  const root = $('#v-about'), wrap = root.querySelector('.about'), P = DATA.profile;
+  const cap = s => s.replace(/^./, c => c.toUpperCase());
+  const rows = (arr, left) => arr.map(e => `<div class="a-row"><div class="when">${escH(left(e))}</div><div class="what"><b>${escH(e.org)}</b><i>${escH(e.role)}</i>${e.note ? `<p>${escH(e.note)}</p>` : ''}</div></div>`).join('');
+  wrap.innerHTML = `
+    <header class="a-hero">
+      <div>
+        <div class="a-kicker">${LP.aboutKicker}</div>
+        <h1>${escH(LP.zh ? P.nameZh : P.name)}<span>${escH(LP.zh ? P.name : P.nameZh)}</span></h1>
+        <p class="a-role">${escH(P.title)}</p>
+        <p class="a-pitch">${escH(P.pitch)}</p>
+        <p class="a-tag">${escH(P.tagline)}</p>
+        <div class="a-cta"><a class="go" href="#daily">${LP.ctaDaily}</a><a href="#features">${LP.ctaFeatures}</a><a href="${escH(P.links[0][1])}" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+      </div>
+      <div class="bot-stage" aria-hidden="true"><div class="bot-hint">${LP.botHint}</div></div>
+    </header>
+    <section class="a-stats" aria-label="${LP.statsLabel}">
+      <div><b>${DATA.eds}</b><span>${LP.statEds}</span></div>
+      <div><b>${DATA.stories}</b><span>${LP.statStories}</span></div>
+      <div><b>${DATA.F.length}</b><span>${LP.statFeats}</span></div>
+      <div><b>${LP.coverage.length}</b><span>${LP.statMarkets}</span></div>
+    </section>
+    <div class="a-two">
+      <section class="a-sec"><h2>${LP.secFocus}</h2><p>${escH(P.tagline)}</p><div class="a-chipline">${LP.coverage.map(c => `<span>${escH(c)}</span>`).join('')}</div><p style="margin-top:14px">${LP.method}</p></section>
+      <section class="a-sec"><h2>${LP.secViews}</h2>${FEATS.filter(f => f.bank).slice(0, 2).map(f => `<a class="a-view" href="#features"><small>${escH(LP.featureCat + '｜' + f.region)}</small><span>${escH(cap(f.bank))}</span><em>${escH(f.full)}</em></a>`).join('')}</section>
+    </div>
+    <section class="a-sec"><h2>${LP.secExp}</h2>${rows(P.experience, e => [e.when, e.where].filter(Boolean).join('　'))}</section>
+    <div class="a-two">
+      <section class="a-sec"><h2>${LP.secEdu}</h2>${rows(P.education, e => e.when || '')}</section>
+      <section class="a-sec"><h2>${LP.secBio}</h2>${P.bio.map(b => `<p>${escH(b)}</p>`).join('')}</section>
+    </div>
+    <section class="a-sec"><h2>${LP.secWork}</h2><div class="a-work">${P.work.map(w => `<div><b>${escH(w.t)}</b><span>${escH(w.d)}</span></div>`).join('')}</div></section>
+    <section class="a-sec a-contact"><h2>${LP.secContact}</h2><p><a href="${escH(P.links[0][1])}" target="_blank" rel="noopener">LinkedIn ↗</a>　·　<a href="${LP.classic + LP.dailyHash}">${LP.briefSite}</a></p></section>
+    <p class="a-note">${LP.note}</p>`;
+
+  // ---------- bot ----------
+  const stage = wrap.querySelector('.bot-stage');
+  const renderer = new THREE.WebGLRenderer({antialias: true, alpha: false});
+  renderer.setPixelRatio(DPR); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NoToneMapping; renderer.setClearColor(BG, 1);
+  stage.insertBefore(renderer.domElement, stage.firstChild);
+  const canvas = renderer.domElement;
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(BG);
+  const camera = new THREE.PerspectiveCamera(45, 1, .1, 100); camera.position.z = 13;
+  const room = new THREE.Scene(); room.background = new THREE.Color(0x0a0a0b);
+  room.add(new THREE.Mesh(new THREE.BoxGeometry(24, 16, 24), new THREE.MeshBasicMaterial({color: 0x0a0a0b, side: THREE.BackSide})));
+  const panel = (w, h, k, pos, rot) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color: new THREE.Color(k, k, k), side: THREE.DoubleSide})); m.position.set(...pos); if (rot) m.rotation.set(...rot); room.add(m); };
+  panel(14, 5, 1.1, [0, 6, 0], [Math.PI / 2, 0, 0]); panel(3.2, 10, 1.0, [-6, 0, 0], [0, Math.PI / 2, 0]); panel(2.4, 10, .85, [6, 0, 0], [0, -Math.PI / 2, 0]);
+  panel(12, 2.2, .6, [0, -1.5, -6]); panel(5, 4, .8, [3, 2.5, 6], [0, Math.PI, 0]); panel(14, 6, .22, [0, -6, 0], [-Math.PI / 2, 0, 0]);
+  const env = new THREE.PMREMGenerator(renderer).fromScene(room, .04).texture;
+  const U = {uReveal: {value: reduced ? 1 : 0}, uMinY: {value: -1}, uMaxY: {value: 1}, uBand: {value: .97}, uTime: {value: 0}, uHit: {value: new THREE.Vector3(0, 0, -100)}, uHover: {value: 0}, uInvBot: {value: new THREE.Matrix4()}};
+  function patch(mat){
+    mat.onBeforeCompile = sh => {
+      Object.assign(sh.uniforms, U);
+      sh.vertexShader = 'uniform mat4 uInvBot;\nvarying vec3 vWP;\nvarying vec3 vBP;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n{ vec4 _w = modelMatrix * vec4(transformed, 1.0); vWP = _w.xyz; vBP = (uInvBot * _w).xyz; }');
+      sh.fragmentShader = `uniform float uReveal, uMinY, uMaxY, uBand, uTime, uHover; uniform vec3 uHit; varying vec3 vWP; varying vec3 vBP;
+float _h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float _vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(_h21(i), _h21(i + vec2(1, 0)), f.x), mix(_h21(i + vec2(0, 1)), _h21(i + vec2(1, 1)), f.x), f.y); }
+float _front(){ return mix(uMinY - uBand, uMaxY + 0.25 * uBand, uReveal) + (_vn(vec2(vBP.x * 1.7 + uTime * 0.35, vBP.z * 1.7 - uTime * 0.25)) - 0.5) * 0.95 * (1.0 - uReveal); }
+` + sh.fragmentShader.replace('void main() {', 'void main() {\n float _fy = _front(); if (vBP.y > _fy) discard;').replace('#include <dithering_fragment>', `#include <dithering_fragment>
+{ float t = clamp((_fy - vBP.y) / uBand, 0.0, 1.0); float fade = 1.0 - smoothstep(0.9, 1.0, uReveal);
+  gl_FragColor.rgb = mix(gl_FragColor.rgb, mix(gl_FragColor.rgb * 1.35 + 0.08, vec3(${TH.liquid.join(', ')}), 0.4), (1.0 - t) * fade);
+  gl_FragColor.rgb += vec3(${TH.glow.join(', ')}) * pow(1.0 - t, 3.0) * 1.4 * (0.7 + 0.3 * sin(uTime * 7.0 + vBP.x * 9.0)) * fade * 0.55;
+  float g = pow(1.0 - smoothstep(0.828, 1.352, length(vWP - uHit)), 3.0) * 0.4 * uHover;
+  gl_FragColor.rgb += vec3(${TH.glow.join(', ')}) * g; }`);
+    };
+    mat.customProgramCacheKey = () => 'botfx'; return mat;
+  }
+  const chrome = patch(new THREE.MeshPhysicalMaterial({color: 0xffffff, metalness: 1, roughness: .07, envMap: env}));
+  const dark = patch(new THREE.MeshPhysicalMaterial({color: 0x040405, metalness: .3, roughness: .12, clearcoat: 1, clearcoatRoughness: .04, envMap: env}));
+  const eyeMat = patch(new THREE.MeshBasicMaterial({color: 0xf2f2ee}));
+  const inner = new THREE.Group();
+  const head = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 64), chrome); head.scale.set(1.1, 1, .98); inner.add(head);
+  const visor = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 48, Math.PI / 2 - 1.02, 2.04, Math.PI / 2 - .5, 1.0), dark); visor.scale.set(1.1 * 1.015, 1.015, .98 * 1.015); inner.add(visor);
+  const eyes = [-.3, .3].map(x => { const ax = 1.1 * 1.015, ay = 1.015, az = .98 * 1.015, y = .03; const e = new THREE.Mesh(new THREE.CapsuleGeometry(.075, .2, 8, 16), eyeMat); e.position.set(x, y, az * Math.sqrt(Math.max(0, 1 - (x / ax) ** 2 - (y / ay) ** 2))); e.scale.z = .45; inner.add(e); return e; });
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(.022, .03, .42, 24), chrome); stem.position.y = 1.15; inner.add(stem);
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(.095, 32, 24), chrome); ball.position.y = 1.38; inner.add(ball);
+  [-1.1, 1.1].forEach(x => { const ear = new THREE.Mesh(new THREE.TorusGeometry(.2, .065, 24, 64), chrome); ear.position.x = x; ear.rotation.y = Math.PI / 2; inner.add(ear); const c = new THREE.Mesh(new THREE.CylinderGeometry(.15, .15, .06, 40), dark); c.position.x = x; c.rotation.z = Math.PI / 2; inner.add(c); });
+  const haloPivot = new THREE.Group(); haloPivot.position.y = -1.28; haloPivot.rotation.x = .92 * Math.PI / 2; inner.add(haloPivot);
+  const halo = new THREE.Mesh(new THREE.TorusGeometry(.78, .05, 24, 160), chrome); haloPivot.add(halo);
+  const box = new THREE.Box3().setFromObject(inner), bsz = box.getSize(new THREE.Vector3());
+  U.uMinY.value = box.min.y; U.uMaxY.value = box.max.y; inner.position.copy(box.getCenter(new THREE.Vector3())).negate();
+  const pivot = new THREE.Group(); pivot.add(inner); const bot = new THREE.Group(); bot.add(pivot); scene.add(bot);
+  const botMeshes = []; inner.traverse(o => { if (o.isMesh) botMeshes.push(o); });
+
+  let SW = 1, SH = 1;
+  function layout(){ SW = stage.clientWidth || 1; SH = stage.clientHeight || 1; renderer.setSize(SW, SH, false); camera.aspect = SW / SH; camera.updateProjectionMatrix(); bot.scale.setScalar(.72 * (2 * 13 * Math.tan(THREE.MathUtils.degToRad(22.5))) / bsz.y); }
+  layout();
+
+  const tgt = {x: -.3, y: .4, z: .1}, rot = {...tgt}, rx = {x: 0, y: 0, z: 0}, sh = {y: 0}, eye = {blink: 1, sq: 1, sleep: 1}, fl = {phase: 0, y: 0, speed: 1, amp: 1};
+  let freeze = false, sleeping = false, lastInput = performance.now(), reactN = 0, visits = 0, hoverOn = false;
+  (function blinkLoop(){ setTimeout(() => { if (!sleeping) gsap.to(eye, {blink: .1, duration: .09, yoyo: true, repeat: 1}); blinkLoop(); }, 3000 + Math.random() * 2000); })();
+  const shake = () => gsap.timeline().to(sh, {y: .22, duration: .09}).to(sh, {y: -.18, duration: .12}).to(sh, {y: .10, duration: .11}).to(sh, {y: 0, duration: .18});
+  function sleep(){ sleeping = true; gsap.to(eye, {sleep: .2, duration: 1.1, ease: 'power2.inOut'}); gsap.to(tgt, {x: .42, y: 0, z: .12, duration: 1.4, ease: 'power2.inOut'}); gsap.to(fl, {speed: .35, amp: 1.6, duration: 1.6}); }
+  function wake(){ if (!sleeping) return; sleeping = false; gsap.killTweensOf(tgt); gsap.to(fl, {speed: 1, amp: 1, duration: .8}); gsap.killTweensOf(eye, 'sleep'); eye.sleep = 1; shake(); }
+  const onInput = () => { lastInput = performance.now(); wake(); };
+  ['pointerdown', 'wheel', 'keydown', 'touchstart'].forEach(ev => window.addEventListener(ev, () => { if (current === 'about') onInput(); }, {passive: true}));
+  root.addEventListener('scroll', () => { if (current === 'about') onInput(); }, {passive: true});
+  window.addEventListener('mousemove', e => {
+    if (current !== 'about') return; onInput();
+    const r = canvas.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    if (!sleeping){ tgt.x = clamp((e.clientY - cy) / (innerHeight / 2), -.62, .62); tgt.y = clamp((e.clientX - cx) / (innerWidth / 2), -.59, .59); tgt.z = .2 * clamp((e.clientX - cx) / (innerWidth / 2), -1, 1); }
+    ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    hoverOn = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+  });
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(9, 9);
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera); if (!ray.intersectObjects(botMeshes, false).length || freeze || U.uReveal.value < .8) return;
+    freeze = true;
+    const tl = gsap.timeline({onComplete: () => { freeze = false; shake(); }});
+    if (reactN++ % 2 === 0) tl.to(rx, {x: -.45, y: .18, duration: .16, ease: 'power3.out'}).to(eye, {sq: .35, duration: .16}, 0).to(rx, {x: 0, y: 0, duration: .9, ease: 'elastic.out(1, .45)'}).to(eye, {sq: 1, duration: .3}, '<');
+    else tl.to(rx, {y: Math.PI * 2, duration: 1.1, ease: 'power3.inOut'}).to(rx, {z: .25, duration: .25, ease: 'power2.out'}, 0).to(rx, {z: 0, duration: .9, ease: 'elastic.out(1, .5)'}, .25).set(rx, {y: 0});
+  });
+
+  let running = false, raf = 0, last = performance.now();
+  function frame(now){
+    raf = requestAnimationFrame(frame);
+    const dt = Math.min(.05, ((now || performance.now()) - last) / 1000); last = now || performance.now();
+    U.uTime.value += dt;
+    const k = 1 - Math.pow(1 - .08, 60 * dt);
+    if (!isTouch && !sleeping && U.uReveal.value >= 1 && performance.now() - lastInput > 30000) sleep();
+    if (!freeze){ rot.x += (tgt.x - rot.x) * k; rot.y += (tgt.y - rot.y) * k; rot.z += (tgt.z - rot.z) * k; }
+    pivot.rotation.set(rot.x + rx.x, rot.y + rx.y + sh.y, rot.z + rx.z);
+    if (!reduced){ fl.phase += dt * 1.5 * fl.speed; fl.y += (Math.sin(fl.phase) * .2 * fl.amp * U.uReveal.value - fl.y) * k; }
+    bot.position.y = fl.y; halo.rotation.z += .35 * dt;
+    eyes.forEach(e => e.scale.y = eye.blink * eye.sq * eye.sleep);
+    let hit = null;
+    if (hoverOn){ ray.setFromCamera(ndc, camera); hit = ray.intersectObjects(botMeshes, false)[0]; }
+    if (hit){ U.uHit.value.copy(hit.point); U.uHover.value += (1 - U.uHover.value) * .1; } else U.uHover.value += (0 - U.uHover.value) * .05;
+    scene.updateMatrixWorld(); U.uInvBot.value.copy(inner.matrixWorld).invert();
+    renderer.render(scene, camera);
+  }
+  return {
+    start(){
+      if (running) return; running = true; last = performance.now(); layout(); raf = requestAnimationFrame(frame); visits++; root.scrollTop = 0;
+      if (!reduced){ U.uReveal.value = 0; gsap.to(U.uReveal, {value: 1, duration: 3.85, ease: 'power2.out', delay: visits === 1 ? .6 : .3, overwrite: true}); }
+      gsap.fromTo(wrap.querySelectorAll('.a-hero > div:first-child > *'), {y: 18, opacity: 0}, {y: 0, opacity: 1, duration: .9, ease: 'expo.out', stagger: .06});
+      lastInput = performance.now();
+    },
+    stop(){ running = false; cancelAnimationFrame(raf); },
+    resize(){ layout(); },
+    esc(){}
+  };
 }
-$("edition").addEventListener("change", () => { state.i = Number($("edition").value); state.region = null; renderDaily(); });
-$("prev").addEventListener("click", () => { if (state.i < EDS[state.lang].length - 1){ state.i++; state.region = null; renderDaily(); } });
-$("next").addEventListener("click", () => { if (state.i > 0){ state.i--; state.region = null; renderDaily(); } });
-window.addEventListener("hashchange", route);
-route();
+
+// =====================================================================
+// ROUTER + DOCK
+// =====================================================================
+const dock = $('#dock');
+let dockShown = false;
+function showDock(){ if (dockShown) return; dockShown = true; gsap.fromTo(dock, {y: 16, opacity: 0}, {y: 0, opacity: 1, duration: .9, ease: 'expo.out', onStart: () => dock.style.pointerEvents = 'auto'}); }
+const VIEWS = {
+  gallery: {el: $('#v-gallery'), init: () => initGallery(), api: null},
+  daily: {el: $('#v-daily'), init: () => initGrid(DAILY_CFG), api: null},
+  features: {el: $('#v-features'), init: () => initGrid(FEAT_CFG), api: null},
+  about: {el: $('#v-about'), init: () => initAbout(), api: null}
+};
+let current = null, routeToken = 0;
+function parseHash(){ let h = ''; try { h = decodeURIComponent(location.hash.slice(1)); } catch (e) { h = location.hash.slice(1); } h = h.replace(/^en-?/, ''); if (h === 'views') h = 'about'; const [v, ...ps] = h.split('/'); return {view: VIEWS[v] ? v : 'gallery', ps}; }
+function applyParams(view, ps){
+  if (view !== 'daily') return;
+  const date = DATA.editions.includes(ps[0]) ? ps[0] : DATA.editions[0];
+  let region = ps[1] && ps[1] !== 'all' ? ps[1] : 'all';
+  if (region !== 'all' && !edStories(date).some(s => s.region === region)) region = 'all';
+  const changed = date !== daily.date || region !== daily.region;
+  daily.date = date; daily.region = region; renderCtrl();
+  if (changed && VIEWS.daily.api) VIEWS.daily.api.rebuild();
+  if (ps[2] !== undefined){ const s = STORIES.find(x => x.date === date && String(x.i) === ps[2]); if (s) setTimeout(() => openLightbox(s), changed ? 450 : 50); }
+}
+async function route(){
+  if (LP.zh && /^#en(-|$)/.test(location.hash)){ location.replace('index-en.html#' + location.hash.slice(1).replace(/^en-?/, '')); return; }
+  const {view: next, ps} = parseHash();
+  document.querySelectorAll('.tab').forEach(t => { const on = t.dataset.v === next; t.classList.toggle('on', on); if (on) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
+  if (next === current){ applyParams(next, ps); return; }
+  closeLightbox();
+  const token = ++routeToken; const prev = current; current = next;
+  applyParams(next, ps);
+  if (prev){ const p = VIEWS[prev]; await new Promise(r => gsap.to(p.el, {opacity: 0, duration: .3, ease: 'power2.in', overwrite: true, onComplete: r})); p.api && p.api.stop(); p.el.style.visibility = 'hidden'; }
+  if (token !== routeToken) return;
+  const v = VIEWS[next];
+  v.el.style.visibility = 'visible';
+  if (!v.api) v.api = await v.init();
+  if (token !== routeToken) return;
+  v.api.start();
+  gsap.to(v.el, {opacity: 1, duration: .45, ease: 'power2.out', overwrite: true});
+  if (next !== 'gallery' || v.api.introDone) showDock();
+}
+window.addEventListener('hashchange', route);
+window.addEventListener('keydown', e => { if (e.key === 'Escape'){ if (lbIsOpen()) closeLightbox(); else { const v = VIEWS[current]; v && v.api && v.api.esc && v.api.esc(); } } });
+let rTimer = 0;
+window.addEventListener('resize', () => { clearTimeout(rTimer); rTimer = setTimeout(() => Object.values(VIEWS).forEach(v => v.api && v.api.resize()), 60); });
+const langBtn = $('#langBtn'); langBtn.addEventListener('click', () => { langBtn.href = langBtn.getAttribute('href').split('#')[0] + location.hash; });
+// links shared from the old site: #en-… goes to the English page
+if (LP.zh && /^#en(-|$)/.test(location.hash)) location.replace('index-en.html#' + location.hash.slice(1).replace(/^en-?/, ''));
+else route();
+
 </script>
 </body>
 </html>
